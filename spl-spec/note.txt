@@ -1,0 +1,83 @@
+
+
+
+
+/* high-level definition */             全局变量没有初始值，只能定义。 即不能 int env=100; 只能int env;
+Program -> ExtDefList                   ExtDefList：外部声明列表
+ExtDefList -> ExtDef ExtDefList         迭代增长list
+    | $
+ExtDef -> Specifier ExtDecList SEMI     int a; int a[10]; struct A a;  struct A {int a; int b;}struct1;
+    | Specifier SEMI        int;
+    | Specifier FunDec CompSt           int function() {}
+ExtDecList -> VarDec                    a 或者 a[10]
+    | VarDec COMMA ExtDecList           a,b,c,...
+
+/* specifier */
+Specifier -> TYPE                       int float char
+    | StructSpecifier                   struct A 或者  struct A {int a; int b;}
+StructSpecifier -> STRUCT ID LC DefList RC      struct A {int a; int b;}
+    | STRUCT ID                         struct A
+
+/* declarator */
+VarDec -> ID                            a
+    | VarDec LB INT RB                  a[10]
+FunDec -> ID LP VarList RP              function(int a, int b)
+    | ID LP RP      function()
+VarList -> ParamDec COMMA VarList       int a, int b, int c
+    | ParamDec                          int a
+ParamDec -> Specifier VarDec            int a  struct A a
+
+/* statement */
+CompSt -> LC DefList StmtList RC        {各种语句}  stmt，def均为语句，以分号结尾. 似乎compst内至少两个语句 
+StmtList -> Stmt StmtList               迭代增长
+    | $
+Stmt -> Exp SEMI                         
+    | CompSt                            混合了..
+    | RETURN Exp SEMI                   return a*b;
+    | IF LP Exp RP Stmt                 if(a==b){ stmt}  或 if(a==b) stmt
+    | IF LP Exp RP Stmt ELSE Stmt       if
+    | WHILE LP Exp RP Stmt              while(a==b){ stmt}
+
+/* local definition */
+DefList -> Def DefList                  迭代增长 int a; int b=10；两条语句相当于list的两个element
+    | $
+Def -> Specifier DecList SEMI           int a=exp; 或 int a[10];
+DecList -> Dec                          a 或 a=exp
+    | Dec COMMA DecList                 a,b,c=exp
+Dec -> VarDec                           a a[10] 
+    | VarDec ASSIGN Exp                 a= exp
+
+/* Expression */            exp：算术运算，逻辑运算，函数调用，
+Exp -> Exp ASSIGN Exp
+    | Exp AND Exp           
+    | Exp OR Exp
+    | Exp LT Exp
+    | Exp LE Exp
+    | Exp GT Exp
+    | Exp GE Exp
+    | Exp NE Exp
+    | Exp EQ Exp
+    | Exp PLUS Exp
+    | Exp MINUS Exp
+    | Exp MUL Exp
+    | Exp DIV Exp
+    | LP Exp RP             exp ==（exp）
+    | MINUS Exp
+    | NOT Exp
+    | ID LP Args RP         function(1,2,3) 或者 function(a,b)函数调用
+    | ID LP RP              function()
+    | Exp LB Exp RB         ？？？？  a[10]
+    | Exp DOT ID            ？？？？  class1.name
+    | ID
+    | INT
+    | FLOAT
+    | CHAR
+Args -> Exp COMMA Args      1,a,1.2
+    | Exp
+
+
+不支持 {1，2，3，4}这种数组赋值操作
+比如int a[4]={1,2,3,4}；
+或者 int a[4];  a={1,2,3,4};
+都不行
+
