@@ -3,12 +3,12 @@
 int hasError = 0;
 int error_type = -1;
 
-nodePointer getTerminalNode(char *name, char* value, int line){
+nodePointer getTerminalNode(char *name, int line){
     nodePointer f = (nodePointer)malloc(sizeof(struct Node));
     f -> name = name;
     f -> head = f -> next = NULL;
     f -> line = line;
-    f -> value = value;
+    strcpy(f->value,yytext);
     return f;
 }
 
@@ -60,7 +60,7 @@ void writeNode(nodePointer node,int deep){
     }
 
     for(int i = 1;i <= deep;i++){
-        printf("    ");
+        printf("  ");
     }
 
     if(node -> head != NULL){
@@ -75,10 +75,10 @@ void writeNode(nodePointer node,int deep){
 
 void yyerror(char *msg)
 {
-    if(strcmp(msg,"syntax error") !=0 && error_type == 1){
-       printf("Error type B at line %d: %s\n",yylineno,msg); // 如果是syntax error
+    if(error_type == 1){
+        printf("Error type B at line %d: %s\n",yylineno,msg); // 如果是syntax error
     }else if(error_type == 0){
-        print("%s\n", msg); // 或者是 lex error
+        //printf("Error type A at line %d: %s\n",yylineno,msg); // 或者是 lex error
     }
     hasError=1;
 }

@@ -6,7 +6,7 @@
 extern char* yytext;
 extern int yylineno;
 extern int error_type;
-extern int has_error;
+extern int hasError;
 void yyerror(char *msg);
 
 typedef struct Node{
@@ -18,7 +18,7 @@ typedef struct Node{
 
 typedef struct Node* nodePointer;
 
-nodePointer getTerminalNode(char *name, char* value, int line);
+nodePointer getTerminalNode(char *name, int line);
 nodePointer getNode(char* token_name,int num,...);
 
 
