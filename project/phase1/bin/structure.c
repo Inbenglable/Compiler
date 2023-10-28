@@ -4,15 +4,22 @@ int hasError = 0;
 int error_type = -1;
 
 nodePointer getTerminalNode(char *name, int line){
+    //printf("terminal: %s %d %s\n", name, line, yytext);
+    //fflush(stdout);
     nodePointer f = (nodePointer)malloc(sizeof(struct Node));
     f -> name = name;
     f -> head = f -> next = NULL;
     f -> line = line;
+    //printf("Success\n");
+    f -> value = (char*)malloc(sizeof(char)*30);
     strcpy(f->value,yytext);
+    
     return f;
 }
 
 nodePointer getNode(char* name, int num, ...){
+    //printf("%s %d %s\n", name, yylineno, yytext);
+    //fflush(stdout);
     nodePointer f = (nodePointer)malloc(sizeof(struct Node));
     f -> name = name;
     f -> head = f -> next = NULL;
@@ -28,6 +35,7 @@ nodePointer getNode(char* name, int num, ...){
         }else{
             temp -> next = va_arg(ap, nodePointer);
             temp = temp -> next;
+            //if(strcmp("RC", temp->name) == 0)printf("OOOOO!");
         }
     }
     va_end(ap);
@@ -55,6 +63,7 @@ void writeTerminalNode(nodePointer node){
 void writeNode(nodePointer node,int deep){
     if(node == NULL)return;
     if(node -> line == -1){
+        writeNode(node->head, deep+1);
         writeNode(node->next, deep);
         return;
     }
@@ -75,7 +84,8 @@ void writeNode(nodePointer node,int deep){
 
 void yyerror(char *msg)
 {
-    if(error_type == 1){
+    //printf("?? %d %s %s\n", yylineno, yytext, msg);
+    if(error_type == 1 && strcmp(msg,"syntax error")!=0){
         printf("Error type B at line %d: %s\n",yylineno,msg); // 如果是syntax error
     }else if(error_type == 0){
         //printf("Error type A at line %d: %s\n",yylineno,msg); // 或者是 lex error
@@ -83,6 +93,30 @@ void yyerror(char *msg)
     hasError=1;
 }
 
-int main() {
-    yyparse();
+
+int main(int argc, char **argv) {
+    if (argc < 2)
+    {
+        
+        return 1;
+    }
+    for (int i = 1; i < argc; i++)
+    {
+       
+        hasError = 0;
+
+        FILE *f = fopen(argv[i], "r");
+        if (!f)
+        {
+            perror(argv[i]);
+            return 1;
+        }
+        yyrestart(f);
+        //printf("oooooooo%s\n", argv[i]);
+        fflush(stdout);
+        yyparse();
+        fclose(f);
+        
+    }
 }
+

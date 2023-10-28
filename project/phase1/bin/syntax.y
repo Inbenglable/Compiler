@@ -17,9 +17,13 @@
 %type <type> Program ExtDefList ExtDef ExtDecList Specifier StructSpecifier 
 %type <type> VarDec FunDec VarList ParamDec CompSt StmtList Stmt DefList Def DecList Dec Exp Args
 
-%right ASSIGN NOT
-%left OR AND LT LE GT GE NE EQ
-%left PLUS MINUS MUL DIV
+%right ASSIGN
+%left OR
+%left AND
+%left LT LE GT GE NE EQ
+%left PLUS MINUS
+%left MUL DIV
+%right NOT 
 %left LP RP LB RB DOT
 
 %nonassoc LOWER_THAN_ELSE 
@@ -29,7 +33,8 @@
 
 Program: ExtDefList {
     $$ = getNode("Program", 1, $1);
-    if(!hasError)writeNode($$, 0);
+    if(!hasError)
+        writeNode($$, 0);
     }
         ;
 ExtDefList: ExtDef ExtDefList {$$ = getNode("ExtDefList", 2, $1, $2);}
@@ -49,13 +54,15 @@ Specifier: TYPE {$$ = getNode("Specifier", 1, $1);}
          | StructSpecifier {$$ = getNode("Specifier", 1, $1);}
          ;
 StructSpecifier: STRUCT ID LC DefList RC {$$ = getNode("StructSpecifier", 5, $1, $2, $3, $4, $5);}
-              | STRUCT ID LC DefList error {error_type = 1;yyerror("Missing closing symbol '}'");}
               | STRUCT ID {$$ = getNode("StructSpecifier", 2, $1, $2);}
+//              | STRUCT ID LC DefList error {error_type = 1;yyerror("Missing closing symbol '}'");}
               ;
 
 VarDec: ID {$$ = getNode("VarDec", 1, $1);}
       | VarDec LB INT RB {$$ = getNode("VarDec", 4, $1, $2, $3, $4);}
       | VarDec LB INT error {error_type = 1;yyerror("Missing closing symbol ']'");}
+      | VarDec LB Exp RB {$$ = getNode("VarDec", 4, $1, $2, $3, $4);}
+      | VarDec LB Exp error {error_type = 1;yyerror("Missing closing symbol ']'");}
       ;
 FunDec: ID LP VarList RP {$$ = getNode("FunDec", 4, $1, $2, $3, $4);}
       | ID LP RP {$$ = getNode("FunDec", 3, $1, $2, $3);}
@@ -68,21 +75,22 @@ VarList: ParamDec COMMA VarList {$$ = getNode("VarList", 3, $1, $2, $3);}
 ParamDec: Specifier VarDec {$$ = getNode("ParamDec", 2, $1, $2);}
          ;
 
-CompSt: LC DefList StmtList RC {$$ = getNode("CompSt", 3, $1, $2, $3);}
+CompSt: LC DefList StmtList RC {$$ = getNode("CompSt", 4, $1, $2, $3, $4);}
       | LC DefList StmtList error {error_type = 1;yyerror("Missing closing symbol '}'");}
       ;
 StmtList: Stmt StmtList {$$ = getNode("StmtList", 2, $1, $2);}
         |{$$=getTerminalNode("StmtList", -1);}
         ;
-Stmt: Exp SEMI {$$ = getNode("Stmt", 2, $1, $2);}
+Stmt: SEMI {$$ = getNode("Stmt", 1, $1);}
+    | Exp SEMI {$$ = getNode("Stmt", 2, $1, $2);}
     | Exp error {error_type = 1;yyerror("Missing semicolon ';'");}
     | CompSt {$$ = getNode("Stmt", 1, $1);}
     | RETURN Exp SEMI {$$ = getNode("Stmt", 3, $1, $2, $3);}
     | RETURN Exp error {error_type = 1;yyerror("Missing semicolon ';'");}
     | IF LP Exp RP Stmt %prec LOWER_THAN_ELSE {$$ = getNode("Stmt", 5, $1, $2, $3, $4, $5);}
+    | IF LP Exp error Stmt %prec LOWER_THAN_ELSE {error_type = 1;yyerror("Missing closing symbol ')'");}
     | IF LP Exp RP Stmt ELSE Stmt {$$ = getNode("Stmt", 7, $1, $2, $3, $4, $5, $6, $7);}
     | WHILE LP Exp RP Stmt {$$ = getNode("Stmt", 5, $1, $2, $3, $4, $5);}
-    | IF LP Exp error Stmt %prec LOWER_THAN_ELSE {error_type = 1;yyerror("Missing closing symbol ')'");}
     | IF LP Exp error Stmt ELSE Stmt {error_type = 1;yyerror("Missing closing symbol ')'");}
     | WHILE LP Exp error Stmt {error_type = 1;yyerror("Missing closing symbol ')'");}
     ;
@@ -90,7 +98,6 @@ DefList: Def DefList {$$ = getNode("DefList", 2, $1, $2);}
         |{$$=getTerminalNode("DefList", -1);}
         ;
 Def: Specifier DecList SEMI {$$ = getNode("Def", 3, $1, $2, $3);}
-    | Specifier DecList error {error_type = 1;yyerror("Missing semicolon ';'");}
     ;
 DecList: Dec {$$ = getNode("DecList", 1, $1);}
         | Dec COMMA DecList {$$ = getNode("DecList", 3, $1, $2, $3);}
@@ -131,8 +138,8 @@ Exp: Exp ASSIGN Exp {$$ = getNode("Exp", 3, $1, $2, $3);}
     ;
 Args: Exp COMMA Args {$$ = getNode("Args", 3, $1, $2, $3);}
 //    | Exp error Args {error_type = 1;yyerror("Missing comma ','");}
-    | COMMA Args {yyerror("Unexpected ','");}
-    | Exp COMMA {yyerror("expected another parenthesis after ','");}
+    | COMMA Args {error_type = 1;yyerror("Unexpected ','");}
+    | Exp COMMA {error_type = 1;yyerror("expected another parenthesis after ','");}
     | Exp {$$ = getNode("Args", 1, $1);}
     ;
 

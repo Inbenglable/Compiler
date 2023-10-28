@@ -490,16 +490,16 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  9
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   317
+#define YYLAST   438
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  41
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  20
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  81
+#define YYNRULES  82
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  142
+#define YYNSTATES  144
 
 /* YYMAXUTOK -- Last valid token kind.  */
 #define YYMAXUTOK   295
@@ -552,15 +552,15 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    30,    30,    36,    37,    39,    40,    41,    42,    43,
-      45,    46,    49,    50,    52,    53,    54,    57,    58,    59,
-      61,    62,    63,    64,    66,    67,    69,    72,    73,    75,
-      76,    78,    79,    80,    81,    82,    83,    84,    85,    86,
-      87,    88,    90,    91,    93,    94,    96,    97,   100,   101,
-     104,   105,   106,   107,   108,   109,   110,   111,   112,   113,
-     114,   115,   116,   117,   118,   119,   120,   121,   122,   123,
-     124,   125,   126,   127,   128,   129,   130,   131,   133,   135,
-     136,   137
+       0,    34,    34,    40,    41,    43,    44,    45,    46,    47,
+      49,    50,    53,    54,    56,    57,    61,    62,    63,    64,
+      65,    67,    68,    69,    70,    72,    73,    75,    78,    79,
+      81,    82,    84,    85,    86,    87,    88,    89,    90,    91,
+      92,    93,    94,    95,    97,    98,   100,   102,   103,   106,
+     107,   110,   111,   112,   113,   114,   115,   116,   117,   118,
+     119,   120,   121,   122,   123,   124,   125,   126,   127,   128,
+     129,   130,   131,   132,   133,   134,   135,   136,   137,   139,
+     141,   142,   143
 };
 #endif
 
@@ -593,12 +593,12 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-75)
+#define YYPACT_NINF (-88)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
 
-#define YYTABLE_NINF (-1)
+#define YYTABLE_NINF (-77)
 
 #define yytable_value_is_error(Yyn) \
   0
@@ -607,21 +607,21 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int16 yypact[] =
 {
-      45,   -75,    16,    54,   -75,    45,    66,   -75,   -17,   -75,
-     -75,   -75,    44,   -75,    10,    -7,    43,    45,   210,   -75,
-     -75,    86,    91,    45,   -75,    86,    13,    45,   -75,   -75,
-      86,     7,    80,   -75,   -75,    19,   197,    40,    11,    81,
-     -75,   -75,   -75,    76,   -75,   -75,    45,   -75,   -75,   -75,
-     -75,   -75,    79,   235,    92,    93,   235,   235,   235,   -75,
-      15,   197,    41,   235,   -75,   -75,    86,   -75,   209,    65,
-     235,   235,    27,   268,    89,   -75,   -75,   -75,   -75,   -75,
-     235,   235,   235,   235,   235,   235,   235,   109,   235,   235,
-     235,   235,   235,   235,   235,   268,   -75,   -75,   226,   -75,
-     246,    22,   -75,   -75,   113,   137,   -75,   -75,   268,    27,
-      27,    27,    27,   289,   289,   -75,   161,   289,   289,   289,
-     289,   289,   289,   -75,   226,   -75,   -75,   197,   197,   197,
-     197,   -75,   -75,   -75,   110,   117,   -75,   -75,   197,   197,
-     -75,   -75
+      62,   -88,    15,    23,   -88,    62,    10,   -88,   -25,   -88,
+     -88,   -88,    12,   -88,    13,    -1,    16,    62,     5,   -88,
+     -88,    53,   306,    62,   -88,    53,    -2,    62,   -88,   -88,
+      53,     7,    46,   -88,   -88,    59,   -88,   -88,    40,   315,
+     315,   315,    84,   264,    20,    52,    55,   -88,   -88,    44,
+     -88,   -88,    62,   -88,   -88,   281,   -88,    37,    -4,   108,
+     -88,   315,   315,   315,   315,   315,   315,   315,    67,   315,
+     -88,   315,   315,   315,   315,   315,   315,   315,    48,    49,
+     -88,   -88,     0,   264,   132,   315,   -88,    53,   -88,   -88,
+     298,   -88,   326,     9,   -88,   -88,   348,    37,    37,    -4,
+      -4,   390,   369,   -88,   156,   309,   309,   309,   309,   309,
+     309,   180,   315,   315,   -88,   -88,   -88,   -88,   -88,   348,
+     -88,   -88,   298,   -88,   -88,   -88,   -88,   -88,   -88,   204,
+     228,   -88,   264,   264,   264,   264,    73,    75,   -88,   -88,
+     264,   264,   -88,   -88
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -629,110 +629,134 @@ static const yytype_int16 yypact[] =
    means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       4,    12,     0,     0,     2,     4,     0,    13,    16,     1,
-       3,     8,    17,     7,     0,    10,     0,    43,     0,     6,
-       5,     0,     0,    43,     9,     0,     0,    43,    23,    21,
-       0,     0,    25,    17,    11,     0,    30,    48,     0,    46,
-      15,    14,    42,    26,    22,    20,     0,    19,    18,    75,
-      76,    77,    74,     0,     0,     0,     0,     0,     0,    33,
-       0,    30,     0,     0,    45,    44,     0,    24,     0,     0,
-       0,     0,    65,    66,     0,    28,    27,    29,    32,    31,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,    49,    47,    70,     0,    69,
-      81,     0,    35,    34,     0,     0,    64,    63,    50,    59,
-      60,    61,    62,    51,    52,    73,     0,    53,    54,    55,
-      56,    57,    58,    79,    80,    68,    67,     0,     0,     0,
-       0,    72,    71,    78,    39,    36,    41,    38,     0,     0,
-      40,    37
+       4,    12,     0,     0,     2,     4,     0,    13,    15,     1,
+       3,     8,    16,     7,     0,    10,     0,    45,     0,     6,
+       5,     0,     0,    45,     9,     0,     0,    45,    24,    22,
+       0,     0,    26,    16,    11,     0,    77,    78,    75,     0,
+       0,     0,     0,    31,    49,     0,    47,    14,    44,    27,
+      23,    21,     0,    18,    17,     0,    76,    66,    67,     0,
+      20,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+      19,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+      32,    35,     0,    31,     0,     0,    46,     0,    25,    71,
+       0,    70,    82,     0,    65,    64,    51,    60,    61,    62,
+      63,    52,    53,    74,     0,    54,    55,    56,    57,    58,
+      59,     0,     0,     0,    29,    28,    30,    34,    33,    50,
+      48,    80,    81,    69,    68,    73,    72,    37,    36,     0,
+       0,    79,     0,     0,     0,     0,    39,    38,    43,    41,
+       0,     0,    42,    40
 };
 
 /* YYPGOTO[NTERM-NUM].  */
-static const yytype_int8 yypgoto[] =
+static const yytype_int16 yypgoto[] =
 {
-     -75,   -75,   115,   -75,   108,     1,   -75,   -23,   -75,    96,
-     -75,   123,    82,   119,    68,   -75,    78,   -75,   -53,   -74
+     -88,   -88,    93,   -88,    68,     4,   -88,   -23,   -88,    47,
+     -88,    94,    28,   297,     3,   -88,    27,   -88,   -22,   -87
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
        0,     3,     4,     5,    14,    25,     7,    15,    16,    31,
-      32,    59,    60,    61,    26,    27,    38,    39,    62,   101
+      32,    81,    82,    83,    26,    27,    45,    46,    84,    93
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
    positive, shift that token.  If negative, reduce the rule whose
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
-static const yytype_uint8 yytable[] =
+static const yytype_int16 yytable[] =
 {
-      69,     6,    37,    72,    73,    74,     6,    43,    44,    21,
-      95,    19,    64,    17,    40,   100,    75,   104,   105,    30,
-      47,    22,     8,   125,   123,    20,    65,   108,   109,   110,
-     111,   112,   113,   114,    45,   116,   117,   118,   119,   120,
-     121,   122,    78,    37,    41,   100,    76,    30,    48,   126,
-     133,    87,     1,     2,     9,    88,    79,    63,    80,    81,
-      82,    83,    84,    85,    86,    87,   102,    11,    22,    88,
-      18,   100,    12,    23,    89,    90,    91,    92,    93,    94,
-     103,    13,    80,    81,    82,    83,    84,    85,    86,    87,
-     106,    36,    33,    88,    35,    42,    46,    66,    89,    90,
-      91,    92,    93,    94,    22,    68,    80,    81,    82,    83,
-      84,    85,    86,    87,   127,   115,   107,    88,    70,    71,
-      10,   138,    89,    90,    91,    92,    93,    94,   139,    34,
-      80,    81,    82,    83,    84,    85,    86,    87,   129,    24,
-     128,    88,    67,    77,    96,     0,    89,    90,    91,    92,
-      93,    94,     0,     0,    80,    81,    82,    83,    84,    85,
-      86,    87,   131,     0,   130,    88,     0,     0,     0,     0,
-      89,    90,    91,    92,    93,    94,     0,     0,    80,    81,
-      82,    83,    84,    85,    86,    87,     0,     0,     0,    88,
-     132,     0,     0,     0,    89,    90,    91,    92,    93,    94,
-      49,    50,    51,    52,     0,     0,    53,    54,     0,    55,
-      97,    28,    49,    50,    51,    52,    56,     1,     2,     0,
-       0,     0,    57,    58,     0,    98,     0,    23,    56,    49,
-      50,    51,    52,     0,    57,    58,    99,    29,    49,    50,
-      51,    52,    98,     0,     0,    56,   134,   135,   136,   137,
-       0,    57,    58,     0,    56,     0,     0,   140,   141,     0,
-      57,    58,   124,    80,    81,    82,    83,    84,    85,    86,
-      87,     0,     0,     0,    88,     0,     0,     0,     0,    89,
-      90,    91,    92,    93,    94,    80,    81,    82,    83,    84,
-      85,    86,    87,     0,     0,     0,    88,     0,     0,     0,
-       0,    89,    90,    91,    92,    93,    94,    81,    82,    83,
-      84,     0,     0,    87,     0,     0,     0,    88
+      42,   114,    44,   121,     6,    17,    28,    49,    50,     6,
+     123,    11,     1,     2,    19,    21,    12,    57,    58,    59,
+      68,     8,    30,     9,    69,    13,    43,    22,    20,    47,
+      48,   115,    29,    92,    51,   131,   124,    85,    18,    96,
+      97,    98,    99,   100,   101,   102,    23,   104,    22,   105,
+     106,   107,   108,   109,   110,   111,    30,    64,    65,    33,
+      53,    68,    52,   119,    44,    69,    55,    86,    92,     1,
+       2,    87,    22,   103,   112,   113,   -76,   -76,   -76,   -76,
+     -76,   -76,   -76,   -76,   140,    60,   141,   -76,    54,    34,
+     129,   130,   -76,   -76,   -76,   -76,   -76,   -76,    10,    88,
+      92,    61,    62,    63,    64,    65,    66,    67,    68,    94,
+      24,   116,    69,    70,   120,     0,     0,    71,    72,    73,
+      74,    75,    76,     0,     0,    61,    62,    63,    64,    65,
+      66,    67,    68,   117,     0,    95,    69,     0,     0,     0,
+       0,    71,    72,    73,    74,    75,    76,   118,     0,    61,
+      62,    63,    64,    65,    66,    67,    68,   125,     0,     0,
+      69,     0,     0,     0,     0,    71,    72,    73,    74,    75,
+      76,     0,     0,    61,    62,    63,    64,    65,    66,    67,
+      68,   127,     0,     0,    69,   126,     0,     0,     0,    71,
+      72,    73,    74,    75,    76,   128,     0,    61,    62,    63,
+      64,    65,    66,    67,    68,   132,     0,     0,    69,     0,
+       0,     0,     0,    71,    72,    73,    74,    75,    76,     0,
+       0,    61,    62,    63,    64,    65,    66,    67,    68,   134,
+       0,   133,    69,     0,     0,     0,     0,    71,    72,    73,
+      74,    75,    76,     0,     0,    61,    62,    63,    64,    65,
+      66,    67,    68,     0,     0,   135,    69,     0,     0,     0,
+       0,    71,    72,    73,    74,    75,    76,    56,    36,    37,
+      38,     0,     0,    77,    78,     0,    79,     0,     0,    80,
+       0,     0,    89,    39,    56,    36,    37,    38,     0,    40,
+      41,     0,     0,     0,    23,     0,     0,    90,     0,     0,
+      39,    56,    36,    37,    38,     0,    40,    41,    91,    35,
+      36,    37,    38,     0,    90,     0,     0,    39,    56,    36,
+      37,    38,     0,    40,    41,    39,     0,    62,    63,    64,
+      65,    40,    41,    68,    39,     0,     0,    69,     0,     0,
+      40,    41,   122,    61,    62,    63,    64,    65,    66,    67,
+      68,     0,     0,     0,    69,     0,     0,     0,     0,    71,
+      72,    73,    74,    75,    76,    61,    62,    63,    64,    65,
+      66,    67,    68,     0,     0,     0,    69,     0,     0,     0,
+       0,    71,    72,    73,    74,    75,    76,    62,    63,    64,
+      65,    66,     0,    68,     0,     0,     0,    69,     0,     0,
+       0,     0,    71,    72,    73,    74,    75,    76,    62,    63,
+      64,    65,     0,     0,    68,     0,     0,     0,    69,     0,
+       0,     0,     0,    71,    72,    73,    74,    75,    76,   136,
+     137,   138,   139,     0,     0,     0,     0,   142,   143
 };
 
 static const yytype_int16 yycheck[] =
 {
-      53,     0,    25,    56,    57,    58,     5,    30,     1,    16,
-      63,     1,     1,    30,     1,    68,     1,    70,    71,    18,
-       1,    28,     6,     1,    98,    15,    15,    80,    81,    82,
-      83,    84,    85,    86,    27,    88,    89,    90,    91,    92,
-      93,    94,     1,    66,    31,    98,    31,    46,    29,    27,
-     124,    24,     7,     8,     0,    28,    15,    17,    17,    18,
-      19,    20,    21,    22,    23,    24,     1,     1,    28,    28,
-      26,   124,     6,    30,    33,    34,    35,    36,    37,    38,
-      15,    15,    17,    18,    19,    20,    21,    22,    23,    24,
-       1,    23,     6,    28,     3,    27,    16,    16,    33,    34,
-      35,    36,    37,    38,    28,    26,    17,    18,    19,    20,
-      21,    22,    23,    24,     1,     6,    27,    28,    26,    26,
-       5,    11,    33,    34,    35,    36,    37,    38,    11,    21,
-      17,    18,    19,    20,    21,    22,    23,    24,     1,    16,
-      27,    28,    46,    61,    66,    -1,    33,    34,    35,    36,
-      37,    38,    -1,    -1,    17,    18,    19,    20,    21,    22,
-      23,    24,     1,    -1,    27,    28,    -1,    -1,    -1,    -1,
-      33,    34,    35,    36,    37,    38,    -1,    -1,    17,    18,
-      19,    20,    21,    22,    23,    24,    -1,    -1,    -1,    28,
-      29,    -1,    -1,    -1,    33,    34,    35,    36,    37,    38,
-       3,     4,     5,     6,    -1,    -1,     9,    10,    -1,    12,
-       1,     1,     3,     4,     5,     6,    19,     7,     8,    -1,
-      -1,    -1,    25,    26,    -1,    16,    -1,    30,    19,     3,
-       4,     5,     6,    -1,    25,    26,    27,    27,     3,     4,
-       5,     6,    16,    -1,    -1,    19,   127,   128,   129,   130,
-      -1,    25,    26,    -1,    19,    -1,    -1,   138,   139,    -1,
+      22,     1,    25,    90,     0,    30,     1,    30,     1,     5,
+       1,     1,     7,     8,     1,    16,     6,    39,    40,    41,
+      24,     6,    18,     0,    28,    15,    23,    28,    15,    31,
+      27,    31,    27,    55,    27,   122,    27,    17,    26,    61,
+      62,    63,    64,    65,    66,    67,    30,    69,    28,    71,
+      72,    73,    74,    75,    76,    77,    52,    20,    21,     6,
+       1,    24,    16,    85,    87,    28,    26,    15,    90,     7,
+       8,    16,    28,     6,    26,    26,    17,    18,    19,    20,
+      21,    22,    23,    24,    11,     1,    11,    28,    29,    21,
+     112,   113,    33,    34,    35,    36,    37,    38,     5,    52,
+     122,    17,    18,    19,    20,    21,    22,    23,    24,     1,
+      16,    83,    28,    29,    87,    -1,    -1,    33,    34,    35,
+      36,    37,    38,    -1,    -1,    17,    18,    19,    20,    21,
+      22,    23,    24,     1,    -1,    27,    28,    -1,    -1,    -1,
+      -1,    33,    34,    35,    36,    37,    38,    15,    -1,    17,
+      18,    19,    20,    21,    22,    23,    24,     1,    -1,    -1,
+      28,    -1,    -1,    -1,    -1,    33,    34,    35,    36,    37,
+      38,    -1,    -1,    17,    18,    19,    20,    21,    22,    23,
+      24,     1,    -1,    -1,    28,    29,    -1,    -1,    -1,    33,
+      34,    35,    36,    37,    38,    15,    -1,    17,    18,    19,
+      20,    21,    22,    23,    24,     1,    -1,    -1,    28,    -1,
+      -1,    -1,    -1,    33,    34,    35,    36,    37,    38,    -1,
+      -1,    17,    18,    19,    20,    21,    22,    23,    24,     1,
+      -1,    27,    28,    -1,    -1,    -1,    -1,    33,    34,    35,
+      36,    37,    38,    -1,    -1,    17,    18,    19,    20,    21,
+      22,    23,    24,    -1,    -1,    27,    28,    -1,    -1,    -1,
+      -1,    33,    34,    35,    36,    37,    38,     3,     4,     5,
+       6,    -1,    -1,     9,    10,    -1,    12,    -1,    -1,    15,
+      -1,    -1,     1,    19,     3,     4,     5,     6,    -1,    25,
+      26,    -1,    -1,    -1,    30,    -1,    -1,    16,    -1,    -1,
+      19,     3,     4,     5,     6,    -1,    25,    26,    27,     3,
+       4,     5,     6,    -1,    16,    -1,    -1,    19,     3,     4,
+       5,     6,    -1,    25,    26,    19,    -1,    18,    19,    20,
+      21,    25,    26,    24,    19,    -1,    -1,    28,    -1,    -1,
       25,    26,    16,    17,    18,    19,    20,    21,    22,    23,
       24,    -1,    -1,    -1,    28,    -1,    -1,    -1,    -1,    33,
       34,    35,    36,    37,    38,    17,    18,    19,    20,    21,
       22,    23,    24,    -1,    -1,    -1,    28,    -1,    -1,    -1,
       -1,    33,    34,    35,    36,    37,    38,    18,    19,    20,
-      21,    -1,    -1,    24,    -1,    -1,    -1,    28
+      21,    22,    -1,    24,    -1,    -1,    -1,    28,    -1,    -1,
+      -1,    -1,    33,    34,    35,    36,    37,    38,    18,    19,
+      20,    21,    -1,    -1,    24,    -1,    -1,    -1,    28,    -1,
+      -1,    -1,    -1,    33,    34,    35,    36,    37,    38,   132,
+     133,   134,   135,    -1,    -1,    -1,    -1,   140,   141
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
@@ -742,46 +766,46 @@ static const yytype_int8 yystos[] =
        0,     7,     8,    42,    43,    44,    46,    47,     6,     0,
       43,     1,     6,    15,    45,    48,    49,    30,    26,     1,
       15,    16,    28,    30,    52,    46,    55,    56,     1,    27,
-      46,    50,    51,     6,    45,     3,    55,    48,    57,    58,
-       1,    31,    55,    48,     1,    27,    16,     1,    29,     3,
-       4,     5,     6,     9,    10,    12,    19,    25,    26,    52,
-      53,    54,    59,    17,     1,    15,    16,    50,    26,    59,
-      26,    26,    59,    59,    59,     1,    31,    53,     1,    15,
-      17,    18,    19,    20,    21,    22,    23,    24,    28,    33,
-      34,    35,    36,    37,    38,    59,    57,     1,    16,    27,
-      59,    60,     1,    15,    59,    59,     1,    27,    59,    59,
-      59,    59,    59,    59,    59,     6,    59,    59,    59,    59,
-      59,    59,    59,    60,    16,     1,    27,     1,    27,     1,
-      27,     1,    29,    60,    54,    54,    54,    54,    11,    11,
-      54,    54
+      46,    50,    51,     6,    45,     3,     4,     5,     6,    19,
+      25,    26,    59,    55,    48,    57,    58,    31,    55,    48,
+       1,    27,    16,     1,    29,    26,     3,    59,    59,    59,
+       1,    17,    18,    19,    20,    21,    22,    23,    24,    28,
+      29,    33,    34,    35,    36,    37,    38,     9,    10,    12,
+      15,    52,    53,    54,    59,    17,    15,    16,    50,     1,
+      16,    27,    59,    60,     1,    27,    59,    59,    59,    59,
+      59,    59,    59,     6,    59,    59,    59,    59,    59,    59,
+      59,    59,    26,    26,     1,    31,    53,     1,    15,    59,
+      57,    60,    16,     1,    27,     1,    29,     1,    15,    59,
+      59,    60,     1,    27,     1,    27,    54,    54,    54,    54,
+      11,    11,    54,    54
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
        0,    41,    42,    43,    43,    44,    44,    44,    44,    44,
-      45,    45,    46,    46,    47,    47,    47,    48,    48,    48,
-      49,    49,    49,    49,    50,    50,    51,    52,    52,    53,
-      53,    54,    54,    54,    54,    54,    54,    54,    54,    54,
-      54,    54,    55,    55,    56,    56,    57,    57,    58,    58,
+      45,    45,    46,    46,    47,    47,    48,    48,    48,    48,
+      48,    49,    49,    49,    49,    50,    50,    51,    52,    52,
+      53,    53,    54,    54,    54,    54,    54,    54,    54,    54,
+      54,    54,    54,    54,    55,    55,    56,    57,    57,    58,
+      58,    59,    59,    59,    59,    59,    59,    59,    59,    59,
       59,    59,    59,    59,    59,    59,    59,    59,    59,    59,
-      59,    59,    59,    59,    59,    59,    59,    59,    59,    59,
-      59,    59,    59,    59,    59,    59,    59,    59,    60,    60,
-      60,    60
+      59,    59,    59,    59,    59,    59,    59,    59,    59,    60,
+      60,    60,    60
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr2[] =
 {
        0,     2,     1,     2,     0,     3,     3,     2,     2,     3,
-       1,     3,     1,     1,     5,     5,     2,     1,     4,     4,
-       4,     3,     4,     3,     3,     1,     2,     4,     4,     2,
-       0,     2,     2,     1,     3,     3,     5,     7,     5,     5,
-       7,     5,     2,     0,     3,     3,     1,     3,     1,     3,
+       1,     3,     1,     1,     5,     2,     1,     4,     4,     4,
+       4,     4,     3,     4,     3,     3,     1,     2,     4,     4,
+       2,     0,     1,     2,     2,     1,     3,     3,     5,     5,
+       7,     5,     7,     5,     2,     0,     3,     1,     3,     1,
        3,     3,     3,     3,     3,     3,     3,     3,     3,     3,
-       3,     3,     3,     3,     3,     2,     2,     4,     4,     3,
-       3,     4,     4,     3,     1,     1,     1,     1,     3,     2,
-       2,     1
+       3,     3,     3,     3,     3,     3,     2,     2,     4,     4,
+       3,     3,     4,     4,     3,     1,     1,     1,     1,     3,
+       2,     2,     1
 };
 
 
@@ -1245,491 +1269,497 @@ yyreduce:
   switch (yyn)
     {
   case 2: /* Program: ExtDefList  */
-#line 30 "syntax.y"
+#line 34 "syntax.y"
                     {
-    printf("begin!!");
     (yyval.type) = getNode("Program", 1, (yyvsp[0].type));
-    if(!hasError)writeNode((yyval.type), 0);
+    if(!hasError)
+        writeNode((yyval.type), 0);
     }
-#line 1255 "syntax.tab.c"
-    break;
-
-  case 3: /* ExtDefList: ExtDef ExtDefList  */
-#line 36 "syntax.y"
-                              {(yyval.type) = getNode("ExtDefList", 2, (yyvsp[-1].type), (yyvsp[0].type));}
-#line 1261 "syntax.tab.c"
-    break;
-
-  case 4: /* ExtDefList: %empty  */
-#line 37 "syntax.y"
-            {(yyval.type)=getTerminalNode("ExtDefList", -1);}
-#line 1267 "syntax.tab.c"
-    break;
-
-  case 5: /* ExtDef: Specifier ExtDecList SEMI  */
-#line 39 "syntax.y"
-                                  {(yyval.type) = getNode("ExtDef", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
-#line 1273 "syntax.tab.c"
-    break;
-
-  case 6: /* ExtDef: Specifier ExtDecList error  */
-#line 40 "syntax.y"
-                                   {error_type = 1;yyerror("Missing semicolon ';'");}
 #line 1279 "syntax.tab.c"
     break;
 
-  case 7: /* ExtDef: Specifier SEMI  */
-#line 41 "syntax.y"
-                       {(yyval.type) = getNode("ExtDef", 2, (yyvsp[-1].type), (yyvsp[0].type));}
+  case 3: /* ExtDefList: ExtDef ExtDefList  */
+#line 40 "syntax.y"
+                              {(yyval.type) = getNode("ExtDefList", 2, (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1285 "syntax.tab.c"
     break;
 
-  case 8: /* ExtDef: Specifier error  */
-#line 42 "syntax.y"
-                        {error_type = 1;yyerror("Missing semicolon ';'");}
+  case 4: /* ExtDefList: %empty  */
+#line 41 "syntax.y"
+            {(yyval.type)=getTerminalNode("ExtDefList", -1);}
 #line 1291 "syntax.tab.c"
     break;
 
-  case 9: /* ExtDef: Specifier FunDec CompSt  */
+  case 5: /* ExtDef: Specifier ExtDecList SEMI  */
 #line 43 "syntax.y"
-                                {(yyval.type) = getNode("ExtDef", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
+                                  {(yyval.type) = getNode("ExtDef", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1297 "syntax.tab.c"
     break;
 
-  case 10: /* ExtDecList: VarDec  */
-#line 45 "syntax.y"
-                   {(yyval.type) = getNode("ExtDecList", 1, (yyvsp[0].type));}
+  case 6: /* ExtDef: Specifier ExtDecList error  */
+#line 44 "syntax.y"
+                                   {error_type = 1;yyerror("Missing semicolon ';'");}
 #line 1303 "syntax.tab.c"
     break;
 
-  case 11: /* ExtDecList: VarDec COMMA ExtDecList  */
-#line 46 "syntax.y"
-                                    {(yyval.type) = getNode("ExtDecList", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
+  case 7: /* ExtDef: Specifier SEMI  */
+#line 45 "syntax.y"
+                       {(yyval.type) = getNode("ExtDef", 2, (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1309 "syntax.tab.c"
     break;
 
-  case 12: /* Specifier: TYPE  */
-#line 49 "syntax.y"
-                {(yyval.type) = getNode("Specifier", 1, (yyvsp[0].type));}
+  case 8: /* ExtDef: Specifier error  */
+#line 46 "syntax.y"
+                        {error_type = 1;yyerror("Missing semicolon ';'");}
 #line 1315 "syntax.tab.c"
     break;
 
-  case 13: /* Specifier: StructSpecifier  */
-#line 50 "syntax.y"
-                           {(yyval.type) = getNode("Specifier", 1, (yyvsp[0].type));}
+  case 9: /* ExtDef: Specifier FunDec CompSt  */
+#line 47 "syntax.y"
+                                {(yyval.type) = getNode("ExtDef", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1321 "syntax.tab.c"
     break;
 
-  case 14: /* StructSpecifier: STRUCT ID LC DefList RC  */
-#line 52 "syntax.y"
-                                         {(yyval.type) = getNode("StructSpecifier", 5, (yyvsp[-4].type), (yyvsp[-3].type), (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
+  case 10: /* ExtDecList: VarDec  */
+#line 49 "syntax.y"
+                   {(yyval.type) = getNode("ExtDecList", 1, (yyvsp[0].type));}
 #line 1327 "syntax.tab.c"
     break;
 
-  case 15: /* StructSpecifier: STRUCT ID LC DefList error  */
-#line 53 "syntax.y"
-                                           {error_type = 1;yyerror("Missing closing symbol '}'");}
+  case 11: /* ExtDecList: VarDec COMMA ExtDecList  */
+#line 50 "syntax.y"
+                                    {(yyval.type) = getNode("ExtDecList", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1333 "syntax.tab.c"
     break;
 
-  case 16: /* StructSpecifier: STRUCT ID  */
-#line 54 "syntax.y"
-                          {(yyval.type) = getNode("StructSpecifier", 2, (yyvsp[-1].type), (yyvsp[0].type));}
+  case 12: /* Specifier: TYPE  */
+#line 53 "syntax.y"
+                {(yyval.type) = getNode("Specifier", 1, (yyvsp[0].type));}
 #line 1339 "syntax.tab.c"
     break;
 
-  case 17: /* VarDec: ID  */
-#line 57 "syntax.y"
-           {(yyval.type) = getNode("VarDec", 1, (yyvsp[0].type));}
+  case 13: /* Specifier: StructSpecifier  */
+#line 54 "syntax.y"
+                           {(yyval.type) = getNode("Specifier", 1, (yyvsp[0].type));}
 #line 1345 "syntax.tab.c"
     break;
 
-  case 18: /* VarDec: VarDec LB INT RB  */
-#line 58 "syntax.y"
-                         {(yyval.type) = getNode("VarDec", 4, (yyvsp[-3].type), (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
+  case 14: /* StructSpecifier: STRUCT ID LC DefList RC  */
+#line 56 "syntax.y"
+                                         {(yyval.type) = getNode("StructSpecifier", 5, (yyvsp[-4].type), (yyvsp[-3].type), (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1351 "syntax.tab.c"
     break;
 
-  case 19: /* VarDec: VarDec LB INT error  */
-#line 59 "syntax.y"
-                            {error_type = 1;yyerror("Missing closing symbol ']'");}
+  case 15: /* StructSpecifier: STRUCT ID  */
+#line 57 "syntax.y"
+                          {(yyval.type) = getNode("StructSpecifier", 2, (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1357 "syntax.tab.c"
     break;
 
-  case 20: /* FunDec: ID LP VarList RP  */
+  case 16: /* VarDec: ID  */
 #line 61 "syntax.y"
-                         {(yyval.type) = getNode("FunDec", 4, (yyvsp[-3].type), (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
+           {(yyval.type) = getNode("VarDec", 1, (yyvsp[0].type));}
 #line 1363 "syntax.tab.c"
     break;
 
-  case 21: /* FunDec: ID LP RP  */
+  case 17: /* VarDec: VarDec LB INT RB  */
 #line 62 "syntax.y"
-                 {(yyval.type) = getNode("FunDec", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
+                         {(yyval.type) = getNode("VarDec", 4, (yyvsp[-3].type), (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1369 "syntax.tab.c"
     break;
 
-  case 22: /* FunDec: ID LP VarList error  */
+  case 18: /* VarDec: VarDec LB INT error  */
 #line 63 "syntax.y"
-                            {error_type = 1;yyerror("Missing closing symbol ')'");}
+                            {error_type = 1;yyerror("Missing closing symbol ']'");}
 #line 1375 "syntax.tab.c"
     break;
 
-  case 23: /* FunDec: ID LP error  */
+  case 19: /* VarDec: VarDec LB Exp RB  */
 #line 64 "syntax.y"
-                    {error_type = 1;yyerror("Missing closing symbol ')'");}
+                         {(yyval.type) = getNode("VarDec", 4, (yyvsp[-3].type), (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1381 "syntax.tab.c"
     break;
 
-  case 24: /* VarList: ParamDec COMMA VarList  */
-#line 66 "syntax.y"
-                                {(yyval.type) = getNode("VarList", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
+  case 20: /* VarDec: VarDec LB Exp error  */
+#line 65 "syntax.y"
+                            {error_type = 1;yyerror("Missing closing symbol ']'");}
 #line 1387 "syntax.tab.c"
     break;
 
-  case 25: /* VarList: ParamDec  */
+  case 21: /* FunDec: ID LP VarList RP  */
 #line 67 "syntax.y"
-                  {(yyval.type) = getNode("VarList", 1, (yyvsp[0].type));}
+                         {(yyval.type) = getNode("FunDec", 4, (yyvsp[-3].type), (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1393 "syntax.tab.c"
     break;
 
-  case 26: /* ParamDec: Specifier VarDec  */
-#line 69 "syntax.y"
-                           {(yyval.type) = getNode("ParamDec", 2, (yyvsp[-1].type), (yyvsp[0].type));}
+  case 22: /* FunDec: ID LP RP  */
+#line 68 "syntax.y"
+                 {(yyval.type) = getNode("FunDec", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1399 "syntax.tab.c"
     break;
 
-  case 27: /* CompSt: LC DefList StmtList RC  */
-#line 72 "syntax.y"
-                               {(yyval.type) = getNode("CompSt", 3, (yyvsp[-3].type), (yyvsp[-2].type), (yyvsp[-1].type));}
+  case 23: /* FunDec: ID LP VarList error  */
+#line 69 "syntax.y"
+                            {error_type = 1;yyerror("Missing closing symbol ')'");}
 #line 1405 "syntax.tab.c"
     break;
 
-  case 28: /* CompSt: LC DefList StmtList error  */
-#line 73 "syntax.y"
-                                  {error_type = 1;yyerror("Missing closing symbol '}'");}
+  case 24: /* FunDec: ID LP error  */
+#line 70 "syntax.y"
+                    {error_type = 1;yyerror("Missing closing symbol ')'");}
 #line 1411 "syntax.tab.c"
     break;
 
-  case 29: /* StmtList: Stmt StmtList  */
-#line 75 "syntax.y"
-                        {(yyval.type) = getNode("StmtList", 2, (yyvsp[-1].type), (yyvsp[0].type));}
+  case 25: /* VarList: ParamDec COMMA VarList  */
+#line 72 "syntax.y"
+                                {(yyval.type) = getNode("VarList", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1417 "syntax.tab.c"
     break;
 
-  case 30: /* StmtList: %empty  */
-#line 76 "syntax.y"
-         {(yyval.type)=getTerminalNode("StmtList", -1);}
+  case 26: /* VarList: ParamDec  */
+#line 73 "syntax.y"
+                  {(yyval.type) = getNode("VarList", 1, (yyvsp[0].type));}
 #line 1423 "syntax.tab.c"
     break;
 
-  case 31: /* Stmt: Exp SEMI  */
-#line 78 "syntax.y"
-               {(yyval.type) = getNode("Stmt", 2, (yyvsp[-1].type), (yyvsp[0].type));}
+  case 27: /* ParamDec: Specifier VarDec  */
+#line 75 "syntax.y"
+                           {(yyval.type) = getNode("ParamDec", 2, (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1429 "syntax.tab.c"
     break;
 
-  case 32: /* Stmt: Exp error  */
-#line 79 "syntax.y"
-                {error_type = 1;yyerror("Missing semicolon ';'");}
+  case 28: /* CompSt: LC DefList StmtList RC  */
+#line 78 "syntax.y"
+                               {(yyval.type) = getNode("CompSt", 4, (yyvsp[-3].type), (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1435 "syntax.tab.c"
     break;
 
-  case 33: /* Stmt: CompSt  */
-#line 80 "syntax.y"
-             {(yyval.type) = getNode("Stmt", 1, (yyvsp[0].type));}
+  case 29: /* CompSt: LC DefList StmtList error  */
+#line 79 "syntax.y"
+                                  {error_type = 1;yyerror("Missing closing symbol '}'");}
 #line 1441 "syntax.tab.c"
     break;
 
-  case 34: /* Stmt: RETURN Exp SEMI  */
+  case 30: /* StmtList: Stmt StmtList  */
 #line 81 "syntax.y"
-                      {(yyval.type) = getNode("Stmt", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
+                        {(yyval.type) = getNode("StmtList", 2, (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1447 "syntax.tab.c"
     break;
 
-  case 35: /* Stmt: RETURN Exp error  */
+  case 31: /* StmtList: %empty  */
 #line 82 "syntax.y"
-                       {error_type = 1;yyerror("Missing semicolon ';'");}
+         {(yyval.type)=getTerminalNode("StmtList", -1);}
 #line 1453 "syntax.tab.c"
     break;
 
-  case 36: /* Stmt: IF LP Exp RP Stmt  */
-#line 83 "syntax.y"
-                                              {(yyval.type) = getNode("Stmt", 5, (yyvsp[-4].type), (yyvsp[-3].type), (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
+  case 32: /* Stmt: SEMI  */
+#line 84 "syntax.y"
+           {(yyval.type) = getNode("Stmt", 1, (yyvsp[0].type));}
 #line 1459 "syntax.tab.c"
     break;
 
-  case 37: /* Stmt: IF LP Exp RP Stmt ELSE Stmt  */
-#line 84 "syntax.y"
-                                  {(yyval.type) = getNode("Stmt", 7, (yyvsp[-6].type), (yyvsp[-5].type), (yyvsp[-4].type), (yyvsp[-3].type), (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
+  case 33: /* Stmt: Exp SEMI  */
+#line 85 "syntax.y"
+               {(yyval.type) = getNode("Stmt", 2, (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1465 "syntax.tab.c"
     break;
 
-  case 38: /* Stmt: WHILE LP Exp RP Stmt  */
-#line 85 "syntax.y"
-                           {(yyval.type) = getNode("Stmt", 5, (yyvsp[-4].type), (yyvsp[-3].type), (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
+  case 34: /* Stmt: Exp error  */
+#line 86 "syntax.y"
+                {error_type = 1;yyerror("Missing semicolon ';'");}
 #line 1471 "syntax.tab.c"
     break;
 
-  case 39: /* Stmt: IF LP Exp error Stmt  */
-#line 86 "syntax.y"
-                                                 {error_type = 1;yyerror("Missing closing symbol ')'");}
+  case 35: /* Stmt: CompSt  */
+#line 87 "syntax.y"
+             {(yyval.type) = getNode("Stmt", 1, (yyvsp[0].type));}
 #line 1477 "syntax.tab.c"
     break;
 
-  case 40: /* Stmt: IF LP Exp error Stmt ELSE Stmt  */
-#line 87 "syntax.y"
-                                     {error_type = 1;yyerror("Missing closing symbol ')'");}
+  case 36: /* Stmt: RETURN Exp SEMI  */
+#line 88 "syntax.y"
+                      {(yyval.type) = getNode("Stmt", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1483 "syntax.tab.c"
     break;
 
-  case 41: /* Stmt: WHILE LP Exp error Stmt  */
-#line 88 "syntax.y"
-                              {error_type = 1;yyerror("Missing closing symbol ')'");}
+  case 37: /* Stmt: RETURN Exp error  */
+#line 89 "syntax.y"
+                       {error_type = 1;yyerror("Missing semicolon ';'");}
 #line 1489 "syntax.tab.c"
     break;
 
-  case 42: /* DefList: Def DefList  */
+  case 38: /* Stmt: IF LP Exp RP Stmt  */
 #line 90 "syntax.y"
-                     {(yyval.type) = getNode("DefList", 2, (yyvsp[-1].type), (yyvsp[0].type));}
+                                              {(yyval.type) = getNode("Stmt", 5, (yyvsp[-4].type), (yyvsp[-3].type), (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1495 "syntax.tab.c"
     break;
 
-  case 43: /* DefList: %empty  */
+  case 39: /* Stmt: IF LP Exp error Stmt  */
 #line 91 "syntax.y"
-         {(yyval.type)=getTerminalNode("DefList", -1);}
+                                                 {error_type = 1;yyerror("Missing closing symbol ')'");}
 #line 1501 "syntax.tab.c"
     break;
 
-  case 44: /* Def: Specifier DecList SEMI  */
-#line 93 "syntax.y"
-                            {(yyval.type) = getNode("Def", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
+  case 40: /* Stmt: IF LP Exp RP Stmt ELSE Stmt  */
+#line 92 "syntax.y"
+                                  {(yyval.type) = getNode("Stmt", 7, (yyvsp[-6].type), (yyvsp[-5].type), (yyvsp[-4].type), (yyvsp[-3].type), (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1507 "syntax.tab.c"
     break;
 
-  case 45: /* Def: Specifier DecList error  */
-#line 94 "syntax.y"
-                              {error_type = 1;yyerror("Missing semicolon ';'");}
+  case 41: /* Stmt: WHILE LP Exp RP Stmt  */
+#line 93 "syntax.y"
+                           {(yyval.type) = getNode("Stmt", 5, (yyvsp[-4].type), (yyvsp[-3].type), (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1513 "syntax.tab.c"
     break;
 
-  case 46: /* DecList: Dec  */
-#line 96 "syntax.y"
-             {(yyval.type) = getNode("DecList", 1, (yyvsp[0].type));}
+  case 42: /* Stmt: IF LP Exp error Stmt ELSE Stmt  */
+#line 94 "syntax.y"
+                                     {error_type = 1;yyerror("Missing closing symbol ')'");}
 #line 1519 "syntax.tab.c"
     break;
 
-  case 47: /* DecList: Dec COMMA DecList  */
-#line 97 "syntax.y"
-                            {(yyval.type) = getNode("DecList", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
+  case 43: /* Stmt: WHILE LP Exp error Stmt  */
+#line 95 "syntax.y"
+                              {error_type = 1;yyerror("Missing closing symbol ')'");}
 #line 1525 "syntax.tab.c"
     break;
 
-  case 48: /* Dec: VarDec  */
-#line 100 "syntax.y"
-            {(yyval.type) = getNode("Dec", 1, (yyvsp[0].type));}
+  case 44: /* DefList: Def DefList  */
+#line 97 "syntax.y"
+                     {(yyval.type) = getNode("DefList", 2, (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1531 "syntax.tab.c"
     break;
 
-  case 49: /* Dec: VarDec ASSIGN Exp  */
-#line 101 "syntax.y"
-                        {(yyval.type) = getNode("Dec", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
+  case 45: /* DefList: %empty  */
+#line 98 "syntax.y"
+         {(yyval.type)=getTerminalNode("DefList", -1);}
 #line 1537 "syntax.tab.c"
     break;
 
-  case 50: /* Exp: Exp ASSIGN Exp  */
-#line 104 "syntax.y"
-                    {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
+  case 46: /* Def: Specifier DecList SEMI  */
+#line 100 "syntax.y"
+                            {(yyval.type) = getNode("Def", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1543 "syntax.tab.c"
     break;
 
-  case 51: /* Exp: Exp AND Exp  */
-#line 105 "syntax.y"
-                  {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
+  case 47: /* DecList: Dec  */
+#line 102 "syntax.y"
+             {(yyval.type) = getNode("DecList", 1, (yyvsp[0].type));}
 #line 1549 "syntax.tab.c"
     break;
 
-  case 52: /* Exp: Exp OR Exp  */
-#line 106 "syntax.y"
-                 {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
+  case 48: /* DecList: Dec COMMA DecList  */
+#line 103 "syntax.y"
+                            {(yyval.type) = getNode("DecList", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1555 "syntax.tab.c"
     break;
 
-  case 53: /* Exp: Exp LT Exp  */
-#line 107 "syntax.y"
-                 {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
+  case 49: /* Dec: VarDec  */
+#line 106 "syntax.y"
+            {(yyval.type) = getNode("Dec", 1, (yyvsp[0].type));}
 #line 1561 "syntax.tab.c"
     break;
 
-  case 54: /* Exp: Exp LE Exp  */
-#line 108 "syntax.y"
-                 {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
+  case 50: /* Dec: VarDec ASSIGN Exp  */
+#line 107 "syntax.y"
+                        {(yyval.type) = getNode("Dec", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1567 "syntax.tab.c"
     break;
 
-  case 55: /* Exp: Exp GT Exp  */
-#line 109 "syntax.y"
-                 {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
+  case 51: /* Exp: Exp ASSIGN Exp  */
+#line 110 "syntax.y"
+                    {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1573 "syntax.tab.c"
     break;
 
-  case 56: /* Exp: Exp GE Exp  */
-#line 110 "syntax.y"
-                 {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
+  case 52: /* Exp: Exp AND Exp  */
+#line 111 "syntax.y"
+                  {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1579 "syntax.tab.c"
     break;
 
-  case 57: /* Exp: Exp NE Exp  */
-#line 111 "syntax.y"
+  case 53: /* Exp: Exp OR Exp  */
+#line 112 "syntax.y"
                  {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1585 "syntax.tab.c"
     break;
 
-  case 58: /* Exp: Exp EQ Exp  */
-#line 112 "syntax.y"
+  case 54: /* Exp: Exp LT Exp  */
+#line 113 "syntax.y"
                  {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1591 "syntax.tab.c"
     break;
 
-  case 59: /* Exp: Exp PLUS Exp  */
-#line 113 "syntax.y"
-                   {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
+  case 55: /* Exp: Exp LE Exp  */
+#line 114 "syntax.y"
+                 {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1597 "syntax.tab.c"
     break;
 
-  case 60: /* Exp: Exp MINUS Exp  */
-#line 114 "syntax.y"
-                    {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
+  case 56: /* Exp: Exp GT Exp  */
+#line 115 "syntax.y"
+                 {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1603 "syntax.tab.c"
     break;
 
-  case 61: /* Exp: Exp MUL Exp  */
-#line 115 "syntax.y"
-                  {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
+  case 57: /* Exp: Exp GE Exp  */
+#line 116 "syntax.y"
+                 {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1609 "syntax.tab.c"
     break;
 
-  case 62: /* Exp: Exp DIV Exp  */
-#line 116 "syntax.y"
-                  {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
+  case 58: /* Exp: Exp NE Exp  */
+#line 117 "syntax.y"
+                 {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1615 "syntax.tab.c"
     break;
 
-  case 63: /* Exp: LP Exp RP  */
-#line 117 "syntax.y"
-                {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
+  case 59: /* Exp: Exp EQ Exp  */
+#line 118 "syntax.y"
+                 {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1621 "syntax.tab.c"
     break;
 
-  case 64: /* Exp: LP Exp error  */
-#line 118 "syntax.y"
-                   {error_type = 1;yyerror("Missing closing symbol ')'");}
+  case 60: /* Exp: Exp PLUS Exp  */
+#line 119 "syntax.y"
+                   {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1627 "syntax.tab.c"
     break;
 
-  case 65: /* Exp: MINUS Exp  */
-#line 119 "syntax.y"
-                {(yyval.type) = getNode("Exp", 2, (yyvsp[-1].type), (yyvsp[0].type));}
+  case 61: /* Exp: Exp MINUS Exp  */
+#line 120 "syntax.y"
+                    {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1633 "syntax.tab.c"
     break;
 
-  case 66: /* Exp: NOT Exp  */
-#line 120 "syntax.y"
-              {(yyval.type) = getNode("Exp", 2, (yyvsp[-1].type), (yyvsp[0].type));}
+  case 62: /* Exp: Exp MUL Exp  */
+#line 121 "syntax.y"
+                  {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1639 "syntax.tab.c"
     break;
 
-  case 67: /* Exp: ID LP Args RP  */
-#line 121 "syntax.y"
-                    {(yyval.type) = getNode("Exp", 4, (yyvsp[-3].type), (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
+  case 63: /* Exp: Exp DIV Exp  */
+#line 122 "syntax.y"
+                  {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1645 "syntax.tab.c"
     break;
 
-  case 68: /* Exp: ID LP Args error  */
-#line 122 "syntax.y"
-                       {error_type = 1;yyerror("Missing closing symbol ')'");}
+  case 64: /* Exp: LP Exp RP  */
+#line 123 "syntax.y"
+                {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1651 "syntax.tab.c"
     break;
 
-  case 69: /* Exp: ID LP RP  */
-#line 123 "syntax.y"
-               {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
+  case 65: /* Exp: LP Exp error  */
+#line 124 "syntax.y"
+                   {error_type = 1;yyerror("Missing closing symbol ')'");}
 #line 1657 "syntax.tab.c"
     break;
 
-  case 70: /* Exp: ID LP error  */
-#line 124 "syntax.y"
-                  {error_type = 1;yyerror("Missing closing symbol ')'");}
+  case 66: /* Exp: MINUS Exp  */
+#line 125 "syntax.y"
+                {(yyval.type) = getNode("Exp", 2, (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1663 "syntax.tab.c"
     break;
 
-  case 71: /* Exp: Exp LB Exp RB  */
-#line 125 "syntax.y"
-                    {(yyval.type) = getNode("Exp", 4, (yyvsp[-3].type), (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
+  case 67: /* Exp: NOT Exp  */
+#line 126 "syntax.y"
+              {(yyval.type) = getNode("Exp", 2, (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1669 "syntax.tab.c"
     break;
 
-  case 72: /* Exp: Exp LB Exp error  */
-#line 126 "syntax.y"
-                       {error_type = 1;yyerror("Missing closing symbol ']'");}
+  case 68: /* Exp: ID LP Args RP  */
+#line 127 "syntax.y"
+                    {(yyval.type) = getNode("Exp", 4, (yyvsp[-3].type), (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1675 "syntax.tab.c"
     break;
 
-  case 73: /* Exp: Exp DOT ID  */
-#line 127 "syntax.y"
-                 {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
+  case 69: /* Exp: ID LP Args error  */
+#line 128 "syntax.y"
+                       {error_type = 1;yyerror("Missing closing symbol ')'");}
 #line 1681 "syntax.tab.c"
     break;
 
-  case 74: /* Exp: ID  */
-#line 128 "syntax.y"
-         {(yyval.type) = getNode("Exp", 1, (yyvsp[0].type));}
+  case 70: /* Exp: ID LP RP  */
+#line 129 "syntax.y"
+               {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1687 "syntax.tab.c"
     break;
 
-  case 75: /* Exp: INT  */
-#line 129 "syntax.y"
-          {(yyval.type) = getNode("Exp", 1, (yyvsp[0].type));}
+  case 71: /* Exp: ID LP error  */
+#line 130 "syntax.y"
+                  {error_type = 1;yyerror("Missing closing symbol ')'");}
 #line 1693 "syntax.tab.c"
     break;
 
-  case 76: /* Exp: FLOAT  */
-#line 130 "syntax.y"
-            {(yyval.type) = getNode("Exp", 1, (yyvsp[0].type));}
+  case 72: /* Exp: Exp LB Exp RB  */
+#line 131 "syntax.y"
+                    {(yyval.type) = getNode("Exp", 4, (yyvsp[-3].type), (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1699 "syntax.tab.c"
     break;
 
-  case 77: /* Exp: CHAR  */
-#line 131 "syntax.y"
-           {(yyval.type) = getNode("Exp", 1, (yyvsp[0].type));}
+  case 73: /* Exp: Exp LB Exp error  */
+#line 132 "syntax.y"
+                       {error_type = 1;yyerror("Missing closing symbol ']'");}
 #line 1705 "syntax.tab.c"
     break;
 
-  case 78: /* Args: Exp COMMA Args  */
+  case 74: /* Exp: Exp DOT ID  */
 #line 133 "syntax.y"
-                     {(yyval.type) = getNode("Args", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
+                 {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1711 "syntax.tab.c"
     break;
 
-  case 79: /* Args: COMMA Args  */
-#line 135 "syntax.y"
-                 {yyerror("Unexpected ','");}
+  case 75: /* Exp: ID  */
+#line 134 "syntax.y"
+         {(yyval.type) = getNode("Exp", 1, (yyvsp[0].type));}
 #line 1717 "syntax.tab.c"
     break;
 
-  case 80: /* Args: Exp COMMA  */
-#line 136 "syntax.y"
-                {yyerror("expected another parenthesis after ','");}
+  case 76: /* Exp: INT  */
+#line 135 "syntax.y"
+          {(yyval.type) = getNode("Exp", 1, (yyvsp[0].type));}
 #line 1723 "syntax.tab.c"
     break;
 
-  case 81: /* Args: Exp  */
-#line 137 "syntax.y"
-          {(yyval.type) = getNode("Args", 1, (yyvsp[0].type));}
+  case 77: /* Exp: FLOAT  */
+#line 136 "syntax.y"
+            {(yyval.type) = getNode("Exp", 1, (yyvsp[0].type));}
 #line 1729 "syntax.tab.c"
     break;
 
+  case 78: /* Exp: CHAR  */
+#line 137 "syntax.y"
+           {(yyval.type) = getNode("Exp", 1, (yyvsp[0].type));}
+#line 1735 "syntax.tab.c"
+    break;
 
-#line 1733 "syntax.tab.c"
+  case 79: /* Args: Exp COMMA Args  */
+#line 139 "syntax.y"
+                     {(yyval.type) = getNode("Args", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
+#line 1741 "syntax.tab.c"
+    break;
+
+  case 80: /* Args: COMMA Args  */
+#line 141 "syntax.y"
+                 {error_type = 1;yyerror("Unexpected ','");}
+#line 1747 "syntax.tab.c"
+    break;
+
+  case 81: /* Args: Exp COMMA  */
+#line 142 "syntax.y"
+                {error_type = 1;yyerror("expected another parenthesis after ','");}
+#line 1753 "syntax.tab.c"
+    break;
+
+  case 82: /* Args: Exp  */
+#line 143 "syntax.y"
+          {(yyval.type) = getNode("Args", 1, (yyvsp[0].type));}
+#line 1759 "syntax.tab.c"
+    break;
+
+
+#line 1763 "syntax.tab.c"
 
       default: break;
     }
@@ -1922,4 +1952,4 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 140 "syntax.y"
+#line 146 "syntax.y"
