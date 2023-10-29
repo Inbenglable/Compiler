@@ -61,14 +61,40 @@ return { yylval.type=getTerminalNode("RETURN", yylineno);return RETURN; }
   unput('/');  
   unput('*');
 }
-'\\x{Hex}' { yyerror("Illegal hex char: %s"+yytext+"\n");}
-'\\x{Hex}{Hex}{Hex}+' {  yyerror("Illegal hex char: "+yytext+"\n");}
-'\\x{Hex}*[g-zG-Z][0-9a-zA-Z]*' {yyerror("Illegal hex char: "+yytext+"\n");}
-0[xX]{Hex}*[g-zG-Z][0-9a-zA-Z]* { yyerror("Illegal hex int: "+yytext+"\n");} 
-[^a-zA-Z]*({letter_}|{digit})* { yyerror("Illegal id: "+yytext+"\n");}
-[0][0-9]+ {yyerror("Illegal int: "+yytext+"\n");}
+'\\x{Hex}' { yyerror("Illegal hex char: %s"+yytext+"\n");
+yylval.type = getTerminalNode("RB", yylineno);
+return CHAR;
+}
+'\\x{Hex}{Hex}{Hex}+' {  yylval.type = getTerminalNode("ERROR", yylineno);
+ yyerror("Illegal hex char: "+yytext+"\n");
+ return CHAR;
+ }
+'\\x{Hex}*[g-zG-Z][0-9a-zA-Z]*' {
+    yylval.type = getTerminalNode("ERROR", yylineno);
+    yyerror("Illegal hex char: "+yytext+"\n");
+    return CHAR;
+    }
+0[xX]{Hex}*[g-zG-Z][0-9a-zA-Z]* { 
+    yylval.type = getTerminalNode("ERROR", yylineno);
+    yyerror("Illegal hex int: "+yytext+"\n");
+    return INT;
+    } 
+[^a-zA-Z]*({letter_}|{digit})* { 
+    yylval.type = getTerminalNode("ERROR", yylineno);
+    yyerror("Illegal id: "+yytext+"\n");
+    return ID;
+    }
+[0][0-9]+ {
+    yylval.type = getTerminalNode("ERROR", yylineno);
+    yyerror("Illegal int: "+yytext+"\n");
+    return INT;
+    }
 
-.   { yyerror("Undefined token: "+yytext+"\n");}
+.   { 
+    yylval.type = getTerminalNode("ERROR", yylineno);
+    yyerror("Undefined token: "+yytext+"\n");
+    return ID;
+    }
 
 
 %%
