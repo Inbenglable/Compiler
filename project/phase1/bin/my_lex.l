@@ -8,17 +8,20 @@
     #include <string.h>
     char tmp[500]; 
 %}
-
+SPACE [ \f\r\t\v]+
 letter [a-zA-Z]
 letter_ {letter}|_
 digit [0-9]
 Hex [0-9a-fA-F]
-
+EOL \n
 %%
+
+{SPACE} {}
+{EOL} {yylineno += 1;}
+
 (0[xX]{Hex}+)|([1-9]{digit}*)|0     { yylval.type=getTerminalNode("INT", yylineno);return INT; }
 (0|([1-9]{digit}*))\.{digit}*  { yylval.type=getTerminalNode("FLOAT", yylineno);return FLOAT; }
 ('\\x{Hex}{Hex}') |('.')       { yylval.type=getTerminalNode("CHAR", yylineno);return CHAR; }
-
 
 
 int {yylval.type=getTerminalNode("TYPE", yylineno);return TYPE; }
@@ -61,19 +64,71 @@ return { yylval.type=getTerminalNode("RETURN", yylineno);return RETURN; }
 }
 "/*" { 
   int c;
-  while((c = input()) != '*' & (c = input()) != '/'); 
+  while(1){
+    c=input();
+    if(c == '\n')yylineno += 1;
+    if(c=='*') {
+      c=input();
+      if(c == '\n')yylineno += 1;
+      if (c == '/') break;
+    }
+ 
+  }; 
   unput('/');  
   unput('*');
 }
-'\\x{Hex}' { }
-'\\x{Hex}{Hex}{Hex}+' { sprintf(tmp, "Illegal hex char: %s", yytext); yyerror(tmp);}
-'\\x{Hex}*[g-zG-Z][0-9a-zA-Z]*' { sprintf(tmp, "Illegal hex char: %s", yytext); yyerror(tmp);}
-0[xX]{Hex}*[g-zG-Z][0-9a-zA-Z]* { sprintf(tmp, "Illegal hex char: %s", yytext); yyerror(tmp);} 
-[^a-zA-Z]*({letter_}|{digit})* { sprintf(tmp, "Illegal id: %s", yytext); yyerror(tmp);}
-[0][0-9]+ { sprintf(tmp, "Illegal int: %s", yytext); yyerror(tmp);}
 
-.   { sprintf(tmp, "Unexpected token: %s", yytext); yyerror(tmp);}
+'\\x{Hex}' { 
+  error_type=0;
+  sprintf(tmp,"Illegal hex char: %s",yytext);
+  yyerror(tmp);
+yylval.type = getTerminalNode("RB", yylineno);
+return CHAR;
+}
+'\\x{Hex}{Hex}{Hex}+' {
+  error_type=0;
+    yylval.type = getTerminalNode("ERROR", yylineno);
+ sprintf(tmp, "Illegal hex char: %s", yytext); 
+ yyerror(tmp);
+ return CHAR;
+ }
+'\\x{Hex}*[g-zG-Z][0-9a-zA-Z]*' {
+  error_type=0;
+    yylval.type = getTerminalNode("ERROR", yylineno);
+   sprintf(tmp, "Illegal hex char: %s", yytext); 
+   yyerror(tmp);
+    return CHAR;
+    }
+0[xX]{Hex}*[g-zG-Z][0-9a-zA-Z]* { 
+  error_type=0;
+    yylval.type = getTerminalNode("ERROR", yylineno);
+    sprintf(tmp, "Illegal hex char: %s", yytext);
+    yyerror(tmp);
+    return INT;
+    } 
+({digit}|[#@$?])({letter_}|{digit})* { 
+  error_type=0;
+    yylval.type = getTerminalNode("ERROR", yylineno);
+    sprintf(tmp, "Illegal id: %s", yytext);
+     yyerror(tmp);
+    return ID;
+    }
 
+[0][0-9]+ {
+  error_type=0;
+    yylval.type = getTerminalNode("ERROR", yylineno);
+   sprintf(tmp, "Illegal int: %s", yytext); 
+   yyerror(tmp);
+    return INT;
+    }
+
+. { 
+  error_type=0;
+    yylval.type = getTerminalNode("ERROR", yylineno);
+   sprintf(tmp, "Unexpected token: %s", yytext);
+    yyerror(tmp);
+    return ID;
+    }
 
 %%
 

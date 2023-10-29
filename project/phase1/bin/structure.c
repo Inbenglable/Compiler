@@ -85,7 +85,7 @@ void writeNode(nodePointer node,int deep){
 
 void yyerror(char *msg)
 {
-    //printf("?? %d %s %s\n", yylineno, yytext, msg);
+    //printf("?? %d %s \"%s\"\n", yylineno, yytext, msg);
     if(error_type == 1 && strcmp(msg,"syntax error")!=0){
         printf("Error type B at line %d: %s\n",yylineno,msg); // 如果是syntax error
     }else if(error_type == 0 && strcmp(msg,"syntax error")!=0){

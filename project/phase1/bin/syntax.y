@@ -104,7 +104,6 @@ Stmt: SEMI {$$ = getNode("Stmt", 1, $1);}
     | FOR LP SEMI Exp SEMI RP Stmt {$$ = getNode("Stmt", 7, $1, $2, $3, $4, $5, $6, $7);}
     | FOR LP VarList SEMI SEMI RP Stmt {$$ = getNode("Stmt", 7, $1, $2, $3, $4, $5, $6, $7);}
     | FOR LP SEMI SEMI RP Stmt {$$ = getNode("Stmt", 6, $1, $2, $3, $4, $5, $6);}
-    | FOR LP error {error_type = 1; yyerror("Invalid for statement: missing ';' or ')'");}
     ;
 DefList: Def DefList {$$ = getNode("DefList", 2, $1, $2);}
         |{$$=getTerminalNode("DefList", -1);}
