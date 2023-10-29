@@ -5,6 +5,7 @@
     #include <stdio.h>
     #include "structure.h"
     #include "syntax.tab.h"
+    #include <string.h>
 %}
 
 letter [a-zA-Z]
@@ -13,12 +14,11 @@ digit [0-9]
 Hex [0-9a-fA-F]
 
 %%
-0[xX]{Hex}+          { yylval.type=getTerminalNode("INT", yylineno);return INT; }
-{digit}+             { yylval.type=getTerminalNode("INT", yylineno);return INT; }
-{digit}*\.{digit}+   { yylval.type=getTerminalNode("FLOAT", yylineno);return FLOAT; }
-{digit}+\.           { yylval.type=getTerminalNode("FLOAT", yylineno);return FLOAT; }
-'\\x{Hex}{Hex}'      { yylval.type=getTerminalNode("CHAR", yylineno);return CHAR; }
-'.'                  { yylval.type=getTerminalNode("CHAR", yylineno);return CHAR; }
+(0[xX]{Hex}+)|([1-9]{digit}*)|0     { yylval.type=getTerminalNode("INT", yylineno);return INT; }
+(0|([1-9]{digit}*))\.{digit}*  { yylval.type=getTerminalNode("FLOAT", yylineno);return FLOAT; }
+('\\x{Hex}{Hex}') |('.')       { yylval.type=getTerminalNode("CHAR", yylineno);return CHAR; }
+
+
 
 int { printf("lex.l_begin");yylval.type=getTerminalNode("TYPE", yylineno);return TYPE; }
 float { yylval.type=getTerminalNode("TYPE", yylineno);return TYPE; }
@@ -52,6 +52,24 @@ return { yylval.type=getTerminalNode("RETURN", yylineno);return RETURN; }
 "]" { yylval.type = getTerminalNode("RB", yylineno); return RB; }
 "{" { yylval.type = getTerminalNode("LC", yylineno); return LC; }
 "}" { yylval.type = getTerminalNode("RC", yylineno); return RC; }
+"//" { 
+  while((c = input()) != '\n'); 
+  unput(c); 
+}
+"/*" { 
+  while((c = input()) != '*' & (c = input()) != '/'); 
+  unput('/');  
+  unput('*');
+}
+'\\x{Hex}' { yyerror("Illegal hex char: %s"+yytext+"\n");}
+'\\x{Hex}{Hex}{Hex}+' {  yyerror("Illegal hex char: "+yytext+"\n");}
+'\\x{Hex}*[g-zG-Z][0-9a-zA-Z]*' {yyerror("Illegal hex char: "+yytext+"\n");}
+0[xX]{Hex}*[g-zG-Z][0-9a-zA-Z]* { yyerror("Illegal hex int: "+yytext+"\n");} 
+[^a-zA-Z]*({letter_}|{digit})* { yyerror("Illegal id: "+yytext+"\n");}
+[0][0-9]+ {yyerror("Illegal int: "+yytext+"\n");}
+
+.   { yyerror("Undefined token: "+yytext+"\n");}
+
 
 %%
 
