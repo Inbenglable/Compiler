@@ -59,8 +59,8 @@ return { yylval.type=getTerminalNode("RETURN", yylineno);return RETURN; }
 "}" { yylval.type = getTerminalNode("RC", yylineno); return RC; }
 "//" { 
   int c;
-  while((c = input()) != '\n'); 
-  unput(c); 
+  while((c = input()) != '\n');
+  yylineno += 1;  
 }
 "/*" { 
   int c;
@@ -74,8 +74,6 @@ return { yylval.type=getTerminalNode("RETURN", yylineno);return RETURN; }
     }
  
   }; 
-  unput('/');  
-  unput('*');
 }
 
 '\\x{Hex}' { 
