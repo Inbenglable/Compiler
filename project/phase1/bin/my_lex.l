@@ -6,6 +6,7 @@
     #include "structure.h"
     #include "syntax.tab.h"
     #include <string.h>
+    char tmp[500]; 
 %}
 
 letter [a-zA-Z]
@@ -20,15 +21,16 @@ Hex [0-9a-fA-F]
 
 
 
-int { printf("lex.l_begin");yylval.type=getTerminalNode("TYPE", yylineno);return TYPE; }
+int {yylval.type=getTerminalNode("TYPE", yylineno);return TYPE; }
 float { yylval.type=getTerminalNode("TYPE", yylineno);return TYPE; }
 char { yylval.type=getTerminalNode("TYPE", yylineno);return TYPE; }
 struct { yylval.type=getTerminalNode("STRUCT", yylineno);return STRUCT; }
 if { yylval.type=getTerminalNode("IF", yylineno);return IF; }
 else { yylval.type=getTerminalNode("ELSE", yylineno);return ELSE; }
 while { yylval.type=getTerminalNode("WHILE", yylineno);return WHILE; }
+for { yylval.type=getTerminalNode("FOR", yylineno);return FOR; }
 return { yylval.type=getTerminalNode("RETURN", yylineno);return RETURN; }
-{letter_}({letter_}|{digit})* {printf("an id\n"); yylval.type=getTerminalNode("ID", yylineno);return ID; }
+{letter_}({letter_}|{digit})* { yylval.type=getTerminalNode("ID", yylineno);return ID; }
 "." { yylval.type=getTerminalNode("DOT", yylineno);return DOT; }
 ";" { yylval.type=getTerminalNode("SEMI", yylineno);return SEMI; }
 "," { yylval.type=getTerminalNode("COMMA", yylineno);return COMMA; }
@@ -53,22 +55,24 @@ return { yylval.type=getTerminalNode("RETURN", yylineno);return RETURN; }
 "{" { yylval.type = getTerminalNode("LC", yylineno); return LC; }
 "}" { yylval.type = getTerminalNode("RC", yylineno); return RC; }
 "//" { 
+  int c;
   while((c = input()) != '\n'); 
   unput(c); 
 }
 "/*" { 
+  int c;
   while((c = input()) != '*' & (c = input()) != '/'); 
   unput('/');  
   unput('*');
 }
-'\\x{Hex}' { yyerror("Illegal hex char: %s"+yytext+"\n");}
-'\\x{Hex}{Hex}{Hex}+' {  yyerror("Illegal hex char: "+yytext+"\n");}
-'\\x{Hex}*[g-zG-Z][0-9a-zA-Z]*' {yyerror("Illegal hex char: "+yytext+"\n");}
-0[xX]{Hex}*[g-zG-Z][0-9a-zA-Z]* { yyerror("Illegal hex int: "+yytext+"\n");} 
-[^a-zA-Z]*({letter_}|{digit})* { yyerror("Illegal id: "+yytext+"\n");}
-[0][0-9]+ {yyerror("Illegal int: "+yytext+"\n");}
+'\\x{Hex}' { }
+'\\x{Hex}{Hex}{Hex}+' { sprintf(tmp, "Illegal hex char: %s", yytext); yyerror(tmp);}
+'\\x{Hex}*[g-zG-Z][0-9a-zA-Z]*' { sprintf(tmp, "Illegal hex char: %s", yytext); yyerror(tmp);}
+0[xX]{Hex}*[g-zG-Z][0-9a-zA-Z]* { sprintf(tmp, "Illegal hex char: %s", yytext); yyerror(tmp);} 
+[^a-zA-Z]*({letter_}|{digit})* { sprintf(tmp, "Illegal id: %s", yytext); yyerror(tmp);}
+[0][0-9]+ { sprintf(tmp, "Illegal int: %s", yytext); yyerror(tmp);}
 
-.   { yyerror("Undefined token: "+yytext+"\n");}
+.   { sprintf(tmp, "Unexpected token: %s", yytext); yyerror(tmp);}
 
 
 %%

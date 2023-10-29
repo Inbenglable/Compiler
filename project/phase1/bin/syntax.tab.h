@@ -64,34 +64,35 @@ extern int yydebug;
     IF = 265,                      /* IF  */
     ELSE = 266,                    /* ELSE  */
     WHILE = 267,                   /* WHILE  */
-    COMMENT = 268,                 /* COMMENT  */
-    SPACE = 269,                   /* SPACE  */
-    SEMI = 270,                    /* SEMI  */
-    COMMA = 271,                   /* COMMA  */
-    ASSIGN = 272,                  /* ASSIGN  */
-    PLUS = 273,                    /* PLUS  */
-    MINUS = 274,                   /* MINUS  */
-    MUL = 275,                     /* MUL  */
-    DIV = 276,                     /* DIV  */
-    AND = 277,                     /* AND  */
-    OR = 278,                      /* OR  */
-    DOT = 279,                     /* DOT  */
-    NOT = 280,                     /* NOT  */
-    LP = 281,                      /* LP  */
-    RP = 282,                      /* RP  */
-    LB = 283,                      /* LB  */
-    RB = 284,                      /* RB  */
-    LC = 285,                      /* LC  */
-    RC = 286,                      /* RC  */
-    AERROR = 287,                  /* AERROR  */
-    LT = 288,                      /* LT  */
-    LE = 289,                      /* LE  */
-    GT = 290,                      /* GT  */
-    GE = 291,                      /* GE  */
-    NE = 292,                      /* NE  */
-    EQ = 293,                      /* EQ  */
-    EOL = 294,                     /* EOL  */
-    LOWER_THAN_ELSE = 295          /* LOWER_THAN_ELSE  */
+    FOR = 268,                     /* FOR  */
+    COMMENT = 269,                 /* COMMENT  */
+    SPACE = 270,                   /* SPACE  */
+    SEMI = 271,                    /* SEMI  */
+    COMMA = 272,                   /* COMMA  */
+    ASSIGN = 273,                  /* ASSIGN  */
+    PLUS = 274,                    /* PLUS  */
+    MINUS = 275,                   /* MINUS  */
+    MUL = 276,                     /* MUL  */
+    DIV = 277,                     /* DIV  */
+    AND = 278,                     /* AND  */
+    OR = 279,                      /* OR  */
+    DOT = 280,                     /* DOT  */
+    NOT = 281,                     /* NOT  */
+    LP = 282,                      /* LP  */
+    RP = 283,                      /* RP  */
+    LB = 284,                      /* LB  */
+    RB = 285,                      /* RB  */
+    LC = 286,                      /* LC  */
+    RC = 287,                      /* RC  */
+    AERROR = 288,                  /* AERROR  */
+    LT = 289,                      /* LT  */
+    LE = 290,                      /* LE  */
+    GT = 291,                      /* GT  */
+    GE = 292,                      /* GE  */
+    NE = 293,                      /* NE  */
+    EQ = 294,                      /* EQ  */
+    EOL = 295,                     /* EOL  */
+    LOWER_THAN_ELSE = 296          /* LOWER_THAN_ELSE  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -105,7 +106,7 @@ union YYSTYPE
     nodePointer type;
     double d;
 
-#line 109 "syntax.tab.h"
+#line 110 "syntax.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

@@ -43,6 +43,7 @@ nodePointer getNode(char* name, int num, ...){
 }
 
 void writeTerminalNode(nodePointer node){
+    if(node == NULL)return;
     if(strcmp(node->name,"ID")==0 
         || strcmp(node->name,"TYPE")==0 
         || strcmp(node->name,"CHAR")==0){
@@ -87,8 +88,8 @@ void yyerror(char *msg)
     //printf("?? %d %s %s\n", yylineno, yytext, msg);
     if(error_type == 1 && strcmp(msg,"syntax error")!=0){
         printf("Error type B at line %d: %s\n",yylineno,msg); // 如果是syntax error
-    }else if(error_type == 0){
-        //printf("Error type A at line %d: %s\n",yylineno,msg); // 或者是 lex error
+    }else if(error_type == 0 && strcmp(msg,"syntax error")!=0){
+        printf("Error type A at line %d: %s\n",yylineno,msg); // 或者是 lex error
     }
     hasError=1;
 }

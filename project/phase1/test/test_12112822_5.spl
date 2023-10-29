@@ -1,0 +1,6 @@
+int a,b,,c,d;
+
+int main(){
+    print(a);
+    return 0;
+}
