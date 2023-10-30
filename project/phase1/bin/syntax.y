@@ -80,7 +80,7 @@ ParamDec: Specifier VarDec {$$ = getNode("ParamDec", 2, $1, $2);}
          ;
 
 CompSt: LC DefList StmtList RC {$$ = getNode("CompSt", 4, $1, $2, $3, $4);}
-      | LC DefList StmtList error {error_type = 1;yyerror("Missing closing symbol '}'");}
+    //   | LC DefList StmtList error {error_type = 1;yyerror("Missing closing symbol '}'");}
       ;
 StmtList: Stmt StmtList {$$ = getNode("StmtList", 2, $1, $2);}
         |{$$=getTerminalNode("StmtList", -1);}
@@ -111,7 +111,7 @@ DefList: Def DefList {$$ = getNode("DefList", 2, $1, $2);}
         |{$$=getTerminalNode("DefList", -1);}
         ;
 Def: Specifier DecList SEMI {$$ = getNode("Def", 3, $1, $2, $3);}
-//    |error DecList SEMI {error_type = 1; yyerror("Missing specifier");}
+   |error DecList SEMI {error_type = 1; yyerror("Missing specifier");}
     ;
 DecList: Dec {$$ = getNode("DecList", 1, $1);}
         | Dec COMMA DecList {$$ = getNode("DecList", 3, $1, $2, $3);}
