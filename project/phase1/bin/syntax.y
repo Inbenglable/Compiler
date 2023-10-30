@@ -112,6 +112,7 @@ DefList: Def DefList {$$ = getNode("DefList", 2, $1, $2);}
         ;
 Def: Specifier DecList SEMI {$$ = getNode("Def", 3, $1, $2, $3);}
    |error DecList SEMI {error_type = 1; yyerror("Missing specifier");}
+   |Specifier DecList error {error_type = 1; yyerror("Missing semicolon");}
     ;
 DecList: Dec {$$ = getNode("DecList", 1, $1);}
         | Dec COMMA DecList {$$ = getNode("DecList", 3, $1, $2, $3);}
