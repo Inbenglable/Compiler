@@ -7,7 +7,7 @@ int 111getAns(int nth){
     }
     while(i - w[nth] >= 0){
         dp[nth][i] = max(dp[nth-1][i], dp[nth-1][i-w[nth]] + v[nth]);
-        i--;
+        i = i - 1;
     }
     return 111getAns(nth + 1);
 }

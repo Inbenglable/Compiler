@@ -45,6 +45,8 @@ ExtDef: Specifier ExtDecList SEMI {$$ = getNode("ExtDef", 3, $1, $2, $3);}
       | Specifier SEMI {$$ = getNode("ExtDef", 2, $1, $2);}
       | Specifier error {error_type = 1;yyerror("Missing semicolon ';'");}
       | Specifier FunDec CompSt {$$ = getNode("ExtDef", 3, $1, $2, $3);}
+//      | error FunDec CompSt {error_type = 1; yyerror("Missing specifier");}
+      
       ;
 ExtDecList: VarDec {$$ = getNode("ExtDecList", 1, $1);}
           | VarDec COMMA ExtDecList {$$ = getNode("ExtDecList", 3, $1, $2, $3);}
@@ -90,11 +92,11 @@ Stmt: SEMI {$$ = getNode("Stmt", 1, $1);}
     | RETURN Exp SEMI {$$ = getNode("Stmt", 3, $1, $2, $3);}
     | RETURN Exp error {error_type = 1;yyerror("Missing semicolon ';'");}
     | IF LP Exp RP Stmt %prec LOWER_THAN_ELSE {$$ = getNode("Stmt", 5, $1, $2, $3, $4, $5);}
-    | IF LP Exp error Stmt %prec LOWER_THAN_ELSE {error_type = 1;yyerror("Missing closing symbol ')'");}
+    | IF LP Exp error Stmt %prec LOWER_THAN_ELSE {error_type = 1;yyerror("This if function miss closing symbol ')'");}
     | IF LP Exp RP Stmt ELSE Stmt {$$ = getNode("Stmt", 7, $1, $2, $3, $4, $5, $6, $7);}
     | WHILE LP Exp RP Stmt {$$ = getNode("Stmt", 5, $1, $2, $3, $4, $5);}
     | WHILE LP RP Stmt {$$ = getNode("Stmt", 4, $1, $2, $3, $4);}
-    | IF LP Exp error Stmt ELSE Stmt {error_type = 1;yyerror("Missing closing symbol ')'");}
+    | IF LP Exp error Stmt ELSE Stmt {error_type = 1;yyerror("This if function miss closing symbol ')'");}
     | WHILE LP Exp error Stmt {error_type = 1;yyerror("Missing closing symbol ')'");}
     | FOR LP VarList SEMI Exp SEMI Exp RP Stmt {$$ = getNode("Stmt", 9, $1, $2, $3, $4, $5, $6, $7, $8, $9);}
     | FOR LP SEMI Exp SEMI Exp RP Stmt {$$ = getNode("Stmt", 8, $1, $2, $3, $4, $5, $6, $7, $8);}
@@ -109,6 +111,7 @@ DefList: Def DefList {$$ = getNode("DefList", 2, $1, $2);}
         |{$$=getTerminalNode("DefList", -1);}
         ;
 Def: Specifier DecList SEMI {$$ = getNode("Def", 3, $1, $2, $3);}
+//    |error DecList SEMI {error_type = 1; yyerror("Missing specifier");}
     ;
 DecList: Dec {$$ = getNode("DecList", 1, $1);}
         | Dec COMMA DecList {$$ = getNode("DecList", 3, $1, $2, $3);}
@@ -131,6 +134,18 @@ Exp: Exp ASSIGN Exp {$$ = getNode("Exp", 3, $1, $2, $3);}
     | Exp MINUS Exp {$$ = getNode("Exp", 3, $1, $2, $3);}
     | Exp MUL Exp {$$ = getNode("Exp", 3, $1, $2, $3);}
     | Exp DIV Exp {$$ = getNode("Exp", 3, $1, $2, $3);}
+    | Exp AND error {error_type = 1; yyerror("Expect expression after 'ans'");}
+    | Exp OR error {error_type = 1; yyerror("Expect expression after 'or'");}
+    | Exp LT error {error_type = 1; yyerror("Expect expression after '<'");}
+    | Exp LE error {error_type = 1; yyerror("Expect expression after '<='");}
+    | Exp GT error {error_type = 1; yyerror("Expect expression after '>'");}
+    | Exp GE error {error_type = 1; yyerror("Expect expression after '>=");}
+    | Exp NE error {error_type = 1; yyerror("Expect expression after '!='");}
+    | Exp EQ error {error_type = 1; yyerror("Expect expression after '=='");}
+    | Exp PLUS error {error_type = 1; yyerror("Expect expression after '+'");}
+    | Exp MINUS error {error_type = 1; yyerror("Expect expression after '-'");}
+    | Exp MUL error {error_type = 1; yyerror("Expect expression after '*'");}
+    | Exp DIV error {error_type = 1; yyerror("Expect expression after '/'");}
     | LP Exp RP {$$ = getNode("Exp", 3, $1, $2, $3);}
     | LP Exp error {error_type = 1;yyerror("Missing closing symbol ')'");}
     | MINUS Exp {$$ = getNode("Exp", 2, $1, $2);}

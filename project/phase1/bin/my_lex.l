@@ -14,14 +14,16 @@ letter_ {letter}|_
 digit [0-9]
 Hex [0-9a-fA-F]
 EOL \n
+unknown .
 %%
 
 {SPACE} {}
 {EOL} {yylineno += 1;}
 
-(0[xX]{Hex}+)|([1-9]{digit}*)|0     { yylval.type=getTerminalNode("INT", yylineno);return INT; }
+(0[xX]([1-9a-fA-F]{Hex}*))|([1-9]{digit}*)|0     { yylval.type=getTerminalNode("INT", yylineno);return INT; }
 (0|([1-9]{digit}*))\.{digit}*  { yylval.type=getTerminalNode("FLOAT", yylineno);return FLOAT; }
-('\\x{Hex}{Hex}') |('.')       { yylval.type=getTerminalNode("CHAR", yylineno);return CHAR; }
+'\\x{Hex}{Hex}'       { yylval.type=getTerminalNode("CHAR", yylineno);return CHAR; }
+'.'    { yylval.type=getTerminalNode("CHAR", yylineno);return CHAR; }
 
 
 int {yylval.type=getTerminalNode("TYPE", yylineno);return TYPE; }
@@ -164,13 +166,13 @@ return CHAR;
     return INT;
     }
 
-. { 
+{unknown} {
   error_type=0;
     yylval.type = getTerminalNode("ERROR", yylineno);
-   sprintf(tmp, "Unexpected token: %s", yytext);
-    yyerror(tmp);
-    return ID;
-    }
+   sprintf(tmp, "unknown lexeme: %s", yytext); 
+   yyerror(tmp);
+    return PLUS;
+}
 
 %%
 
