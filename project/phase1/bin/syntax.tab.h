@@ -95,9 +95,8 @@ union YYSTYPE
 #line 8 "syntax.y" /* yacc.c:1909  */
 
     nodePointer type;
-    double d;
 
-#line 101 "syntax.tab.h" /* yacc.c:1909  */
+#line 100 "syntax.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

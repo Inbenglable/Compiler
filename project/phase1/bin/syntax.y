@@ -7,7 +7,6 @@
 
 %union{
     nodePointer type;
-    double d;
 }
 
 %token <type> INT FLOAT CHAR
@@ -45,9 +44,10 @@ ExtDef: Specifier ExtDecList SEMI {$$ = getNode("ExtDef", 3, $1, $2, $3);}
       | Specifier SEMI {$$ = getNode("ExtDef", 2, $1, $2);}
       | Specifier error {error_type = 1;yyerror("Missing semicolon ';'");}
       | Specifier FunDec CompSt {$$ = getNode("ExtDef", 3, $1, $2, $3);}
-//      | error FunDec CompSt {error_type = 1; yyerror("Missing specifier");}
-      
+      |  error ExtDecList SEMI {error_type = 1; yyerror("Missing specifier");}
       ;
+
+
 ExtDecList: VarDec {$$ = getNode("ExtDecList", 1, $1);}
           | VarDec COMMA ExtDecList {$$ = getNode("ExtDecList", 3, $1, $2, $3);}
           | COMMA ExtDecList {error_type = 1;yyerror("Unexpected ','");}
@@ -77,6 +77,8 @@ VarList: ParamDec COMMA VarList {$$ = getNode("VarList", 3, $1, $2, $3);}
        | ParamDec {$$ = getNode("VarList", 1, $1);}
        ;
 ParamDec: Specifier VarDec {$$ = getNode("ParamDec", 2, $1, $2);}
+        | error VarDec {error_type = 1;yyerror("Missing specifier");}
+        | Specifier error {error_type = 1;yyerror("Missing variable name");}
          ;
 
 CompSt: LC DefList StmtList RC {$$ = getNode("CompSt", 4, $1, $2, $3, $4);}
@@ -112,7 +114,7 @@ DefList: Def DefList {$$ = getNode("DefList", 2, $1, $2);}
         ;
 Def: Specifier DecList SEMI {$$ = getNode("Def", 3, $1, $2, $3);}
    |error DecList SEMI {error_type = 1; yyerror("Missing specifier");}
-   |Specifier DecList error {error_type = 1; yyerror("Missing semicolon");}
+   |Specifier DecList error {error_type = 1; yyerror("Missing semicolon ';'");}
     ;
 DecList: Dec {$$ = getNode("DecList", 1, $1);}
         | Dec COMMA DecList {$$ = getNode("DecList", 3, $1, $2, $3);}
@@ -135,6 +137,7 @@ Exp: Exp ASSIGN Exp {$$ = getNode("Exp", 3, $1, $2, $3);}
     | Exp MINUS Exp {$$ = getNode("Exp", 3, $1, $2, $3);}
     | Exp MUL Exp {$$ = getNode("Exp", 3, $1, $2, $3);}
     | Exp DIV Exp {$$ = getNode("Exp", 3, $1, $2, $3);}
+    | Exp ASSIGN error {error_type = 1; yyerror("Expect expression after '='");}
     | Exp AND error {error_type = 1; yyerror("Expect expression after 'ans'");}
     | Exp OR error {error_type = 1; yyerror("Expect expression after 'or'");}
     | Exp LT error {error_type = 1; yyerror("Expect expression after '<'");}

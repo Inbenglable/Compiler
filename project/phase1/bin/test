@@ -1,0 +1,23 @@
+#include<stdio.h>
+//symbol,  function,  struct
+// 
+
+struct B{
+    struct A{
+        int a; 
+        float b;
+    }t1,t2;  
+int c;
+};
+struct A{
+        int a; 
+        float b;
+    };
+
+int main(){
+    int a=1,b=2;
+    printf("%d\n",b);
+}
+
+
+

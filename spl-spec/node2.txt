@@ -1,0 +1,67 @@
+
+在C语言中，
+int main(){
+    int a[1];
+    float b=2.3;
+    char d='q';
+    int c=1;
+    c=b+d;
+    a[1]=c+b;
+    
+}
+type checking不warning
+
+
+struct A
+{
+    int value=7;
+};
+报错。 不能赋初始值
+
+
+struct B{
+    struct A t1;
+    struct T{
+        int a;
+        float b;
+    }t2;
+}; 可以递归定义
+
+struct B{
+    struct A t1;
+    struct B{
+        int a;
+        float b;
+    }t2;
+}; 不能重复定义
+
+struct B{
+    struct A{
+        int a;
+        float b;
+    }t1;
+    struct A a;
+};
+struct A{
+        int a;
+        float b;
+    }t2;
+不能重复定义
+
+
+struct B{
+    struct A{
+        int a;
+        float b;
+    }t2;
+    struct A a;
+};没问题，定义了后即刻生效，有作用域
+
+
+struct main{
+    int main;
+};
+int main(){
+    int main;
+}
+没问题，函数，变量名和结构体名可以重复

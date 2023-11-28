@@ -35,7 +35,7 @@ else { yylval.type=getTerminalNode("ELSE", yylineno);return ELSE; }
 while { yylval.type=getTerminalNode("WHILE", yylineno);return WHILE; }
 for { yylval.type=getTerminalNode("FOR", yylineno);return FOR; }
 return { yylval.type=getTerminalNode("RETURN", yylineno);return RETURN; }
-{letter_}({letter_}|{digit})* { yylval.type=getTerminalNode("ID", yylineno);return ID; }
+{letter_}({letter_}|{digit})* { yylval.type=getIDNode(yytext, yylineno);return ID; }
 "." { yylval.type=getTerminalNode("DOT", yylineno);return DOT; }
 ";" { yylval.type=getTerminalNode("SEMI", yylineno);return SEMI; }
 "," { yylval.type=getTerminalNode("COMMA", yylineno);return COMMA; }
@@ -57,7 +57,7 @@ return { yylval.type=getTerminalNode("RETURN", yylineno);return RETURN; }
 ")" { yylval.type = getTerminalNode("RP", yylineno); return RP; }
 "[" { yylval.type = getTerminalNode("LB", yylineno); return LB; }
 "]" { yylval.type = getTerminalNode("RB", yylineno); return RB; }
-"{" { yylval.type = getTerminalNode("LC", yylineno); return LC; }
+"{" { yylval.type = getTerminalNode("LC", yylineno) ; return LC; }
 "}" { yylval.type = getTerminalNode("RC", yylineno); return RC; }
 "//" { 
   int c;
@@ -106,51 +106,7 @@ return CHAR;
     yyerror(tmp);
     return INT;
     } 
-({digit}|[#@$?])({letter_}|{digit})* { 
-  error_type=0;
-    yylval.type = getTerminalNode("ERROR", yylineno);
-    sprintf(tmp, "Illegal id: %s", yytext);
-     yyerror(tmp);
-    return ID;
-    }
-
-[0][0-9]+ {
-  error_type=0;
-    yylval.type = getTerminalNode("ERROR", yylineno);
-   sprintf(tmp, "Illegal int: %s", yytext); 
-   yyerror(tmp);
-    return INT;
-    }
-
-'\\x{Hex}' { 
-  error_type=0;
-  sprintf(tmp,"Illegal hex char: %s",yytext);
-  yyerror(tmp);
-yylval.type = getTerminalNode("RB", yylineno);
-return CHAR;
-}
-'\\x{Hex}{Hex}{Hex}+' {
-  error_type=0;
-    yylval.type = getTerminalNode("ERROR", yylineno);
- sprintf(tmp, "Illegal hex char: %s", yytext); 
- yyerror(tmp);
- return CHAR;
- }
-'\\x{Hex}*[g-zG-Z][0-9a-zA-Z]*' {
-  error_type=0;
-    yylval.type = getTerminalNode("ERROR", yylineno);
-   sprintf(tmp, "Illegal hex char: %s", yytext); 
-   yyerror(tmp);
-    return CHAR;
-    }
-0[xX]{Hex}*[g-zG-Z][0-9a-zA-Z]* { 
-  error_type=0;
-    yylval.type = getTerminalNode("ERROR", yylineno);
-    sprintf(tmp, "Illegal hex char: %s", yytext);
-    yyerror(tmp);
-    return INT;
-    } 
-({digit}|[#@$?])({letter_}|{digit})* { 
+([1-9]|[#@$?])({letter_}|{digit})* { 
   error_type=0;
     yylval.type = getTerminalNode("ERROR", yylineno);
     sprintf(tmp, "Illegal id: %s", yytext);
