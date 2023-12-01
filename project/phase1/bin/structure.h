@@ -13,7 +13,6 @@ typedef struct Type{
     char* type_name;//the name of the type
     char isStruct;//s -> structure, v-> var, f->function
     unsigned long long hash;//type hash
-    unsigned long long hash;//type hash
     struct Var* contain;
 };
 

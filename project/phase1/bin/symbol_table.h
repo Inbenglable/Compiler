@@ -7,6 +7,8 @@
 //store_Fun(ID, varptr): insert an ID of a function and its corresponding Var* into the function table
 //query_Fun(ID): return the Var* of a certain function
 //get_hash(typeptr): return the hash value of a certain Type
+//When using symbol table, please run init_symbol_table() before start,
+//and run clear_symbol_table() before exit
 
 
 #include <string.h>
@@ -19,6 +21,17 @@ void init_symbol_table(){
     top->next = NULL;
     top->scope = 0;
     top->link_start = NULL;
+}
+
+void clear_symbol_table(){
+    clear_treap(symbol_treap);
+    clear_treap(type_treap);
+    clear_treap(fun_treap);
+    while(top != NULL){
+        ScopeStack* tmp = top;
+        top = top->next;
+        free(tmp);
+    }
 }
 
 void new_scope(){
@@ -153,6 +166,9 @@ unsigned long long get_hash(Type* typeptr){
         tmp = typeptr->contain;
         for(int i = 0; i <= length; i ++){
             children_hash[i] = tmp->type->hash;
+            if(children_hash[i] == 0){
+                children_hash[i] = tmp->type->hash = get_hash(tmp->type);
+            }
             int dim = tmp->dim;
             while(dim){
                 unsigned long long tmpbase = base;
@@ -264,4 +280,41 @@ Treap* find(char* v, Treap* node){
         }
     }
     return NULL;
+}
+
+void clear_treap(Treap* node){
+    if(node == NULL){
+        return;
+    }
+    clear_treap(node->lson);
+    clear_treap(node->rson);
+    clear_intermediate(node->link);
+    free(node);
+}
+
+void clear_intermediate(IntermediateLink* link){
+    if(link == NULL){
+        return;
+    }
+    clear_Type(link->typeptr);
+    clear_Var(link->varptr);
+    clear_intermediate(link->next_scope);
+    free(link);
+}
+
+void clear_Type(Type* typeptr){
+    if(typeptr == NULL){
+        return;
+    }
+    clear_Var(typeptr->contain);
+    free(typeptr);
+}
+
+void clear_Var(Var* varptr){
+    if(varptr == NULL){
+        return;
+    }
+    clear_Var(varptr->next);
+    clear_Type(varptr->type);
+    free(varptr);
 }
