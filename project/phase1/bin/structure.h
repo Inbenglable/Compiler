@@ -66,6 +66,8 @@ void extend_var(nodePointer to, nodePointer from);
 void extend_dim(nodePointer var);
 nodePointer getNode(char* token_name,int num,...);
 
+int check_ID_def(nodePointer node);
+
 void writeNode(nodePointer node,int depth);
 void writeTerminalNode(nodePointer node);
 
