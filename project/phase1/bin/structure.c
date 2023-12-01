@@ -310,5 +310,5 @@ int main(int argc, char **argv) {
         fclose(f);
         
     }
-    clear_symbol_table();
+    //clear_symbol_table();
 }
