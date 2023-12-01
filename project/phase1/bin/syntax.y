@@ -266,8 +266,9 @@ Exp: Exp ASSIGN Exp {$$ = getNode("Exp", 3, $1, $2, $3);}
         $$ = getNode("Exp", 1, $1);
         if(check_ID_def($1) == 0){
             error_type = 10;
-            char* name = $1->var->name;
+            char* name = $1->value;
             char* msg = (char*)malloc(sizeof(name)+sizeof(char)*100);
+            memset(msg, 0,sizeof(msg));
             strcat(msg, "\"");
             strcat(msg, name);
             strcat(msg, "\" is used without a definition");

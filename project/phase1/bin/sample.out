@@ -1,0 +1,119 @@
+Specifier 1 int
+Specifier 1 int
+VarDec 1 x
+ParamDec 1 ,
+Specifier 1 int
+VarDec 1 y
+ParamDec 1 )
+VarList 1 )
+VarList 1 )
+FunDec 1 )
+new scope
+new scope success
+Semantic Error at line 1: Variable aready exists
+Specifier 3 int
+VarDec 3 res
+Exp 3 +
+query ID
+query ID fail
+Error type 1 at line 3: "x" is used without a definition
+Exp 3 +
+query ID
+query ID fail
+Error type 1 at line 3: "y" is used without a definition
+Exp 3 +
+Exp 3 ;
+query ID
+query ID fail
+Error type 1 at line 3: "z" is used without a definition
+Exp 3 ;
+Dec 3 ;
+DecList 3 ;
+Def 3 ;
+CHECK, resstore ID
+store ID check point1
+store ID point2
+sym
+l
+r
+store ID point3
+store ID success
+COMPLET, resDefList 4 return
+Exp 4 ;
+query ID
+query ID success
+Stmt 4 ;
+StmtList 5 }
+CompSt 5 }
+ExtDef 5 }
+pop scope
+pop scope success
+store Fun
+store Fun success
+Specifier 6 int
+FunDec 6 )
+new scope
+new scope success
+Specifier 8 int
+VarDec 8 a1
+Exp 8 1
+Dec 8 ;
+DecList 8 ;
+Def 8 ;
+CHECK, a1store ID
+store ID check point1
+store ID point2
+l
+store ID point3
+Check point4store ID success
+COMPLET, a1Specifier 9 int
+VarDec 9 b
+Exp 9 +
+query ID
+query ID success
+Exp 9 ;
+query ID
+query ID fail
+Error type 1 at line 9: "a" is used without a definition
+Exp 9 ;
+Dec 9 ;
+DecList 9 ;
+Def 9 ;
+CHECK, bstore ID
+store ID check point1
+store ID point2
+store ID point3
+Check point4Check point4Check point4store ID success
+COMPLET, bSpecifier 10 int
+VarDec 10 b
+Exp 10 ,
+query ID
+query ID fail
+Error type 1 at line 10: "a" is used without a definition
+Exp 10 )
+query ID
+query ID success
+Args 10 )
+Args 10 )
+Exp 10 )
+Dec 10 ;
+DecList 10 ;
+Def 10 ;
+CHECK, bstore ID
+store ID fail
+COMPLET, bSemantic Error at line 10: Variable aready exists
+DefList 11 return
+DefList 11 return
+DefList 11 return
+Exp 11 0
+Stmt 11 ;
+StmtList 12 }
+CompSt 12 }
+ExtDef 12 }
+pop scope
+pop scope success
+store Fun
+Check point4store Fun success
+ExtDefList 13 
+ExtDefList 13 
+Program 13 
