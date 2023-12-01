@@ -61,7 +61,7 @@ unsigned long long get_hash(struct Type* typeptr);
 
 struct Treap* new_node(char* val);
 struct Treap* merge(struct Treap* lnode, struct Treap* rnode);
-void split(struct Treap* node, char* v, struct Treap* l, struct Treap* r);
+void split(struct Treap* node, char* v, struct Treap** l, struct Treap** r);
 struct Treap* find(char* v, struct Treap* node);
 void clear_treap(struct Treap* node);
 void clear_intermediate(struct IntermediateLink* link);

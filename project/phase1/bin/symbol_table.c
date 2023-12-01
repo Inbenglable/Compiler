@@ -13,6 +13,9 @@ void init_symbol_table(){
     top->next = NULL;
     top->scope = 0;
     top->link_start = NULL;
+    symbol_treap = NULL;
+    type_treap = NULL;
+    fun_treap = NULL;
 }
 
 void clear_symbol_table(){
@@ -53,15 +56,32 @@ void pop_scope(){
 
 int store_ID(char* ID, Var* varptr){
     printf("store ID\n");
+    fflush(stdout);
     Treap* node = find(ID, symbol_treap);
     if(node == NULL){
+        printf("store ID check point1\n");
+        fflush(stdout);
         node = new_node(ID);
         Treap* l, *r;
-        split(symbol_treap, ID, l, r);
+        printf("store ID point2\n");
+        fflush(stdout);
+        split(symbol_treap, ID, &l, &r);
+        if(symbol_treap == NULL){
+            printf("sym\n");
+        }
+        if(l == NULL){
+            printf("l\n");
+        }
+        if(r == NULL){
+            printf("r\n");
+        }
+        printf("store ID point3\n");
+        fflush(stdout);
         symbol_treap = merge(merge(l, node), r);
     }
     else if(node->link != NULL && node->link->scope == top->scope){
         printf("store ID fail\n");
+        fflush(stdout);
         return 0;
     }
     IntermediateLink* new_link = (IntermediateLink*)malloc(sizeof(IntermediateLink));
@@ -73,6 +93,7 @@ int store_ID(char* ID, Var* varptr){
     top->link_start = new_link;
     node->link = new_link;
     printf("store ID success\n");
+    fflush(stdout);
     return 1;
 }
 
@@ -93,7 +114,7 @@ int store_Type(char* ID, Type* typeptr){
     if(node == NULL){
         node = new_node(ID);
         Treap* l, *r;
-        split(type_treap, ID, l, r);
+        split(type_treap, ID, &l, &r);
         type_treap = merge(merge(l, node), r);
     }
     else if(node->link != NULL && node->link->scope == top->scope){
@@ -129,7 +150,7 @@ int store_Fun(char* ID, Var* varptr){
     if(node == NULL){
         node = new_node(ID);
         Treap* l, *r;
-        split(fun_treap, ID, l, r);
+        split(fun_treap, ID, &l, &r);
         fun_treap = merge(merge(l, node), r);
         IntermediateLink* new_link = (IntermediateLink*)malloc(sizeof(IntermediateLink));
         new_link->next_scope = NULL;
@@ -224,6 +245,7 @@ Treap* new_node(char* val){
     node->key = rand();
     node->val = val;
     node->link = NULL;
+    node->lson = node->rson = NULL;
     return node;
 }
 
@@ -234,6 +256,8 @@ Treap* merge(Treap* lnode, Treap* rnode){
     if(rnode == NULL){
         return lnode;
     }
+    printf("Check point4");
+    fflush(stdout);
     if(lnode->key >= rnode->key){
         rnode->lson = merge(lnode, rnode->lson);
         return rnode;
@@ -244,18 +268,18 @@ Treap* merge(Treap* lnode, Treap* rnode){
     }
 }
 
-void split(Treap* node, char* v, Treap* l, Treap* r){
+void split(Treap* node, char* v, Treap** l, Treap** r){
     if(node == NULL){
-        l = r = NULL;
+        *l = *r = NULL;
         return;
     }
     if(strcmp(node->val, v) < 0){
-        l = node;
-        split(node->rson, v, node->rson, r);
+        *l = node;
+        split(node->rson, v, &(node->rson), r);
     }
     else{
-        r = node;
-        split(node->lson, v, l, node->lson);
+        *r = node;
+        split(node->lson, v, l, &(node->lson));
     }
 }
 
