@@ -2,6 +2,7 @@
     #include<unistd.h>
     #include<stdio.h>   
     #include "structure.h"
+    #include "symbol_table.h"
     int yylex();
 %}
 
@@ -39,26 +40,66 @@ Program: ExtDefList {
 ExtDefList: ExtDef ExtDefList {$$ = getNode("ExtDefList", 2, $1, $2);}
           | {$$=getTerminalNode("ExtDefList", -1);}
         ;
-ExtDef: Specifier ExtDecList SEMI {$$ = getNode("ExtDef", 3, $1, $2, $3);}
+ExtDef: Specifier ExtDecList SEMI {
+            $$ = getNode("ExtDef", 3, $1, $2, $3);
+            assign_type($1, $2);
+            if(push_var($2)!==0){// == 0 : acc , == x : error in line x 
+                error_type = 3;
+                yyerror("Variable aready exists");
+            }
+        }
       | Specifier ExtDecList error {error_type = 1;yyerror("Missing semicolon ';'");}
       | Specifier SEMI {$$ = getNode("ExtDef", 2, $1, $2);}
       | Specifier error {error_type = 1;yyerror("Missing semicolon ';'");}
-      | Specifier FunDec CompSt {$$ = getNode("ExtDef", 3, $1, $2, $3);}
+      | Specifier FunDec CompSt {
+            $$ = getNode("ExtDef", 3, $1, $2, $3);
+            assign_funtype($2, $1);
+            if(push_fun($2))
+            if(push_fun($2)!==0){// == 0 : acc , == x : error in line x 
+                error_type = 3;
+                yyerror("Function name aready exists");
+            }
+        }
       |  error ExtDecList SEMI {error_type = 1; yyerror("Missing specifier");}
       ;
 
 
-ExtDecList: VarDec {$$ = getNode("ExtDecList", 1, $1);}
-          | VarDec COMMA ExtDecList {$$ = getNode("ExtDecList", 3, $1, $2, $3);}
+ExtDecList: VarDec {
+                $$ = getNode("ExtDecList", 1, $1);
+                extend_var($$, $1);    
+            }
+          | VarDec COMMA ExtDecList {
+                $$ = getNode("ExtDecList", 3, $1, $2, $3);
+                connect_var($1, $3);
+                extend_var($$, $1);
+            }
           | COMMA ExtDecList {error_type = 1;yyerror("Unexpected ','");}
           | VarDec COMMA {error_type = 1;yyerror("Unexpected ','");}
           ;
 
-Specifier: TYPE {$$ = getNode("Specifier", 1, $1);}
-         | StructSpecifier {$$ = getNode("Specifier", 1, $1);}
+Specifier: TYPE {
+                $$ = getNode("Specifier", 1, $1);
+                extend_type($$, $1);
+            }
+         | StructSpecifier {
+                $$ = getNode("Specifier", 1, $1);
+                extend_type($$, $1);
+            }
          ;
-StructSpecifier: STRUCT ID LC DefList RC {$$ = getNode("StructSpecifier", 5, $1, $2, $3, $4, $5);}
-              | STRUCT ID {$$ = getNode("StructSpecifier", 2, $1, $2);}
+StructSpecifier: STRUCT ID LC DefList RC {
+                    $$ = getNode("StructSpecifier", 5, $1, $2, $3, $4, $5);
+                    newStructType($$, $2, $4);
+                    if(push_type($$)!==0){// == 0 : acc , == x : error in line x 
+                        error_type = 3;
+                        yyerror("Struct name aready exists");
+                    }
+                }
+              | STRUCT ID {$$ = getNode("StructSpecifier", 2, $1, $2);
+                    if(!getStruct($$, $1)){
+                        error_type = 3;
+                        yyerror("Undefined structer");
+                    }
+              }
 //              | STRUCT ID LC DefList error {error_type = 1;yyerror("Missing closing symbol '}'");}
               ;
 
@@ -75,15 +116,36 @@ VarDec: ID {
 //      | VarDec LB Exp RB {$$ = getNode("VarDec", 4, $1, $2, $3, $4);}
 //      | VarDec LB Exp error {error_type = 1;yyerror("Missing closing symbol ']'");}
       ;
-FunDec: ID LP VarList RP {$$ = getNode("FunDec", 4, $1, $2, $3, $4);}
-      | ID LP RP {$$ = getNode("FunDec", 3, $1, $2, $3);}
+FunDec: ID LP VarList RP {$$ = getNode("FunDec", 4, $1, $2, $3, $4);
+            new_scope();
+            if(push_var($2)!==0){// == 0 : acc , == x : error in line x 
+                error_type = 3;
+                yyerror("Variable aready exists");
+            }
+            newFuntype($$, $1, $3);
+        }
+      | ID LP RP {$$ = getNode("FunDec", 3, $1, $2, $3);
+            new_scope();
+            newFuntype($$, $1, NULL);
+        }
       | ID LP VarList error {error_type = 1;yyerror("Missing closing symbol ')'");}
       | ID LP error {error_type = 1;yyerror("Missing closing symbol ')'");}
       ;
-VarList: ParamDec COMMA VarList {$$ = getNode("VarList", 3, $1, $2, $3);}
-       | ParamDec {$$ = getNode("VarList", 1, $1);}
+VarList: ParamDec COMMA VarList {
+            $$ = getNode("VarList", 3, $1, $2, $3);
+            connect_var($1, $3);
+            extend_var($$, $3);    
+        }
+       | ParamDec {
+            $$ = getNode("VarList", 1, $1);
+            extend_var($$, $1);
+        }
        ;
-ParamDec: Specifier VarDec {$$ = getNode("ParamDec", 2, $1, $2);}
+ParamDec: Specifier VarDec {
+            $$ = getNode("ParamDec", 2, $1, $2);
+            assign_type($1, $2);
+            extend_var($$, $2);   
+        }
         | error VarDec {error_type = 1;yyerror("Missing specifier");}
         | Specifier error {error_type = 1;yyerror("Missing variable name");}
          ;
@@ -107,28 +169,54 @@ Stmt: SEMI {$$ = getNode("Stmt", 1, $1);}
     | WHILE LP RP Stmt {$$ = getNode("Stmt", 4, $1, $2, $3, $4);}
     | IF LP Exp error Stmt ELSE Stmt {error_type = 1;yyerror("This if function miss closing symbol ')'");}
     | WHILE LP Exp error Stmt {error_type = 1;yyerror("Missing closing symbol ')'");}
-    | FOR LP VarList SEMI Exp SEMI Exp RP Stmt {$$ = getNode("Stmt", 9, $1, $2, $3, $4, $5, $6, $7, $8, $9);}
-    | FOR LP SEMI Exp SEMI Exp RP Stmt {$$ = getNode("Stmt", 8, $1, $2, $3, $4, $5, $6, $7, $8);}
-    | FOR LP VarList SEMI SEMI Exp RP Stmt {$$ = getNode("Stmt", 8, $1, $2, $3, $4, $5, $6, $7, $8);}
-    | FOR LP VarList SEMI Exp SEMI RP Stmt {$$ = getNode("Stmt", 8, $1, $2, $3, $4, $5, $6, $7, $8);}
-    | FOR LP SEMI SEMI Exp RP Stmt {$$ = getNode("Stmt", 7, $1, $2, $3, $4, $5, $6, $7);}
-    | FOR LP SEMI Exp SEMI RP Stmt {$$ = getNode("Stmt", 7, $1, $2, $3, $4, $5, $6, $7);}
-    | FOR LP VarList SEMI SEMI RP Stmt {$$ = getNode("Stmt", 7, $1, $2, $3, $4, $5, $6, $7);}
-    | FOR LP SEMI SEMI RP Stmt {$$ = getNode("Stmt", 6, $1, $2, $3, $4, $5, $6);}
+    // | FOR LP VarList SEMI Exp SEMI Exp RP Stmt {$$ = getNode("Stmt", 9, $1, $2, $3, $4, $5, $6, $7, $8, $9);}
+    // | FOR LP SEMI Exp SEMI Exp RP Stmt {$$ = getNode("Stmt", 8, $1, $2, $3, $4, $5, $6, $7, $8);}
+    // | FOR LP VarList SEMI SEMI Exp RP Stmt {$$ = getNode("Stmt", 8, $1, $2, $3, $4, $5, $6, $7, $8);}
+    // | FOR LP VarList SEMI Exp SEMI RP Stmt {$$ = getNode("Stmt", 8, $1, $2, $3, $4, $5, $6, $7, $8);}
+    // | FOR LP SEMI SEMI Exp RP Stmt {$$ = getNode("Stmt", 7, $1, $2, $3, $4, $5, $6, $7);}
+    // | FOR LP SEMI Exp SEMI RP Stmt {$$ = getNode("Stmt", 7, $1, $2, $3, $4, $5, $6, $7);}
+    // | FOR LP VarList SEMI SEMI RP Stmt {$$ = getNode("Stmt", 7, $1, $2, $3, $4, $5, $6, $7);}
+    // | FOR LP SEMI SEMI RP Stmt {$$ = getNode("Stmt", 6, $1, $2, $3, $4, $5, $6);}
     ;
-DefList: Def DefList {$$ = getNode("DefList", 2, $1, $2);}
+DefList: Def DefList {
+            $$ = getNode("DefList", 2, $1, $2);
+            connect_var($1, $2);
+            extend_var($$, $1);
+        }
         |{$$=getTerminalNode("DefList", -1);}
         ;
-Def: Specifier DecList SEMI {$$ = getNode("Def", 3, $1, $2, $3);}
+Def: Specifier DecList SEMI {
+        $$ = getNode("Def", 3, $1, $2, $3);
+        assign_type($1, $2);
+        extend_var($$, $2);
+        if(push_var($2)!==0){// == 0 : acc , == x : error in line x 
+            error_type = 3;
+            yyerror("Variable aready exists");
+        }
+
+    }
    |error DecList SEMI {error_type = 1; yyerror("Missing specifier");}
    |Specifier DecList error {error_type = 1; yyerror("Missing semicolon ';'");}
     ;
-DecList: Dec {$$ = getNode("DecList", 1, $1);}
-        | Dec COMMA DecList {$$ = getNode("DecList", 3, $1, $2, $3);}
+DecList: Dec {
+            $$ = getNode("DecList", 1, $1);
+            extend_var($$, $1);
+        }
+        | Dec COMMA DecList {
+            $$ = getNode("DecList", 3, $1, $2, $3);
+            connect_var($1, $3);
+            extend_var($$, $1);
+        }
 //        | Dec error DecList {error_type = 1;yyerror("Missing comma ','");}
         ;
-Dec: VarDec {$$ = getNode("Dec", 1, $1);}
-    | VarDec ASSIGN Exp {$$ = getNode("Dec", 3, $1, $2, $3);}
+Dec: VarDec {
+        $$ = getNode("Dec", 1, $1);
+        extend_var($$, $1);
+        }
+    | VarDec ASSIGN Exp {
+        $$ = getNode("Dec", 3, $1, $2, $3);
+        extend_var($$, $1);
+    }
     ;
 
 Exp: Exp ASSIGN Exp {$$ = getNode("Exp", 3, $1, $2, $3);}
