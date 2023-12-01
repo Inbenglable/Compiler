@@ -1,5 +1,6 @@
 %{
     #include<unistd.h>
+    #include <string.h>
     #include<stdio.h>   
     #include "structure.h"
     #include "symbol_table.h"
@@ -256,7 +257,19 @@ Exp: Exp ASSIGN Exp {$$ = getNode("Exp", 3, $1, $2, $3);}
     | Exp LB Exp RB {$$ = getNode("Exp", 4, $1, $2, $3, $4);}
     | Exp LB Exp error {error_type = 1;yyerror("Missing closing symbol ']'");}
     | Exp DOT ID {$$ = getNode("Exp", 3, $1, $2, $3);}
-    | ID {$$ = getNode("Exp", 1, $1);}
+    | ID {
+        $$ = getNode("Exp", 1, $1);
+        if(check_ID_def($1) == 0){
+            error_type = 10;
+            char* name = $1->var->name;
+            char* msg = (char*)malloc(sizeof(name)+sizeof(char)*100);
+            strcat(msg, "\"");
+            strcat(msg, name);
+            strcat(msg, "\" is used without a definition");
+            yyerror(msg);
+            free(msg);
+        }
+    }
     | INT {$$ = getNode("Exp", 1, $1);}
     | FLOAT {$$ = getNode("Exp", 1, $1);}
     | CHAR {$$ = getNode("Exp", 1, $1);}

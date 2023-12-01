@@ -290,6 +290,3 @@ void clear_Var(Var* varptr){
 
 // wdh: 下面就是我瞎写的判等的部分了，还没在.h里面声明，上面没动（（
 
-int check_int(nodePointer p){
-    struct Type*
-}

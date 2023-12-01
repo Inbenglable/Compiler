@@ -149,6 +149,13 @@ void extend_dim(nodePointer var){
     var -> var -> dim += 1;
 }
 
+int check_ID_def(nodePointer node){
+    if(query_ID(node -> var -> name) != NULL){
+        return 1;
+    }
+    return 0;
+}
+
 nodePointer getNode(char* name, int num, ...){
     //printf("%s %d %s\n", name, yylineno, yytext);
     //fflush(stdout);
@@ -247,11 +254,16 @@ void yyerror(char *msg)
     else if(error_type == 3){
         printf("Semantic Error at line %d: %s\n",yylineno,msg); 
     }
+    else if(error_type % 10 == 0){
+        printf("Error type %d at line %d: %s\n",error_type / 10,yylineno,msg);
+    }
     hasError=1;
 }
 
 
 int main(int argc, char **argv) {
+    //printf("oooooooo\n");
+    init_symbol_table();
     if (argc < 2)
     {
         
@@ -275,4 +287,5 @@ int main(int argc, char **argv) {
         fclose(f);
         
     }
+    clear_symbol_table();
 }
