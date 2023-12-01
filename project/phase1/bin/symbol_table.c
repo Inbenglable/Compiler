@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include "symbol_table.h"
@@ -26,14 +27,17 @@ void clear_symbol_table(){
 }
 
 void new_scope(){
+    printf("new scope\n");
     ScopeStack* new_node = (ScopeStack*)malloc(sizeof(ScopeStack));
     new_node->next = top;
     new_node->scope = top->scope + 1;
     new_node->link_start = NULL;
     top = new_node;
+    printf("new scope success\n");
 }
 
 void pop_scope(){
+    printf("pop scope\n");
     IntermediateLink* l1 = top->link_start;
     while(l1!=NULL){
         l1->from->link = l1->next_scope;
@@ -44,9 +48,11 @@ void pop_scope(){
     ScopeStack* tmp = top;
     top = top->next;
     free(tmp);
+    printf("pop scope success\n");
 }
 
 int store_ID(char* ID, Var* varptr){
+    printf("store ID\n");
     Treap* node = find(ID, symbol_treap);
     if(node == NULL){
         node = new_node(ID);
@@ -54,7 +60,8 @@ int store_ID(char* ID, Var* varptr){
         split(symbol_treap, ID, l, r);
         symbol_treap = merge(merge(l, node), r);
     }
-    else if(node->link->scope == top->scope){
+    else if(node->link != NULL && node->link->scope == top->scope){
+        printf("store ID fail\n");
         return 0;
     }
     IntermediateLink* new_link = (IntermediateLink*)malloc(sizeof(IntermediateLink));
@@ -65,18 +72,23 @@ int store_ID(char* ID, Var* varptr){
     new_link->varptr = varptr;
     top->link_start = new_link;
     node->link = new_link;
+    printf("store ID success\n");
     return 1;
 }
 
 Var* query_ID(char* ID){
+    printf("query ID\n");
     Treap* node = find(ID, symbol_treap);
     if(node == NULL){
+        printf("query ID fail\n");
         return NULL;
     }
+    printf("query ID success\n");
     return node->link->varptr;
 }
 
 int store_Type(char* ID, Type* typeptr){
+    printf("store Type\n");
     Treap* node = find(ID, type_treap);
     if(node == NULL){
         node = new_node(ID);
@@ -84,7 +96,8 @@ int store_Type(char* ID, Type* typeptr){
         split(type_treap, ID, l, r);
         type_treap = merge(merge(l, node), r);
     }
-    else if(node->link->scope == top->scope){
+    else if(node->link != NULL && node->link->scope == top->scope){
+        printf("store Type fail\n");
         return 0;
     }
     IntermediateLink* new_link = (IntermediateLink*)malloc(sizeof(IntermediateLink));
@@ -95,18 +108,23 @@ int store_Type(char* ID, Type* typeptr){
     new_link->typeptr = typeptr;
     top->link_start = new_link;
     node->link = new_link;
+    printf("store Type success\n");
     return 1;
 }
 
 Type* query_Type(char* ID){
+    printf("query Type\n");
     Treap* node = find(ID, type_treap);
     if(node == NULL){
+        printf("query Type fail\n");
         return NULL;
     }
+    printf("query Type success\n");
     return node->link->typeptr;
 }
 
 int store_Fun(char* ID, Var* varptr){
+    printf("store Fun\n");
     Treap* node = find(ID, fun_treap);
     if(node == NULL){
         node = new_node(ID);
@@ -120,18 +138,23 @@ int store_Fun(char* ID, Var* varptr){
         new_link->scope = top->scope;
         new_link->varptr = varptr;
         node->link = new_link;
+        printf("store Fun success\n");
         return 1;
     }
     else{
+        printf("store Fun fail\n");
         return 0;
     }
 }
 
 Var* query_Fun(char* ID){
+    printf("query Fun\n");
     Treap* node = find(ID, fun_treap);
     if(node == NULL){
+        printf("query Fun fail\n");
         return NULL;
     }
+    printf("query Fun success\n");
     return node->link->varptr;
 }
 
@@ -150,6 +173,7 @@ int cmp(const void* a, const void* b){
 }
 
 unsigned long long get_hash(Type* typeptr){
+    printf("get hash\n");
     unsigned long long base = 998244353, mod = 1610612741, hashval = 0;
     if(strcmp(typeptr->type_name, "int") == 0){
         hashval = 2;
@@ -191,6 +215,7 @@ unsigned long long get_hash(Type* typeptr){
         }
         free(children_hash);
     }
+    printf("get hash success\n");
     return hashval;
 }
 
