@@ -160,7 +160,7 @@ FunDec: ID LP VarList RP {$$ = getNode("FunDec", 4, $1, $2, $3, $4);
 VarList: ParamDec COMMA VarList {
             $$ = getNode("VarList", 3, $1, $2, $3);
             connect_var($1, $3);
-            extend_var($$, $3);    
+            extend_var($$, $1);    
         }
        | ParamDec {
             $$ = getNode("VarList", 1, $1);
