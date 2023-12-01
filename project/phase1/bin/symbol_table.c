@@ -214,7 +214,7 @@ unsigned long long get_hash(Type* typeptr){
         }
         unsigned long long* children_hash = (unsigned long long*)malloc(sizeof(unsigned long long) * length);
         tmp = typeptr->contain;
-        for(int i = 0; i <= length; i ++){
+        for(int i = 0; i < length; i ++){
             children_hash[i] = tmp->type->hash;
             if(children_hash[i] == 0){
                 children_hash[i] = tmp->type->hash = get_hash(tmp->type);
@@ -231,7 +231,7 @@ unsigned long long get_hash(Type* typeptr){
             tmp = tmp->next; 
         }
         qsort(children_hash, length, sizeof(unsigned long long), cmp);
-        for(int i = 0; i <= length; i ++){
+        for(int i = 0; i < length; i ++){
             hashval = (hashval * base + children_hash[i]) % mod;
         }
         free(children_hash);

@@ -564,8 +564,8 @@ static const yytype_int16 yyrline[] =
      226,   227,   228,   229,   230,   231,   232,   233,   234,   235,
      236,   237,   238,   239,   240,   241,   242,   243,   244,   245,
      246,   247,   248,   249,   250,   251,   252,   253,   254,   255,
-     256,   257,   258,   259,   272,   273,   274,   276,   278,   279,
-     280
+     256,   257,   258,   259,   273,   274,   275,   277,   279,   280,
+     281
 };
 #endif
 
@@ -1954,8 +1954,9 @@ yyreduce:
         (yyval.type) = getNode("Exp", 1, (yyvsp[0].type));
         if(check_ID_def((yyvsp[0].type)) == 0){
             error_type = 10;
-            char* name = (yyvsp[0].type)->var->name;
+            char* name = (yyvsp[0].type)->value;
             char* msg = (char*)malloc(sizeof(name)+sizeof(char)*100);
+            memset(msg, 0,sizeof(msg));
             strcat(msg, "\"");
             strcat(msg, name);
             strcat(msg, "\" is used without a definition");
@@ -1963,53 +1964,53 @@ yyreduce:
             free(msg);
         }
     }
-#line 1967 "syntax.tab.c"
+#line 1968 "syntax.tab.c"
     break;
 
   case 94: /* Exp: INT  */
-#line 272 "syntax.y"
+#line 273 "syntax.y"
           {(yyval.type) = getNode("Exp", 1, (yyvsp[0].type));}
-#line 1973 "syntax.tab.c"
+#line 1974 "syntax.tab.c"
     break;
 
   case 95: /* Exp: FLOAT  */
-#line 273 "syntax.y"
+#line 274 "syntax.y"
             {(yyval.type) = getNode("Exp", 1, (yyvsp[0].type));}
-#line 1979 "syntax.tab.c"
+#line 1980 "syntax.tab.c"
     break;
 
   case 96: /* Exp: CHAR  */
-#line 274 "syntax.y"
+#line 275 "syntax.y"
            {(yyval.type) = getNode("Exp", 1, (yyvsp[0].type));}
-#line 1985 "syntax.tab.c"
+#line 1986 "syntax.tab.c"
     break;
 
   case 97: /* Args: Exp COMMA Args  */
-#line 276 "syntax.y"
+#line 277 "syntax.y"
                      {(yyval.type) = getNode("Args", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
-#line 1991 "syntax.tab.c"
+#line 1992 "syntax.tab.c"
     break;
 
   case 98: /* Args: COMMA Args  */
-#line 278 "syntax.y"
+#line 279 "syntax.y"
                  {error_type = 1;yyerror("Unexpected ','");}
-#line 1997 "syntax.tab.c"
+#line 1998 "syntax.tab.c"
     break;
 
   case 99: /* Args: Exp COMMA  */
-#line 279 "syntax.y"
+#line 280 "syntax.y"
                 {error_type = 1;yyerror("Expected another parenthesis after ','");}
-#line 2003 "syntax.tab.c"
+#line 2004 "syntax.tab.c"
     break;
 
   case 100: /* Args: Exp  */
-#line 280 "syntax.y"
+#line 281 "syntax.y"
           {(yyval.type) = getNode("Args", 1, (yyvsp[0].type));}
-#line 2009 "syntax.tab.c"
+#line 2010 "syntax.tab.c"
     break;
 
 
-#line 2013 "syntax.tab.c"
+#line 2014 "syntax.tab.c"
 
       default: break;
     }
@@ -2202,4 +2203,4 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 283 "syntax.y"
+#line 284 "syntax.y"
