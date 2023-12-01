@@ -216,6 +216,10 @@ int check_fun_def(nodePointer node){
 }
 
 int check_assign_type(nodePointer lnode, nodePointer rnode){
+    if(lnode -> var == NULL || rnode -> var == NULL){
+        printf("!!!!\n");
+        return 0;
+    }
     if(lnode -> var -> type == NULL || rnode -> var -> type == NULL)return 0;
     if(lnode -> var -> type -> hash == rnode -> var -> type -> hash)return 1;
     return 0;
@@ -230,8 +234,8 @@ int check_rvalue(nodePointer node){
 }
 
 nodePointer getNode(char* name, int num, ...){
-    //printf("%s %d %s\n", name, yylineno, yytext);
-    //fflush(stdout);
+    printf("%s %d %s\n", name, yylineno, yytext);
+    fflush(stdout);
     nodePointer f = (nodePointer)malloc(sizeof(struct Node));
     f -> name = name;
     f -> head = f -> next = NULL;
