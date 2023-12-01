@@ -266,18 +266,83 @@ Exp: Exp ASSIGN Exp {
         }
         
     }
-    | Exp AND Exp {$$ = getNode("Exp", 3, $1, $2, $3);}
-    | Exp OR Exp {$$ = getNode("Exp", 3, $1, $2, $3);}
-    | Exp LT Exp {$$ = getNode("Exp", 3, $1, $2, $3);}
-    | Exp LE Exp {$$ = getNode("Exp", 3, $1, $2, $3);}
-    | Exp GT Exp {$$ = getNode("Exp", 3, $1, $2, $3);}
-    | Exp GE Exp {$$ = getNode("Exp", 3, $1, $2, $3);}
-    | Exp NE Exp {$$ = getNode("Exp", 3, $1, $2, $3);}
-    | Exp EQ Exp {$$ = getNode("Exp", 3, $1, $2, $3);}
-    | Exp PLUS Exp {$$ = getNode("Exp", 3, $1, $2, $3);}
-    | Exp MINUS Exp {$$ = getNode("Exp", 3, $1, $2, $3);}
-    | Exp MUL Exp {$$ = getNode("Exp", 3, $1, $2, $3);}
-    | Exp DIV Exp {$$ = getNode("Exp", 3, $1, $2, $3);}
+    | Exp AND Exp {$$ = getNode("Exp", 3, $1, $2, $3);
+        if(check_boolean($1, $3) == 0){
+            error_type = 70;
+            yyerror("unmatching operands");
+        }
+    }
+    | Exp OR Exp {$$ = getNode("Exp", 3, $1, $2, $3);
+            if(check_boolean($1, $3) == 0){
+            error_type = 70;
+            yyerror("unmatching operands");
+        }
+    }
+    | Exp LT Exp {$$ = getNode("Exp", 3, $1, $2, $3);
+        if(check_arithmetic($1, $3) == 0){
+            error_type = 70;
+            yyerror("unmatching operands");
+        }
+    }
+    | Exp LE Exp {$$ = getNode("Exp", 3, $1, $2, $3);
+        if(check_arithmetic($1, $3) == 0){
+            error_type = 70;
+            yyerror("unmatching operands");
+        }
+    }
+    | Exp GT Exp {$$ = getNode("Exp", 3, $1, $2, $3);
+        if(check_arithmetic($1, $3) == 0){
+            error_type = 70;
+            yyerror("unmatching operands");
+        }
+    }
+    | Exp GE Exp {$$ = getNode("Exp", 3, $1, $2, $3);
+        if(check_arithmetic($1, $3) == 0){
+            error_type = 70;
+            yyerror("unmatching operands");
+        }
+    }
+    | Exp NE Exp {$$ = getNode("Exp", 3, $1, $2, $3);
+        if(check_arithmetic($1, $3) == 0){
+            error_type = 70;
+            yyerror("unmatching operands");
+        }
+    }
+    | Exp EQ Exp {$$ = getNode("Exp", 3, $1, $2, $3);
+        if(check_arithmetic($1, $3) == 0){
+            error_type = 70;
+            yyerror("unmatching operands");
+        }
+    }
+    | Exp PLUS Exp {$$ = getNode("Exp", 3, $1, $2, $3);
+        printf("PLUS\n");
+        print_type($1->var->type, 0);
+        printf("PLUS\n");
+        print_type($3->var->type, 0);
+        fflush(stdout);
+        if(check_arithmetic($1, $3) == 0){
+            error_type = 70;
+            yyerror("unmatching operands");
+        }
+    }
+    | Exp MINUS Exp {$$ = getNode("Exp", 3, $1, $2, $3);
+        if(check_arithmetic($1, $3) == 0){
+            error_type = 70;
+            yyerror("unmatching operands");
+        }
+    }
+    | Exp MUL Exp {$$ = getNode("Exp", 3, $1, $2, $3);
+        if(check_arithmetic($1, $3) == 0){
+            error_type = 70;
+            yyerror("unmatching operands");
+        }
+    }
+    | Exp DIV Exp {$$ = getNode("Exp", 3, $1, $2, $3);
+        if(check_arithmetic($1, $3) == 0){
+            error_type = 70;
+            yyerror("unmatching operands");
+        }
+    }
     | Exp ASSIGN error {error_type = 1; yyerror("Expect expression after '='");}
     | Exp AND error {error_type = 1; yyerror("Expect expression after 'ans'");}
     | Exp OR error {error_type = 1; yyerror("Expect expression after 'or'");}
@@ -291,10 +356,23 @@ Exp: Exp ASSIGN Exp {
     | Exp MINUS error {error_type = 1; yyerror("Expect expression after '-'");}
     | Exp MUL error {error_type = 1; yyerror("Expect expression after '*'");}
     | Exp DIV error {error_type = 1; yyerror("Expect expression after '/'");}
-    | LP Exp RP {$$ = getNode("Exp", 3, $1, $2, $3);}
+    | LP Exp RP {$$ = getNode("Exp", 3, $1, $2, $3);
+        extend_type($$, $2);
+        extend_var($$, $2);
+    }
     | LP Exp error {error_type = 1;yyerror("Missing closing symbol ')'");}
-    | MINUS Exp {$$ = getNode("Exp", 2, $1, $2);}
-    | NOT Exp {$$ = getNode("Exp", 2, $1, $2);}
+    | MINUS Exp {$$ = getNode("Exp", 2, $1, $2);
+        if(check_arithmetic($2, $2) == 0){
+            error_type = 70;
+            yyerror("unmatching operand");
+        }
+    }
+    | NOT Exp {$$ = getNode("Exp", 2, $1, $2);
+        if(check_boolean($2, $2) == 0){
+            error_type = 70;
+            yyerror("unmatching operand");
+        }
+    }
     | ID LP Args RP {
         $$ = getNode("Exp", 4, $1, $2, $3, $4);
         if(check_fun_def($1) == 0){
@@ -353,9 +431,18 @@ Exp: Exp ASSIGN Exp {
         ($$) -> type = var -> type;
         ($$) -> var = var;
     }
-    | INT {$$ = getNode("Exp", 1, $1);}
-    | FLOAT {$$ = getNode("Exp", 1, $1);}
-    | CHAR {$$ = getNode("Exp", 1, $1);}
+    | INT {$$ = getNode("Exp", 1, $1);
+        extend_var($$, $1);
+        extend_type($$, $1);
+    }
+    | FLOAT {$$ = getNode("Exp", 1, $1);
+        extend_var($$, $1);
+        extend_type($$, $1);
+    }
+    | CHAR {$$ = getNode("Exp", 1, $1);
+        extend_var($$, $1);
+        extend_type($$, $1);
+    }
     ;
 Args: Exp COMMA Args {$$ = getNode("Args", 3, $1, $2, $3);}
 //    | Exp error Args {error_type = 1;yyerror("Missing comma ','");}

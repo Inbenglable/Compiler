@@ -73,6 +73,8 @@ int check_fun_def(nodePointer node);
 int check_assign_type(nodePointer lnode, nodePointer rnode);
 int check_rvalue(nodePointer node);
 Type* check_field(Type* typeptr, char* name);
+int check_boolean(nodePointer node1, nodePointer node2);
+int check_arithmetic(nodePointer node1, nodePointer node2);
 
 void writeNode(nodePointer node,int depth);
 void writeTerminalNode(nodePointer node);

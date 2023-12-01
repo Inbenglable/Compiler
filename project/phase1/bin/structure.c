@@ -57,24 +57,27 @@ nodePointer getTerminalNode(char *name, int line){
     if(strcmp(name, "INT") == 0){
        temp -> type = (struct Type*)malloc(sizeof(struct Type));
        temp -> type -> isStruct = 'v';
-       temp -> type -> hash = 0;
+       temp -> type -> hash = 2;
        temp -> type -> type_name = (char*)malloc(sizeof(char)*30);
        strcpy(temp -> type -> type_name, "int");
        temp -> type -> contain = NULL;
+       f -> type = temp -> type;
     }else if(strcmp(name, "FLOAT") == 0){
        temp -> type = (struct Type*)malloc(sizeof(struct Type));
        temp -> type -> isStruct = 'v';
-       temp -> type -> hash = 0;
+       temp -> type -> hash = 5;
        temp -> type -> type_name = (char*)malloc(sizeof(char)*30);
        strcpy(temp -> type -> type_name, "float");
        temp -> type -> contain = NULL;
+       f -> type = temp -> type;
     }else if(strcmp(name, "CHAR") == 0){
        temp -> type = (struct Type*)malloc(sizeof(struct Type));
        temp -> type -> isStruct = 'v';
-       temp -> type -> hash = 0;
+       temp -> type -> hash = 3;
        temp -> type -> type_name = (char*)malloc(sizeof(char)*30);
        strcpy(temp -> type -> type_name, "char");
        temp -> type -> contain = NULL;
+       f -> type = temp -> type;
     }
     return f;
 }
@@ -109,6 +112,7 @@ nodePointer getTypeNode(char *name, int line){
     temp -> type_name = (char*)malloc(sizeof(char)*30);
     strcpy(temp -> type_name,yytext);
     temp -> contain = NULL;
+    temp -> hash = get_hash(temp);
     f -> type = temp;
     return f;
 }
@@ -215,6 +219,18 @@ int check_fun_def(nodePointer node){
     return 0;
 }
 
+int check_boolean(nodePointer node1, nodePointer node2){
+    if(check_assign_type(node1, node2) == 0)return 0;
+    if (strcmp(node1 -> type->type_name, "int") == 0)return 1;
+    return 0;
+}
+
+int check_arithmetic(nodePointer node1, nodePointer node2){
+    if(check_assign_type(node1, node2) == 0)return 0;
+    if (strcmp(node1 -> type->type_name, "int") == 0 || strcmp(node1 -> type->type_name, "float") == 0)return 1;
+    return 0;
+}
+
 int check_assign_type(nodePointer lnode, nodePointer rnode){
     if(lnode -> var == NULL || rnode -> var == NULL){
         printf("!!!!\n");
@@ -226,10 +242,12 @@ int check_assign_type(nodePointer lnode, nodePointer rnode){
 }
 
 int check_rvalue(nodePointer node){
+    print_var(node -> var, 0);
     if(node->var == NULL || node->type == NULL)return 0;
-    if(node -> var -> name == NULL && strcmp(node->type->type_name, "int") == 0)return 1;
-    if(node -> var -> name == NULL && strcmp(node->type->type_name, "float") == 0)return 1;
-    if(node -> var -> name == NULL && strcmp(node->type->type_name, "char") == 0)return 1;
+    
+    if(node -> var -> name == NULL && strcmp(node->var->type->type_name, "int") == 0)return 1;
+    if(node -> var -> name == NULL && strcmp(node->var->type->type_name, "float") == 0)return 1;
+    if(node -> var -> name == NULL && strcmp(node->var->type->type_name, "char") == 0)return 1;
     return 0;
 }
 
@@ -245,8 +263,8 @@ Type* check_field(Type* typeptr, char* name){
 }
 
 nodePointer getNode(char* name, int num, ...){
-    printf("%s %d %s\n", name, yylineno, yytext);
-    fflush(stdout);
+    // printf("%s %d %s\n", name, yylineno, yytext);
+    // fflush(stdout);
     nodePointer f = (nodePointer)malloc(sizeof(struct Node));
     f -> name = name;
     f -> head = f -> next = NULL;
