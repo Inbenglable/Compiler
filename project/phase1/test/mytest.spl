@@ -1,0 +1,5 @@
+struct Student
+{
+    int weight;
+    float weight;
+};
