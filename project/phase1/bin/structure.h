@@ -1,7 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdarg.h> 
+#ifndef __STRUCTURE__
+#define __STRUCTURE__
 
 extern char* yytext;
 extern int yylineno;
@@ -53,9 +51,24 @@ typedef struct Node* nodePointer;
 
 nodePointer getTerminalNode(char *name, int line);
 nodePointer getIDNode(char *name, int line);
+nodePointer getTypeNode(char *name, int line);
+int push_fun(nodePointer fun_node);
+int push_type(nodePointer type_node);
+int push_var(nodePointer var_node);
+int getStruct(nodePointer spec, nodePointer id);
+void newFuntype(nodePointer funspec, nodePointer id, nodePointer varlist);
+void assign_funtype(nodePointer fun, nodePointer spec);
+void newStructType(nodePointer spec, nodePointer id, nodePointer varlist);
+void assign_type(nodePointer var_head, nodePointer type_provider);
+void extend_type(nodePointer to, nodePointer from);
+void connect_var(nodePointer now, nodePointer to);
+void extend_var(nodePointer to, nodePointer from);
+void extend_dim(nodePointer var);
 nodePointer getNode(char* token_name,int num,...);
 
 void writeNode(nodePointer node,int depth);
 void writeTerminalNode(nodePointer node);
 
 char* mystrcat(char* str1,char* str2,char* str3);
+
+#endif // !__STRUCTURE__

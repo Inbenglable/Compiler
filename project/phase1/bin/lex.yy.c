@@ -536,11 +536,12 @@ char *yytext;
     #include <stdlib.h>
     #include <stdio.h>
     #include "structure.h"
+    #include "symbol_table.h"
     #include "syntax.tab.h"
     #include <string.h>
     char tmp[500]; 
-#line 543 "lex.yy.c"
 #line 544 "lex.yy.c"
+#line 545 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -757,10 +758,10 @@ YY_DECL
 		}
 
 	{
-#line 18 "my_lex.l"
+#line 19 "my_lex.l"
 
 
-#line 764 "lex.yy.c"
+#line 765 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -819,203 +820,203 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 20 "my_lex.l"
+#line 21 "my_lex.l"
 {}
 	YY_BREAK
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-#line 21 "my_lex.l"
+#line 22 "my_lex.l"
 {yylineno += 1;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 23 "my_lex.l"
+#line 24 "my_lex.l"
 { yylval.type=getTerminalNode("INT", yylineno);return INT; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 24 "my_lex.l"
+#line 25 "my_lex.l"
 { yylval.type=getTerminalNode("FLOAT", yylineno);return FLOAT; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 25 "my_lex.l"
+#line 26 "my_lex.l"
 { yylval.type=getTerminalNode("CHAR", yylineno);return CHAR; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 26 "my_lex.l"
+#line 27 "my_lex.l"
 { yylval.type=getTerminalNode("CHAR", yylineno);return CHAR; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 29 "my_lex.l"
-{yylval.type=getTerminalNode("TYPE", yylineno);return TYPE; }
+#line 30 "my_lex.l"
+{yylval.type=getTypeNode("int", yylineno);return TYPE; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 30 "my_lex.l"
-{ yylval.type=getTerminalNode("TYPE", yylineno);return TYPE; }
+#line 31 "my_lex.l"
+{ yylval.type=getTypeNode("float", yylineno);return TYPE; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 31 "my_lex.l"
-{ yylval.type=getTerminalNode("TYPE", yylineno);return TYPE; }
+#line 32 "my_lex.l"
+{ yylval.type=getTypeNode("char", yylineno);return TYPE; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 32 "my_lex.l"
+#line 33 "my_lex.l"
 { yylval.type=getTerminalNode("STRUCT", yylineno);return STRUCT; }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 33 "my_lex.l"
+#line 34 "my_lex.l"
 { yylval.type=getTerminalNode("IF", yylineno);return IF; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 34 "my_lex.l"
+#line 35 "my_lex.l"
 { yylval.type=getTerminalNode("ELSE", yylineno);return ELSE; }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 35 "my_lex.l"
+#line 36 "my_lex.l"
 { yylval.type=getTerminalNode("WHILE", yylineno);return WHILE; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 36 "my_lex.l"
+#line 37 "my_lex.l"
 { yylval.type=getTerminalNode("FOR", yylineno);return FOR; }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 37 "my_lex.l"
+#line 38 "my_lex.l"
 { yylval.type=getTerminalNode("RETURN", yylineno);return RETURN; }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 38 "my_lex.l"
-{ yylval.type=getTerminalNode("ID", yylineno);return ID; }
+#line 39 "my_lex.l"
+{ yylval.type=getIDNode(yytext, yylineno);return ID; }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 39 "my_lex.l"
+#line 40 "my_lex.l"
 { yylval.type=getTerminalNode("DOT", yylineno);return DOT; }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 40 "my_lex.l"
+#line 41 "my_lex.l"
 { yylval.type=getTerminalNode("SEMI", yylineno);return SEMI; }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 41 "my_lex.l"
+#line 42 "my_lex.l"
 { yylval.type=getTerminalNode("COMMA", yylineno);return COMMA; }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 42 "my_lex.l"
+#line 43 "my_lex.l"
 { yylval.type=getTerminalNode("ASSIGN", yylineno);return ASSIGN; }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 43 "my_lex.l"
+#line 44 "my_lex.l"
 { yylval.type=getTerminalNode("LT", yylineno);return LT; }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 44 "my_lex.l"
+#line 45 "my_lex.l"
 { yylval.type=getTerminalNode("LE", yylineno);return LE; }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 45 "my_lex.l"
+#line 46 "my_lex.l"
 { yylval.type=getTerminalNode("GT", yylineno);return GT; }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 46 "my_lex.l"
+#line 47 "my_lex.l"
 { yylval.type=getTerminalNode("GE", yylineno);return GE; }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 47 "my_lex.l"
+#line 48 "my_lex.l"
 { yylval.type=getTerminalNode("NE", yylineno);return NE; }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 48 "my_lex.l"
+#line 49 "my_lex.l"
 { yylval.type=getTerminalNode("EQ", yylineno);return EQ; }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 49 "my_lex.l"
+#line 50 "my_lex.l"
 { yylval.type=getTerminalNode("PLUS", yylineno);return PLUS; }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 50 "my_lex.l"
+#line 51 "my_lex.l"
 { yylval.type=getTerminalNode("MINUS", yylineno);return MINUS; }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 51 "my_lex.l"
+#line 52 "my_lex.l"
 { yylval.type = getTerminalNode("MUL", yylineno); return MUL; }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 52 "my_lex.l"
+#line 53 "my_lex.l"
 { yylval.type = getTerminalNode("DIV", yylineno); return DIV; }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 53 "my_lex.l"
+#line 54 "my_lex.l"
 { yylval.type = getTerminalNode("AND", yylineno); return AND; }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 54 "my_lex.l"
+#line 55 "my_lex.l"
 { yylval.type = getTerminalNode("OR", yylineno); return OR; }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 55 "my_lex.l"
+#line 56 "my_lex.l"
 { yylval.type = getTerminalNode("NOT", yylineno); return NOT; }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 56 "my_lex.l"
+#line 57 "my_lex.l"
 { yylval.type = getTerminalNode("LP", yylineno); return LP; }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 57 "my_lex.l"
+#line 58 "my_lex.l"
 { yylval.type = getTerminalNode("RP", yylineno); return RP; }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 58 "my_lex.l"
+#line 59 "my_lex.l"
 { yylval.type = getTerminalNode("LB", yylineno); return LB; }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 59 "my_lex.l"
+#line 60 "my_lex.l"
 { yylval.type = getTerminalNode("RB", yylineno); return RB; }
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 60 "my_lex.l"
-{ yylval.type = getTerminalNode("LC", yylineno); return LC; }
+#line 61 "my_lex.l"
+{ yylval.type = getTerminalNode("LC", yylineno) ; return LC; new_scope();}
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 61 "my_lex.l"
-{ yylval.type = getTerminalNode("RC", yylineno); return RC; }
+#line 62 "my_lex.l"
+{ yylval.type = getTerminalNode("RC", yylineno); return RC; pop_scope();}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 62 "my_lex.l"
+#line 63 "my_lex.l"
 { 
   int c;
   while((c = input()) != '\n');
@@ -1024,7 +1025,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 67 "my_lex.l"
+#line 68 "my_lex.l"
 { 
   int c;
   while(1){
@@ -1041,7 +1042,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 81 "my_lex.l"
+#line 82 "my_lex.l"
 { 
   error_type=0;
   sprintf(tmp,"Illegal hex char: %s",yytext);
@@ -1052,7 +1053,7 @@ return CHAR;
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 88 "my_lex.l"
+#line 89 "my_lex.l"
 {
   error_type=0;
     yylval.type = getTerminalNode("ERROR", yylineno);
@@ -1063,7 +1064,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 95 "my_lex.l"
+#line 96 "my_lex.l"
 {
   error_type=0;
     yylval.type = getTerminalNode("ERROR", yylineno);
@@ -1074,7 +1075,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 102 "my_lex.l"
+#line 103 "my_lex.l"
 { 
   error_type=0;
     yylval.type = getTerminalNode("ERROR", yylineno);
@@ -1085,7 +1086,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 109 "my_lex.l"
+#line 110 "my_lex.l"
 { 
   error_type=0;
     yylval.type = getTerminalNode("ERROR", yylineno);
@@ -1096,7 +1097,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 117 "my_lex.l"
+#line 118 "my_lex.l"
 {
   error_type=0;
     yylval.type = getTerminalNode("ERROR", yylineno);
@@ -1107,7 +1108,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 125 "my_lex.l"
+#line 126 "my_lex.l"
 {
   error_type=0;
     yylval.type = getTerminalNode("ERROR", yylineno);
@@ -1118,10 +1119,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 133 "my_lex.l"
+#line 134 "my_lex.l"
 ECHO;
 	YY_BREAK
-#line 1125 "lex.yy.c"
+#line 1126 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2126,7 +2127,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 133 "my_lex.l"
+#line 134 "my_lex.l"
 
 
 int yywrap()

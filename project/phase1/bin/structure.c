@@ -1,3 +1,7 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdarg.h>
 #include "structure.h"
 #include "symbol_table.h"
 
@@ -49,7 +53,7 @@ nodePointer getTypeNode(char *name, int line){
     temp -> type_name = (char*)malloc(sizeof(char)*30);
     strcpy(temp -> type_name,yytext);
     temp -> contain = NULL;
-    f -> var = temp;
+    f -> type = temp;
     return f;
 }
 
@@ -141,16 +145,8 @@ void extend_var(nodePointer to, nodePointer from){
     to -> var = from -> var;
 }
 
-void extend_dim(struct Var* var){
-    var -> dim += 1;
-}
- 
-int getdeep(nodePointer f, int deep){
-    //TODO : resolve it 
-    if(f -> head != NULL){
-        return getdeep(f->head, deep+1);
-    }
-    return deep;
+void extend_dim(nodePointer var){
+    var -> var -> dim += 1;
 }
 
 nodePointer getNode(char* name, int num, ...){
@@ -159,7 +155,8 @@ nodePointer getNode(char* name, int num, ...){
     nodePointer f = (nodePointer)malloc(sizeof(struct Node));
     f -> name = name;
     f -> head = f -> next = NULL;
-    f -> type = f -> var = NULL;
+    f -> type = NULL;
+    f -> var = NULL;
     nodePointer temp = NULL;
 
     va_list ap;

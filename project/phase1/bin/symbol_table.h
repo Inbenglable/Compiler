@@ -1,18 +1,7 @@
-//store_ID(ID, varptr): insert an ID and its corresponding Var* into the symbol table
-//new_scope(): enter a new scope, ID defined in the new scope will cover those in old scope
-//pop_scope(): pop the symbol_top scope, as well as its IDs
-//query_ID(ID): return the Var* of a certain ID
-//store_Type(ID, typeptr): insert an Type and its corresponding Type* into the type table
-//query_Type(ID): return the Type* of a certain Type
-//store_Fun(ID, varptr): insert an ID of a function and its corresponding Var* into the function table
-//query_Fun(ID): return the Var* of a certain function
-//get_hash(typeptr): return the hash value of a certain Type
-//When using symbol table, please run init_symbol_table() before start,
-//and run clear_symbol_table() before exit
-
-
 #include "structure.h"
 
+#ifndef __SYMBOL_TABLE__
+#define __SYMBOL_TABLE__
 
 typedef struct ScopeStack ScopeStack;
 typedef struct IntermediateLink IntermediateLink;
@@ -46,7 +35,17 @@ struct Treap{
 extern struct ScopeStack *top;
 extern struct Treap *symbol_treap, *type_treap, *fun_treap;
 
-
+//store_ID(ID, varptr): insert an ID and its corresponding Var* into the symbol table
+//new_scope(): enter a new scope, ID defined in the new scope will cover those in old scope
+//pop_scope(): pop the symbol_top scope, as well as its IDs
+//query_ID(ID): return the Var* of a certain ID
+//store_Type(ID, typeptr): insert an Type and its corresponding Type* into the type table
+//query_Type(ID): return the Type* of a certain Type
+//store_Fun(ID, varptr): insert an ID of a function and its corresponding Var* into the function table
+//query_Fun(ID): return the Var* of a certain function
+//get_hash(typeptr): return the hash value of a certain Type
+//When using symbol table, please run init_symbol_table() before start,
+//and run clear_symbol_table() before exit
 void init_symbol_table();
 void clear_symbol_table();
 void new_scope();
@@ -68,3 +67,5 @@ void clear_treap(struct Treap* node);
 void clear_intermediate(struct IntermediateLink* link);
 void clear_Type(struct Type* typeptr);
 void clear_Var(struct Var* varptr);
+
+#endif // !__SYMBOL_TABLE__
