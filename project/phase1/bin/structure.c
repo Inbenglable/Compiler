@@ -8,9 +8,33 @@
 int hasError = 0;
 int error_type = -1;
 
+void print_var(struct Var* var, int deep);
+void print_type(struct Type* type, int deep){
+    if(type == NULL)return;
+    for(int i = 1;i <= deep;i++){
+        printf("    ");
+    }
+    printf("Type-- name:%s, isStruct:%c, hash:%lld\n", type->type_name, type->isStruct, type->hash);
+    print_var(type->contain, deep+1);
+}
+
+void print_var(struct Var* var, int deep){
+    if(var == NULL)return;
+    for(int i = 1;i <= deep;i++){
+        printf("    ");
+    }
+    printf("Var-- name:%s dim:%d\n", var->name, var->dim);
+    print_type(var->type, deep+1);
+    var = var->next;
+    while(var != NULL){
+        print_var(var, deep);
+        var = var->next;
+    }
+}
+
 nodePointer getTerminalNode(char *name, int line){
-    //printf("terminal: %s %d %s\n", name, line, yytext);
-    //fflush(stdout);
+    // printf("terminal: %s %d %s\n", name, line, yytext);
+    // fflush(stdout);
     nodePointer f = (nodePointer)malloc(sizeof(struct Node));
     f -> name = name;
     f -> head = f -> next = NULL;
@@ -79,11 +103,7 @@ int push_var(nodePointer varlist){
             if(varlist -> line != -1)return -1;
             else break;
         }
-        printf("CHECK, %s", varlist->var->name);
-        fflush(stdout);
         int ret = store_ID(varlist -> var -> name, varlist -> var);
-        printf("COMPLET, %s", varlist->var->name);
-        fflush(stdout);
         if(ret == 0){
             return varlist -> line;
         }
@@ -113,7 +133,7 @@ void newFuntype(nodePointer funspec, nodePointer id, nodePointer varlist){
     funspec -> var = fun;
 }
 
-void assign_funtype(nodePointer fun, nodePointer spec){
+void assign_funtype(nodePointer spec, nodePointer fun){
     fun -> var -> type = spec -> type;
 }
 
@@ -121,14 +141,14 @@ void newStructType(nodePointer spec, nodePointer id, nodePointer varlist){
     struct Type* temp = (struct Type*)malloc(sizeof(struct Type));
     temp -> isStruct = 's';
     temp -> type_name = (char*)malloc(sizeof(char)*30);
-    strcpy(temp -> type_name,yytext);
+    strcpy(temp -> type_name,id -> value);
     temp -> hash = 0;
     temp -> contain = varlist -> var;
     temp -> hash = get_hash(temp);
     spec -> type = temp;
 }
 
-void assign_type(nodePointer var_head, nodePointer type_provider){
+void assign_type(nodePointer type_provider, nodePointer var_head){
     struct Var* var = var_head->var;
     struct Type* type = type_provider -> type;
     while(var != NULL){
@@ -161,8 +181,8 @@ int check_ID_def(nodePointer node){
 }
 
 nodePointer getNode(char* name, int num, ...){
-    printf("%s %d %s\n", name, yylineno, yytext);
-    fflush(stdout);
+    // printf("%s %d %s\n", name, yylineno, yytext);
+    // fflush(stdout);
     nodePointer f = (nodePointer)malloc(sizeof(struct Node));
     f -> name = name;
     f -> head = f -> next = NULL;
@@ -256,11 +276,12 @@ void yyerror(char *msg)
         printf("Error type A at line %d: %s\n",yylineno,msg); // 或者是 lex error
     }
     else if(error_type == 3){
-        printf("Semantic Error at line %d: %s\n",yylineno,msg); 
+        printf("!!Semantic Error at line %d: %s\n",yylineno,msg); 
     }
     else if(error_type % 10 == 0){
-        printf("Error type %d at line %d: %s\n",error_type / 10,yylineno,msg);
+        printf("!!Error type %d at line %d: %s\n",error_type / 10,yylineno,msg);
     }
+    fflush(stdout);
     hasError=1;
 }
 

@@ -54,7 +54,7 @@ ExtDef: Specifier ExtDecList SEMI {
       | Specifier error {error_type = 1;yyerror("Missing semicolon ';'");}
       | Specifier FunDec CompSt {
             $$ = getNode("ExtDef", 3, $1, $2, $3);
-            assign_funtype($2, $1);
+            assign_funtype($1, $2);
             pop_scope();
             if(push_fun($2)!=0){// == 0 : acc , == x : error in line x 
                 error_type = 3;
@@ -89,14 +89,16 @@ Specifier: TYPE {
          ;
 StructSpecifier: STRUCT ID LC DefList RC {
                     $$ = getNode("StructSpecifier", 5, $1, $2, $3, $4, $5);
+                    
                     newStructType($$, $2, $4);
+                    fflush(stdout);
                     if(push_type($$)!=0){// == 0 : acc , == x : error in line x 
                         error_type = 3;
                         yyerror("Struct name aready exists");
                     }
                 }
               | STRUCT ID {$$ = getNode("StructSpecifier", 2, $1, $2);
-                    if(!getStruct($$, $1)){
+                    if(!getStruct($$, $2)){
                         error_type = 3;
                         yyerror("Undefined structer");
                     }
@@ -119,7 +121,7 @@ VarDec: ID {
       ;
 FunDec: ID LP VarList RP {$$ = getNode("FunDec", 4, $1, $2, $3, $4);
             new_scope();
-            if(push_var($2)!=0){// == 0 : acc , == x : error in line x 
+            if(push_var($3)!=0){// == 0 : acc , == x : error in line x 
                 error_type = 3;
                 yyerror("Variable aready exists");
             }
@@ -189,7 +191,9 @@ DefList: Def DefList {
 Def: Specifier DecList SEMI {
         $$ = getNode("Def", 3, $1, $2, $3);
         assign_type($1, $2);
+        //print_var(($2)->var, 0);
         extend_var($$, $2);
+        //print_var(($$)->var, 0);
         if(push_var($2)!=0){// == 0 : acc , == x : error in line x 
             error_type = 3;
             yyerror("Variable aready exists");
