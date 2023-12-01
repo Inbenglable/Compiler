@@ -194,7 +194,6 @@ Def: Specifier DecList SEMI {
             error_type = 3;
             yyerror("Variable aready exists");
         }
-
     }
    |error DecList SEMI {error_type = 1; yyerror("Missing specifier");}
    |Specifier DecList error {error_type = 1; yyerror("Missing semicolon ';'");}
