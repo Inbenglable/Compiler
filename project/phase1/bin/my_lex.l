@@ -4,6 +4,7 @@
     #include <stdlib.h>
     #include <stdio.h>
     #include "structure.h"
+    #include "symbol_table.h"
     #include "syntax.tab.h"
     #include <string.h>
     char tmp[500]; 
@@ -57,8 +58,8 @@ return { yylval.type=getTerminalNode("RETURN", yylineno);return RETURN; }
 ")" { yylval.type = getTerminalNode("RP", yylineno); return RP; }
 "[" { yylval.type = getTerminalNode("LB", yylineno); return LB; }
 "]" { yylval.type = getTerminalNode("RB", yylineno); return RB; }
-"{" { yylval.type = getTerminalNode("LC", yylineno) ; return LC; }
-"}" { yylval.type = getTerminalNode("RC", yylineno); return RC; }
+"{" { yylval.type = getTerminalNode("LC", yylineno) ; return LC; new_scope();}
+"}" { yylval.type = getTerminalNode("RC", yylineno); return RC; pop_scope();}
 "//" { 
   int c;
   while((c = input()) != '\n');

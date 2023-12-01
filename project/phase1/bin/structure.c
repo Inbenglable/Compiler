@@ -1,4 +1,5 @@
 #include "structure.h"
+#include "symbol_table.h"
 
 int hasError = 0;
 int error_type = -1;
@@ -52,13 +53,69 @@ nodePointer getTypeNode(char *name, int line){
     return f;
 }
 
-void newStructType(nodePointer spec, nodePointer id){
+int push_fun(nodePointer fun_node){
+    if(fun_node == NULL || fun_node -> var == NULL)return -1;
+    if(store_Fun(fun_node->var->name, fun_node->var)){
+        return 0;
+    }
+    return fun_node->line;
+}
+
+int push_type(nodePointer type_node){
+    if(type_node == NULL || type_node -> type == NULL)return -1;
+    if(store_Type(type_node -> type -> type_name, type_node->type)){
+        return 0;
+    }
+    return type_node -> line;
+}
+
+int push_var(nodePointer varlist){
+    while(varlist != NULL){
+        if(varlist -> var == NULL){
+            if(varlist -> line != -1)return -1;
+            else break;
+        }
+        int ret = store_ID(varlist -> var -> name, varlist -> var);
+        if(ret == 0){
+            return varlist -> line;
+        }
+        while(varlist->next != NULL){
+            varlist = varlist -> next;
+        }
+        varlist = varlist -> head;
+    }
+    return 0;
+}
+
+int getStruct(nodePointer spec, nodePointer id){
+    struct Type* type = query_Type(id -> value);
+    spec -> type = type;
+    return (type != NULL) ? 1 : 0;
+}
+
+void newFuntype(nodePointer funspec, nodePointer id, nodePointer varlist){
+    struct Var* fun = (struct Var*)malloc(sizeof(struct Var));
+    fun -> dim = 0;
+    fun -> head = fun -> next = NULL;
+    fun -> type = NULL;
+    fun -> name = (char*)malloc(sizeof(char)*30);
+    strcpy(fun -> name, id -> value);
+    if(varlist != NULL)fun -> next = varlist -> var;
+    
+    funspec -> var = fun;
+}
+
+void assign_funtype(nodePointer fun, nodePointer spec){
+    fun -> var -> type = spec -> type;
+}
+
+void newStructType(nodePointer spec, nodePointer id, nodePointer varlist){
     struct Type* temp = (struct Type*)malloc(sizeof(struct Type));
     temp -> isStruct = 's';
     temp -> type_name = (char*)malloc(sizeof(char)*30);
     strcpy(temp -> type_name,yytext);
     temp -> hash = 0;
-    temp -> contain = NULL;
+    temp -> contain = varlist -> var;
     spec -> type = temp;
 }
 
@@ -225,4 +282,3 @@ int main(int argc, char **argv) {
         
     }
 }
-
