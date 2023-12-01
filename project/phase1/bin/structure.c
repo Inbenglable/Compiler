@@ -44,36 +44,38 @@ nodePointer getTerminalNode(char *name, int line){
     strcpy(f->value,yytext);
     f->type = NULL;
     f->var = NULL;
-    //struct Var* temp = (struct Var*)malloc(sizeof(struct Var));
-    //temp -> name = NULL;
-    //temp -> dim = 0;
-    //strcpy(temp -> name,yytext);
-    //temp -> type = NULL;
-    //temp -> head = temp -> next = NULL;
-    //f -> var = temp;
-//
-    //if(strcmp(name, "INT") == 0){
-    //    temp -> type = (struct Type*)malloc(sizeof(struct Type));
-    //    temp -> type -> isStruct = 'v';
-    //    temp -> type -> hash = 0;
-    //    temp -> type -> type_name = (char*)malloc(sizeof(char)*30);
-    //    strcpy(temp -> type -> type_name, "int");
-    //    temp -> type -> contain = NULL;
-    //}else if(strcmp(name, "FLOAT") == 0){
-    //    temp -> type = (struct Type*)malloc(sizeof(struct Type));
-    //    temp -> type -> isStruct = 'v';
-    //    temp -> type -> hash = 0;
-    //    temp -> type -> type_name = (char*)malloc(sizeof(char)*30);
-    //    strcpy(temp -> type -> type_name, "float");
-    //    temp -> type -> contain = NULL;
-    //}else if(strcmp(name, "CHAR") == 0){
-    //    temp -> type = (struct Type*)malloc(sizeof(struct Type));
-    //    temp -> type -> isStruct = 'v';
-    //    temp -> type -> hash = 0;
-    //    temp -> type -> type_name = (char*)malloc(sizeof(char)*30);
-    //    strcpy(temp -> type -> type_name, "char");
-    //    temp -> type -> contain = NULL;
-    //}
+    if(line == -1){
+        return f;
+    }
+    struct Var* temp = (struct Var*)malloc(sizeof(struct Var));
+    temp -> name = NULL;
+    temp -> dim = 0;
+    temp -> type = NULL;
+    temp -> head = temp -> next = NULL;
+    f -> var = temp;
+
+    if(strcmp(name, "INT") == 0){
+       temp -> type = (struct Type*)malloc(sizeof(struct Type));
+       temp -> type -> isStruct = 'v';
+       temp -> type -> hash = 0;
+       temp -> type -> type_name = (char*)malloc(sizeof(char)*30);
+       strcpy(temp -> type -> type_name, "int");
+       temp -> type -> contain = NULL;
+    }else if(strcmp(name, "FLOAT") == 0){
+       temp -> type = (struct Type*)malloc(sizeof(struct Type));
+       temp -> type -> isStruct = 'v';
+       temp -> type -> hash = 0;
+       temp -> type -> type_name = (char*)malloc(sizeof(char)*30);
+       strcpy(temp -> type -> type_name, "float");
+       temp -> type -> contain = NULL;
+    }else if(strcmp(name, "CHAR") == 0){
+       temp -> type = (struct Type*)malloc(sizeof(struct Type));
+       temp -> type -> isStruct = 'v';
+       temp -> type -> hash = 0;
+       temp -> type -> type_name = (char*)malloc(sizeof(char)*30);
+       strcpy(temp -> type -> type_name, "char");
+       temp -> type -> contain = NULL;
+    }
     return f;
 }
 
@@ -243,8 +245,8 @@ Type* check_field(Type* typeptr, char* name){
 }
 
 nodePointer getNode(char* name, int num, ...){
-    // printf("%s %d %s\n", name, yylineno, yytext);
-    // fflush(stdout);
+    printf("%s %d %s\n", name, yylineno, yytext);
+    fflush(stdout);
     nodePointer f = (nodePointer)malloc(sizeof(struct Node));
     f -> name = name;
     f -> head = f -> next = NULL;

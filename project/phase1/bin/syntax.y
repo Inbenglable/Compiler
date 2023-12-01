@@ -104,9 +104,8 @@ Specifier: TYPE {
          ;
 StructSpecifier: STRUCT ID LC DefList RC {
                     $$ = getNode("StructSpecifier", 5, $1, $2, $3, $4, $5);
-                    
                     newStructType($$, $2, $4);
-                    fflush(stdout);
+                    
                     if(push_type($$)!=0){// == 0 : acc , == x : error in line x 
                         error_type = 150;
                         yyerror("Struct name aready exists");
@@ -256,20 +255,16 @@ Dec: VarDec {
 
 Exp: Exp ASSIGN Exp {
         $$ = getNode("Exp", 3, $1, $2, $3);
-        printf("!1!\n");
-        fflush(stdout);
-        if(check_assign_type($1, $3) == 0){
-            error_type = 50;
-            yyerror("unmatching type on both sides of assignment");
-        }
-        printf("!2!\n");
-        fflush(stdout);
+        
         if(check_rvalue($1) == 1){
             error_type = 60;
             yyerror("rvalue appears on the left-side of assignment");
         }
-        printf("!3!\n");
-        fflush(stdout);
+        if(check_assign_type($1, $3) == 0){
+            error_type = 50;
+            yyerror("unmatching type on both sides of assignment");
+        }
+        
     }
     | Exp AND Exp {$$ = getNode("Exp", 3, $1, $2, $3);}
     | Exp OR Exp {$$ = getNode("Exp", 3, $1, $2, $3);}
