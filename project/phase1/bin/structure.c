@@ -116,6 +116,7 @@ void newStructType(nodePointer spec, nodePointer id, nodePointer varlist){
     strcpy(temp -> type_name,yytext);
     temp -> hash = 0;
     temp -> contain = varlist -> var;
+    temp -> hash = get_hash(temp);
     spec -> type = temp;
 }
 
@@ -126,10 +127,6 @@ void assign_type(nodePointer var_head, nodePointer type_provider){
         var -> type = type;
         var = var -> next;
     }
-}
-
-void build_struct(nodePointer top_node, nodePointer list_node){
-    top_node -> type -> contain = list_node -> var;
 }
 
 void extend_type(nodePointer to, nodePointer from){
