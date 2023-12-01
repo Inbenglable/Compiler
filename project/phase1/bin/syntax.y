@@ -43,7 +43,7 @@ ExtDefList: ExtDef ExtDefList {$$ = getNode("ExtDefList", 2, $1, $2);}
 ExtDef: Specifier ExtDecList SEMI {
             $$ = getNode("ExtDef", 3, $1, $2, $3);
             assign_type($1, $2);
-            if(push_var($2)!==0){// == 0 : acc , == x : error in line x 
+            if(push_var($2)!=0){// == 0 : acc , == x : error in line x 
                 error_type = 3;
                 yyerror("Variable aready exists");
             }
@@ -54,8 +54,8 @@ ExtDef: Specifier ExtDecList SEMI {
       | Specifier FunDec CompSt {
             $$ = getNode("ExtDef", 3, $1, $2, $3);
             assign_funtype($2, $1);
-            if(push_fun($2))
-            if(push_fun($2)!==0){// == 0 : acc , == x : error in line x 
+            pop_scope();
+            if(push_fun($2)!=0){// == 0 : acc , == x : error in line x 
                 error_type = 3;
                 yyerror("Function name aready exists");
             }
@@ -89,7 +89,7 @@ Specifier: TYPE {
 StructSpecifier: STRUCT ID LC DefList RC {
                     $$ = getNode("StructSpecifier", 5, $1, $2, $3, $4, $5);
                     newStructType($$, $2, $4);
-                    if(push_type($$)!==0){// == 0 : acc , == x : error in line x 
+                    if(push_type($$)!=0){// == 0 : acc , == x : error in line x 
                         error_type = 3;
                         yyerror("Struct name aready exists");
                     }
@@ -118,7 +118,7 @@ VarDec: ID {
       ;
 FunDec: ID LP VarList RP {$$ = getNode("FunDec", 4, $1, $2, $3, $4);
             new_scope();
-            if(push_var($2)!==0){// == 0 : acc , == x : error in line x 
+            if(push_var($2)!=0){// == 0 : acc , == x : error in line x 
                 error_type = 3;
                 yyerror("Variable aready exists");
             }
@@ -189,7 +189,7 @@ Def: Specifier DecList SEMI {
         $$ = getNode("Def", 3, $1, $2, $3);
         assign_type($1, $2);
         extend_var($$, $2);
-        if(push_var($2)!==0){// == 0 : acc , == x : error in line x 
+        if(push_var($2)!=0){// == 0 : acc , == x : error in line x 
             error_type = 3;
             yyerror("Variable aready exists");
         }

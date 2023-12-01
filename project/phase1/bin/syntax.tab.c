@@ -1326,17 +1326,10 @@ yyreduce:
 #line 1327 "syntax.tab.c"
     break;
 
-  case 5: /* ExtDef: Specifier ExtDecList SEMI  */
-#line 43 "syntax.y"
-                                  {
-            (yyval.type) = getNode("ExtDef", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));
-            assign_type((yyvsp[-2].type), (yyvsp[-1].type));
-            if(push_var((yyvsp[-1].type))!==0){// == 0 : acc , == x : error in line x 
-                error_type = 3;
-                yyerror("Variable aready exists");
-            }
-        }
-#line 1340 "syntax.tab.c"
+  case 5:
+#line 42 "syntax.y" /* yacc.c:1646  */
+    {(yyval.type) = getNode("ExtDef", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
+#line 1518 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 6: /* ExtDef: Specifier ExtDecList error  */
@@ -1357,18 +1350,10 @@ yyreduce:
 #line 1358 "syntax.tab.c"
     break;
 
-  case 9: /* ExtDef: Specifier FunDec CompSt  */
-#line 54 "syntax.y"
-                                {
-            (yyval.type) = getNode("ExtDef", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));
-            assign_funtype((yyvsp[-1].type), (yyvsp[-2].type));
-            if(push_fun((yyvsp[-1].type)))
-            if(push_fun((yyvsp[-1].type))!==0){// == 0 : acc , == x : error in line x 
-                error_type = 3;
-                yyerror("Function name aready exists");
-            }
-        }
-#line 1372 "syntax.tab.c"
+  case 9:
+#line 46 "syntax.y" /* yacc.c:1646  */
+    {(yyval.type) = getNode("ExtDef", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
+#line 1542 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 10: /* ExtDef: error ExtDecList SEMI  */
@@ -1426,17 +1411,10 @@ yyreduce:
 #line 1427 "syntax.tab.c"
     break;
 
-  case 17: /* StructSpecifier: STRUCT ID LC DefList RC  */
-#line 89 "syntax.y"
-                                         {
-                    (yyval.type) = getNode("StructSpecifier", 5, (yyvsp[-4].type), (yyvsp[-3].type), (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));
-                    newStructType((yyval.type), (yyvsp[-3].type), (yyvsp[-1].type));
-                    if(push_type((yyval.type))!==0){// == 0 : acc , == x : error in line x 
-                        error_type = 3;
-                        yyerror("Struct name aready exists");
-                    }
-                }
-#line 1440 "syntax.tab.c"
+  case 17:
+#line 59 "syntax.y" /* yacc.c:1646  */
+    {(yyval.type) = getNode("StructSpecifier", 5, (yyvsp[-4].type), (yyvsp[-3].type), (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
+#line 1590 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 18: /* StructSpecifier: STRUCT ID  */
@@ -1475,17 +1453,10 @@ yyreduce:
 #line 1476 "syntax.tab.c"
     break;
 
-  case 22: /* FunDec: ID LP VarList RP  */
-#line 119 "syntax.y"
-                         {(yyval.type) = getNode("FunDec", 4, (yyvsp[-3].type), (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));
-            new_scope();
-            if(push_var((yyvsp[-2].type))!==0){// == 0 : acc , == x : error in line x 
-                error_type = 3;
-                yyerror("Variable aready exists");
-            }
-            newFuntype((yyval.type), (yyvsp[-3].type), (yyvsp[-1].type));
-        }
-#line 1489 "syntax.tab.c"
+  case 22:
+#line 70 "syntax.y" /* yacc.c:1646  */
+    {(yyval.type) = getNode("FunDec", 4, (yyvsp[-3].type), (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
+#line 1620 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 23: /* FunDec: ID LP RP  */
@@ -1662,19 +1633,16 @@ yyreduce:
 #line 1663 "syntax.tab.c"
     break;
 
-  case 49: /* Def: Specifier DecList SEMI  */
-#line 188 "syntax.y"
-                            {
-        (yyval.type) = getNode("Def", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));
-        assign_type((yyvsp[-2].type), (yyvsp[-1].type));
-        extend_var((yyval.type), (yyvsp[-1].type));
-        if(push_var((yyvsp[-1].type))!==0){// == 0 : acc , == x : error in line x 
-            error_type = 3;
-            yyerror("Variable aready exists");
-        }
+  case 49:
+#line 104 "syntax.y" /* yacc.c:1646  */
+    {(yyval.type) = getNode("Stmt", 8, (yyvsp[-7].type), (yyvsp[-6].type), (yyvsp[-5].type), (yyvsp[-4].type), (yyvsp[-3].type), (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
+#line 1782 "syntax.tab.c" /* yacc.c:1646  */
+    break;
 
-    }
-#line 1678 "syntax.tab.c"
+  case 50:
+#line 105 "syntax.y" /* yacc.c:1646  */
+    {(yyval.type) = getNode("Stmt", 8, (yyvsp[-7].type), (yyvsp[-6].type), (yyvsp[-5].type), (yyvsp[-4].type), (yyvsp[-3].type), (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
+#line 1788 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 50: /* Def: error DecList SEMI  */
