@@ -201,11 +201,9 @@ void extend_dim(nodePointer var){
     var -> var -> dim += 1;
 }
 
-int check_ID_def(nodePointer node){
-    if(query_ID(node -> var -> name) != NULL){
-        return 1;
-    }
-    return 0;
+struct Var* check_ID_def(nodePointer node){
+    struct Var* var = query_ID(node -> var -> name);
+    return var;
 }
 
 int check_fun_def(nodePointer node){
@@ -233,7 +231,7 @@ int check_rvalue(nodePointer node){
     return 0;
 }
 
-Type* check_filed(Type* typeptr, char* name){
+Type* check_field(Type* typeptr, char* name){
     Var* var = typeptr->contain;
     while(var != NULL){
         if(strcmp(var->name, name) == 0){
@@ -245,8 +243,8 @@ Type* check_filed(Type* typeptr, char* name){
 }
 
 nodePointer getNode(char* name, int num, ...){
-    printf("%s %d %s\n", name, yylineno, yytext);
-    fflush(stdout);
+    // printf("%s %d %s\n", name, yylineno, yytext);
+    // fflush(stdout);
     nodePointer f = (nodePointer)malloc(sizeof(struct Node));
     f -> name = name;
     f -> head = f -> next = NULL;

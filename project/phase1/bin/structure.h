@@ -68,11 +68,11 @@ void extend_var(nodePointer to, nodePointer from);
 void extend_dim(nodePointer var);
 nodePointer getNode(char* token_name,int num,...);
 
-int check_ID_def(nodePointer node);
+struct Var* check_ID_def(nodePointer node);
 int check_fun_def(nodePointer node);
 int check_assign_type(nodePointer lnode, nodePointer rnode);
 int check_rvalue(nodePointer node);
-Type* check_filed(Type* typeptr, char* name);
+Type* check_field(Type* typeptr, char* name);
 
 void writeNode(nodePointer node,int depth);
 void writeTerminalNode(nodePointer node);

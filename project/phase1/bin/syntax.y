@@ -256,14 +256,20 @@ Dec: VarDec {
 
 Exp: Exp ASSIGN Exp {
         $$ = getNode("Exp", 3, $1, $2, $3);
+        printf("!1!\n");
+        fflush(stdout);
         if(check_assign_type($1, $3) == 0){
             error_type = 50;
             yyerror("unmatching type on both sides of assignment");
         }
+        printf("!2!\n");
+        fflush(stdout);
         if(check_rvalue($1) == 1){
             error_type = 60;
             yyerror("rvalue appears on the left-side of assignment");
         }
+        printf("!3!\n");
+        fflush(stdout);
     }
     | Exp AND Exp {$$ = getNode("Exp", 3, $1, $2, $3);}
     | Exp OR Exp {$$ = getNode("Exp", 3, $1, $2, $3);}
@@ -326,10 +332,19 @@ Exp: Exp ASSIGN Exp {
     | ID LP error {error_type = 1;yyerror("Missing closing symbol ')'");}
     | Exp LB Exp RB {$$ = getNode("Exp", 4, $1, $2, $3, $4);}
     | Exp LB Exp error {error_type = 1;yyerror("Missing closing symbol ']'");}
-    | Exp DOT ID {$$ = getNode("Exp", 3, $1, $2, $3);}
+    | Exp DOT ID {
+            $$ = getNode("Exp", 3, $1, $2, $3);
+            struct Type* t = check_field(($1)->type, ($3)->value);
+            if(t == NULL) {
+                //yyerror
+            }else{
+                ($$)->type = t;
+            }
+        }
     | ID {
         $$ = getNode("Exp", 1, $1);
-        if(check_ID_def($1) == 0){
+        struct Var* var = check_ID_def($1);
+        if(var == NULL){
             error_type = 10;
             char* name = $1->value;
             char* msg = (char*)malloc(sizeof(name)+sizeof(char)*100);
@@ -340,6 +355,8 @@ Exp: Exp ASSIGN Exp {
             yyerror(msg);
             free(msg);
         }
+        ($$) -> type = var -> type;
+        ($$) -> var = var;
     }
     | INT {$$ = getNode("Exp", 1, $1);}
     | FLOAT {$$ = getNode("Exp", 1, $1);}
