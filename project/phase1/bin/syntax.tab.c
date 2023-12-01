@@ -556,16 +556,16 @@ static const yytype_int8 yytranslate[] =
 static const yytype_int16 yyrline[] =
 {
        0,    35,    35,    41,    42,    44,    52,    53,    54,    55,
-      64,    68,    72,    77,    78,    81,    85,    90,    98,   107,
-     111,   116,   120,   128,   132,   133,   135,   140,   145,   150,
-     151,   154,   157,   158,   160,   161,   162,   163,   164,   165,
-     166,   167,   168,   169,   170,   171,   172,   182,   187,   189,
-     198,   199,   201,   205,   212,   216,   222,   223,   224,   225,
-     226,   227,   228,   229,   230,   231,   232,   233,   234,   235,
-     236,   237,   238,   239,   240,   241,   242,   243,   244,   245,
-     246,   247,   248,   249,   250,   251,   252,   253,   254,   255,
-     256,   257,   258,   259,   272,   273,   274,   276,   278,   279,
-     280
+      64,    68,    72,    77,    78,    81,    85,    90,   100,   109,
+     113,   118,   122,   132,   136,   137,   139,   144,   149,   154,
+     155,   158,   161,   162,   164,   165,   166,   167,   168,   169,
+     170,   171,   172,   173,   174,   175,   176,   186,   191,   193,
+     204,   205,   207,   211,   218,   222,   228,   229,   230,   231,
+     232,   233,   234,   235,   236,   237,   238,   239,   240,   241,
+     242,   243,   244,   245,   246,   247,   248,   249,   250,   251,
+     252,   253,   254,   255,   256,   257,   258,   259,   260,   261,
+     262,   263,   264,   265,   278,   279,   280,   282,   284,   285,
+     286
 };
 #endif
 
@@ -1362,7 +1362,7 @@ yyreduce:
 #line 55 "syntax.y"
                                 {
             (yyval.type) = getNode("ExtDef", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));
-            assign_funtype((yyvsp[-1].type), (yyvsp[-2].type));
+            assign_funtype((yyvsp[-2].type), (yyvsp[-1].type));
             pop_scope();
             if(push_fun((yyvsp[-1].type))!=0){// == 0 : acc , == x : error in line x 
                 error_type = 3;
@@ -1431,525 +1431,531 @@ yyreduce:
 #line 90 "syntax.y"
                                          {
                     (yyval.type) = getNode("StructSpecifier", 5, (yyvsp[-4].type), (yyvsp[-3].type), (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));
+                    
                     newStructType((yyval.type), (yyvsp[-3].type), (yyvsp[-1].type));
+                    fflush(stdout);
                     if(push_type((yyval.type))!=0){// == 0 : acc , == x : error in line x 
                         error_type = 3;
                         yyerror("Struct name aready exists");
                     }
                 }
-#line 1441 "syntax.tab.c"
+#line 1443 "syntax.tab.c"
     break;
 
   case 18: /* StructSpecifier: STRUCT ID  */
-#line 98 "syntax.y"
+#line 100 "syntax.y"
                           {(yyval.type) = getNode("StructSpecifier", 2, (yyvsp[-1].type), (yyvsp[0].type));
-                    if(!getStruct((yyval.type), (yyvsp[-1].type))){
+                    if(!getStruct((yyval.type), (yyvsp[0].type))){
                         error_type = 3;
                         yyerror("Undefined structer");
                     }
               }
-#line 1452 "syntax.tab.c"
+#line 1454 "syntax.tab.c"
     break;
 
   case 19: /* VarDec: ID  */
-#line 107 "syntax.y"
+#line 109 "syntax.y"
            {
             (yyval.type) = getNode("VarDec", 1, (yyvsp[0].type));
             extend_var((yyval.type), (yyvsp[0].type));
         }
-#line 1461 "syntax.tab.c"
+#line 1463 "syntax.tab.c"
     break;
 
   case 20: /* VarDec: VarDec LB INT RB  */
-#line 111 "syntax.y"
+#line 113 "syntax.y"
                          {
         (yyval.type) = getNode("VarDec", 4, (yyvsp[-3].type), (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));
         extend_dim((yyvsp[-3].type));
         extend_var((yyval.type), (yyvsp[-3].type));
       }
-#line 1471 "syntax.tab.c"
+#line 1473 "syntax.tab.c"
     break;
 
   case 21: /* VarDec: VarDec LB INT error  */
-#line 116 "syntax.y"
+#line 118 "syntax.y"
                             {error_type = 1;yyerror("Missing closing symbol ']'");}
-#line 1477 "syntax.tab.c"
+#line 1479 "syntax.tab.c"
     break;
 
   case 22: /* FunDec: ID LP VarList RP  */
-#line 120 "syntax.y"
+#line 122 "syntax.y"
                          {(yyval.type) = getNode("FunDec", 4, (yyvsp[-3].type), (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));
             new_scope();
-            if(push_var((yyvsp[-2].type))!=0){// == 0 : acc , == x : error in line x 
+            int ret = push_var((yyvsp[-1].type));
+            if(ret!=0){// == 0 : acc , == x : error in line x 
                 error_type = 3;
+                printf("%d", ret);
                 yyerror("Variable aready exists");
             }
             newFuntype((yyval.type), (yyvsp[-3].type), (yyvsp[-1].type));
         }
-#line 1490 "syntax.tab.c"
+#line 1494 "syntax.tab.c"
     break;
 
   case 23: /* FunDec: ID LP RP  */
-#line 128 "syntax.y"
+#line 132 "syntax.y"
                  {(yyval.type) = getNode("FunDec", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));
             new_scope();
             newFuntype((yyval.type), (yyvsp[-2].type), NULL);
         }
-#line 1499 "syntax.tab.c"
+#line 1503 "syntax.tab.c"
     break;
 
   case 24: /* FunDec: ID LP VarList error  */
-#line 132 "syntax.y"
+#line 136 "syntax.y"
                             {error_type = 1;yyerror("Missing closing symbol ')'");}
-#line 1505 "syntax.tab.c"
+#line 1509 "syntax.tab.c"
     break;
 
   case 25: /* FunDec: ID LP error  */
-#line 133 "syntax.y"
+#line 137 "syntax.y"
                     {error_type = 1;yyerror("Missing closing symbol ')'");}
-#line 1511 "syntax.tab.c"
+#line 1515 "syntax.tab.c"
     break;
 
   case 26: /* VarList: ParamDec COMMA VarList  */
-#line 135 "syntax.y"
+#line 139 "syntax.y"
                                 {
             (yyval.type) = getNode("VarList", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));
             connect_var((yyvsp[-2].type), (yyvsp[0].type));
-            extend_var((yyval.type), (yyvsp[0].type));    
+            extend_var((yyval.type), (yyvsp[-2].type));    
         }
-#line 1521 "syntax.tab.c"
+#line 1525 "syntax.tab.c"
     break;
 
   case 27: /* VarList: ParamDec  */
-#line 140 "syntax.y"
+#line 144 "syntax.y"
                   {
             (yyval.type) = getNode("VarList", 1, (yyvsp[0].type));
             extend_var((yyval.type), (yyvsp[0].type));
         }
-#line 1530 "syntax.tab.c"
+#line 1534 "syntax.tab.c"
     break;
 
   case 28: /* ParamDec: Specifier VarDec  */
-#line 145 "syntax.y"
+#line 149 "syntax.y"
                            {
             (yyval.type) = getNode("ParamDec", 2, (yyvsp[-1].type), (yyvsp[0].type));
             assign_type((yyvsp[-1].type), (yyvsp[0].type));
             extend_var((yyval.type), (yyvsp[0].type));   
         }
-#line 1540 "syntax.tab.c"
+#line 1544 "syntax.tab.c"
     break;
 
   case 29: /* ParamDec: error VarDec  */
-#line 150 "syntax.y"
+#line 154 "syntax.y"
                        {error_type = 1;yyerror("Missing specifier");}
-#line 1546 "syntax.tab.c"
+#line 1550 "syntax.tab.c"
     break;
 
   case 30: /* ParamDec: Specifier error  */
-#line 151 "syntax.y"
+#line 155 "syntax.y"
                           {error_type = 1;yyerror("Missing variable name");}
-#line 1552 "syntax.tab.c"
+#line 1556 "syntax.tab.c"
     break;
 
   case 31: /* CompSt: LC DefList StmtList RC  */
-#line 154 "syntax.y"
+#line 158 "syntax.y"
                                {(yyval.type) = getNode("CompSt", 4, (yyvsp[-3].type), (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
-#line 1558 "syntax.tab.c"
+#line 1562 "syntax.tab.c"
     break;
 
   case 32: /* StmtList: Stmt StmtList  */
-#line 157 "syntax.y"
+#line 161 "syntax.y"
                         {(yyval.type) = getNode("StmtList", 2, (yyvsp[-1].type), (yyvsp[0].type));}
-#line 1564 "syntax.tab.c"
+#line 1568 "syntax.tab.c"
     break;
 
   case 33: /* StmtList: %empty  */
-#line 158 "syntax.y"
+#line 162 "syntax.y"
          {(yyval.type)=getTerminalNode("StmtList", -1);}
-#line 1570 "syntax.tab.c"
+#line 1574 "syntax.tab.c"
     break;
 
   case 34: /* Stmt: SEMI  */
-#line 160 "syntax.y"
+#line 164 "syntax.y"
            {(yyval.type) = getNode("Stmt", 1, (yyvsp[0].type));}
-#line 1576 "syntax.tab.c"
+#line 1580 "syntax.tab.c"
     break;
 
   case 35: /* Stmt: Exp SEMI  */
-#line 161 "syntax.y"
+#line 165 "syntax.y"
                {(yyval.type) = getNode("Stmt", 2, (yyvsp[-1].type), (yyvsp[0].type));}
-#line 1582 "syntax.tab.c"
+#line 1586 "syntax.tab.c"
     break;
 
   case 36: /* Stmt: Exp error  */
-#line 162 "syntax.y"
+#line 166 "syntax.y"
                 {error_type = 1;yyerror("Missing semicolon ';'");}
-#line 1588 "syntax.tab.c"
+#line 1592 "syntax.tab.c"
     break;
 
   case 37: /* Stmt: CompSt  */
-#line 163 "syntax.y"
+#line 167 "syntax.y"
              {(yyval.type) = getNode("Stmt", 1, (yyvsp[0].type));}
-#line 1594 "syntax.tab.c"
+#line 1598 "syntax.tab.c"
     break;
 
   case 38: /* Stmt: RETURN Exp SEMI  */
-#line 164 "syntax.y"
+#line 168 "syntax.y"
                       {(yyval.type) = getNode("Stmt", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
-#line 1600 "syntax.tab.c"
+#line 1604 "syntax.tab.c"
     break;
 
   case 39: /* Stmt: RETURN Exp error  */
-#line 165 "syntax.y"
+#line 169 "syntax.y"
                        {error_type = 1;yyerror("Missing semicolon ';'");}
-#line 1606 "syntax.tab.c"
+#line 1610 "syntax.tab.c"
     break;
 
   case 40: /* Stmt: IF LP Exp RP Stmt  */
-#line 166 "syntax.y"
+#line 170 "syntax.y"
                                               {(yyval.type) = getNode("Stmt", 5, (yyvsp[-4].type), (yyvsp[-3].type), (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
-#line 1612 "syntax.tab.c"
+#line 1616 "syntax.tab.c"
     break;
 
   case 41: /* Stmt: IF LP Exp error Stmt  */
-#line 167 "syntax.y"
+#line 171 "syntax.y"
                                                  {error_type = 1;yyerror("This if function miss closing symbol ')'");}
-#line 1618 "syntax.tab.c"
+#line 1622 "syntax.tab.c"
     break;
 
   case 42: /* Stmt: IF LP Exp RP Stmt ELSE Stmt  */
-#line 168 "syntax.y"
+#line 172 "syntax.y"
                                   {(yyval.type) = getNode("Stmt", 7, (yyvsp[-6].type), (yyvsp[-5].type), (yyvsp[-4].type), (yyvsp[-3].type), (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
-#line 1624 "syntax.tab.c"
+#line 1628 "syntax.tab.c"
     break;
 
   case 43: /* Stmt: WHILE LP Exp RP Stmt  */
-#line 169 "syntax.y"
+#line 173 "syntax.y"
                            {(yyval.type) = getNode("Stmt", 5, (yyvsp[-4].type), (yyvsp[-3].type), (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
-#line 1630 "syntax.tab.c"
+#line 1634 "syntax.tab.c"
     break;
 
   case 44: /* Stmt: WHILE LP RP Stmt  */
-#line 170 "syntax.y"
+#line 174 "syntax.y"
                        {(yyval.type) = getNode("Stmt", 4, (yyvsp[-3].type), (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
-#line 1636 "syntax.tab.c"
+#line 1640 "syntax.tab.c"
     break;
 
   case 45: /* Stmt: IF LP Exp error Stmt ELSE Stmt  */
-#line 171 "syntax.y"
+#line 175 "syntax.y"
                                      {error_type = 1;yyerror("This if function miss closing symbol ')'");}
-#line 1642 "syntax.tab.c"
+#line 1646 "syntax.tab.c"
     break;
 
   case 46: /* Stmt: WHILE LP Exp error Stmt  */
-#line 172 "syntax.y"
+#line 176 "syntax.y"
                               {error_type = 1;yyerror("Missing closing symbol ')'");}
-#line 1648 "syntax.tab.c"
+#line 1652 "syntax.tab.c"
     break;
 
   case 47: /* DefList: Def DefList  */
-#line 182 "syntax.y"
+#line 186 "syntax.y"
                      {
             (yyval.type) = getNode("DefList", 2, (yyvsp[-1].type), (yyvsp[0].type));
             connect_var((yyvsp[-1].type), (yyvsp[0].type));
             extend_var((yyval.type), (yyvsp[-1].type));
         }
-#line 1658 "syntax.tab.c"
+#line 1662 "syntax.tab.c"
     break;
 
   case 48: /* DefList: %empty  */
-#line 187 "syntax.y"
+#line 191 "syntax.y"
          {(yyval.type)=getTerminalNode("DefList", -1);}
-#line 1664 "syntax.tab.c"
+#line 1668 "syntax.tab.c"
     break;
 
   case 49: /* Def: Specifier DecList SEMI  */
-#line 189 "syntax.y"
+#line 193 "syntax.y"
                             {
         (yyval.type) = getNode("Def", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));
         assign_type((yyvsp[-2].type), (yyvsp[-1].type));
+        //print_var(($2)->var, 0);
         extend_var((yyval.type), (yyvsp[-1].type));
+        //print_var(($$)->var, 0);
         if(push_var((yyvsp[-1].type))!=0){// == 0 : acc , == x : error in line x 
             error_type = 3;
             yyerror("Variable aready exists");
         }
     }
-#line 1678 "syntax.tab.c"
-    break;
-
-  case 50: /* Def: error DecList SEMI  */
-#line 198 "syntax.y"
-                       {error_type = 1; yyerror("Missing specifier");}
 #line 1684 "syntax.tab.c"
     break;
 
-  case 51: /* Def: Specifier DecList error  */
-#line 199 "syntax.y"
-                            {error_type = 1; yyerror("Missing semicolon ';'");}
+  case 50: /* Def: error DecList SEMI  */
+#line 204 "syntax.y"
+                       {error_type = 1; yyerror("Missing specifier");}
 #line 1690 "syntax.tab.c"
     break;
 
+  case 51: /* Def: Specifier DecList error  */
+#line 205 "syntax.y"
+                            {error_type = 1; yyerror("Missing semicolon ';'");}
+#line 1696 "syntax.tab.c"
+    break;
+
   case 52: /* DecList: Dec  */
-#line 201 "syntax.y"
+#line 207 "syntax.y"
              {
             (yyval.type) = getNode("DecList", 1, (yyvsp[0].type));
             extend_var((yyval.type), (yyvsp[0].type));
         }
-#line 1699 "syntax.tab.c"
+#line 1705 "syntax.tab.c"
     break;
 
   case 53: /* DecList: Dec COMMA DecList  */
-#line 205 "syntax.y"
+#line 211 "syntax.y"
                             {
             (yyval.type) = getNode("DecList", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));
             connect_var((yyvsp[-2].type), (yyvsp[0].type));
             extend_var((yyval.type), (yyvsp[-2].type));
         }
-#line 1709 "syntax.tab.c"
+#line 1715 "syntax.tab.c"
     break;
 
   case 54: /* Dec: VarDec  */
-#line 212 "syntax.y"
+#line 218 "syntax.y"
             {
         (yyval.type) = getNode("Dec", 1, (yyvsp[0].type));
         extend_var((yyval.type), (yyvsp[0].type));
         }
-#line 1718 "syntax.tab.c"
+#line 1724 "syntax.tab.c"
     break;
 
   case 55: /* Dec: VarDec ASSIGN Exp  */
-#line 216 "syntax.y"
+#line 222 "syntax.y"
                         {
         (yyval.type) = getNode("Dec", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));
         extend_var((yyval.type), (yyvsp[-2].type));
     }
-#line 1727 "syntax.tab.c"
-    break;
-
-  case 56: /* Exp: Exp ASSIGN Exp  */
-#line 222 "syntax.y"
-                    {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1733 "syntax.tab.c"
     break;
 
-  case 57: /* Exp: Exp AND Exp  */
-#line 223 "syntax.y"
-                  {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
+  case 56: /* Exp: Exp ASSIGN Exp  */
+#line 228 "syntax.y"
+                    {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1739 "syntax.tab.c"
     break;
 
-  case 58: /* Exp: Exp OR Exp  */
-#line 224 "syntax.y"
-                 {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
+  case 57: /* Exp: Exp AND Exp  */
+#line 229 "syntax.y"
+                  {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1745 "syntax.tab.c"
     break;
 
-  case 59: /* Exp: Exp LT Exp  */
-#line 225 "syntax.y"
+  case 58: /* Exp: Exp OR Exp  */
+#line 230 "syntax.y"
                  {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1751 "syntax.tab.c"
     break;
 
-  case 60: /* Exp: Exp LE Exp  */
-#line 226 "syntax.y"
+  case 59: /* Exp: Exp LT Exp  */
+#line 231 "syntax.y"
                  {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1757 "syntax.tab.c"
     break;
 
-  case 61: /* Exp: Exp GT Exp  */
-#line 227 "syntax.y"
+  case 60: /* Exp: Exp LE Exp  */
+#line 232 "syntax.y"
                  {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1763 "syntax.tab.c"
     break;
 
-  case 62: /* Exp: Exp GE Exp  */
-#line 228 "syntax.y"
+  case 61: /* Exp: Exp GT Exp  */
+#line 233 "syntax.y"
                  {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1769 "syntax.tab.c"
     break;
 
-  case 63: /* Exp: Exp NE Exp  */
-#line 229 "syntax.y"
+  case 62: /* Exp: Exp GE Exp  */
+#line 234 "syntax.y"
                  {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1775 "syntax.tab.c"
     break;
 
-  case 64: /* Exp: Exp EQ Exp  */
-#line 230 "syntax.y"
+  case 63: /* Exp: Exp NE Exp  */
+#line 235 "syntax.y"
                  {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1781 "syntax.tab.c"
     break;
 
-  case 65: /* Exp: Exp PLUS Exp  */
-#line 231 "syntax.y"
-                   {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
+  case 64: /* Exp: Exp EQ Exp  */
+#line 236 "syntax.y"
+                 {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1787 "syntax.tab.c"
     break;
 
-  case 66: /* Exp: Exp MINUS Exp  */
-#line 232 "syntax.y"
-                    {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
+  case 65: /* Exp: Exp PLUS Exp  */
+#line 237 "syntax.y"
+                   {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1793 "syntax.tab.c"
     break;
 
-  case 67: /* Exp: Exp MUL Exp  */
-#line 233 "syntax.y"
-                  {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
+  case 66: /* Exp: Exp MINUS Exp  */
+#line 238 "syntax.y"
+                    {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1799 "syntax.tab.c"
     break;
 
-  case 68: /* Exp: Exp DIV Exp  */
-#line 234 "syntax.y"
+  case 67: /* Exp: Exp MUL Exp  */
+#line 239 "syntax.y"
                   {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1805 "syntax.tab.c"
     break;
 
-  case 69: /* Exp: Exp ASSIGN error  */
-#line 235 "syntax.y"
-                       {error_type = 1; yyerror("Expect expression after '='");}
+  case 68: /* Exp: Exp DIV Exp  */
+#line 240 "syntax.y"
+                  {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1811 "syntax.tab.c"
     break;
 
-  case 70: /* Exp: Exp AND error  */
-#line 236 "syntax.y"
-                    {error_type = 1; yyerror("Expect expression after 'ans'");}
+  case 69: /* Exp: Exp ASSIGN error  */
+#line 241 "syntax.y"
+                       {error_type = 1; yyerror("Expect expression after '='");}
 #line 1817 "syntax.tab.c"
     break;
 
-  case 71: /* Exp: Exp OR error  */
-#line 237 "syntax.y"
-                   {error_type = 1; yyerror("Expect expression after 'or'");}
+  case 70: /* Exp: Exp AND error  */
+#line 242 "syntax.y"
+                    {error_type = 1; yyerror("Expect expression after 'ans'");}
 #line 1823 "syntax.tab.c"
     break;
 
-  case 72: /* Exp: Exp LT error  */
-#line 238 "syntax.y"
-                   {error_type = 1; yyerror("Expect expression after '<'");}
+  case 71: /* Exp: Exp OR error  */
+#line 243 "syntax.y"
+                   {error_type = 1; yyerror("Expect expression after 'or'");}
 #line 1829 "syntax.tab.c"
     break;
 
-  case 73: /* Exp: Exp LE error  */
-#line 239 "syntax.y"
-                   {error_type = 1; yyerror("Expect expression after '<='");}
+  case 72: /* Exp: Exp LT error  */
+#line 244 "syntax.y"
+                   {error_type = 1; yyerror("Expect expression after '<'");}
 #line 1835 "syntax.tab.c"
     break;
 
-  case 74: /* Exp: Exp GT error  */
-#line 240 "syntax.y"
-                   {error_type = 1; yyerror("Expect expression after '>'");}
+  case 73: /* Exp: Exp LE error  */
+#line 245 "syntax.y"
+                   {error_type = 1; yyerror("Expect expression after '<='");}
 #line 1841 "syntax.tab.c"
     break;
 
-  case 75: /* Exp: Exp GE error  */
-#line 241 "syntax.y"
-                   {error_type = 1; yyerror("Expect expression after '>=");}
+  case 74: /* Exp: Exp GT error  */
+#line 246 "syntax.y"
+                   {error_type = 1; yyerror("Expect expression after '>'");}
 #line 1847 "syntax.tab.c"
     break;
 
-  case 76: /* Exp: Exp NE error  */
-#line 242 "syntax.y"
-                   {error_type = 1; yyerror("Expect expression after '!='");}
+  case 75: /* Exp: Exp GE error  */
+#line 247 "syntax.y"
+                   {error_type = 1; yyerror("Expect expression after '>=");}
 #line 1853 "syntax.tab.c"
     break;
 
-  case 77: /* Exp: Exp EQ error  */
-#line 243 "syntax.y"
-                   {error_type = 1; yyerror("Expect expression after '=='");}
+  case 76: /* Exp: Exp NE error  */
+#line 248 "syntax.y"
+                   {error_type = 1; yyerror("Expect expression after '!='");}
 #line 1859 "syntax.tab.c"
     break;
 
-  case 78: /* Exp: Exp PLUS error  */
-#line 244 "syntax.y"
-                     {error_type = 1; yyerror("Expect expression after '+'");}
+  case 77: /* Exp: Exp EQ error  */
+#line 249 "syntax.y"
+                   {error_type = 1; yyerror("Expect expression after '=='");}
 #line 1865 "syntax.tab.c"
     break;
 
-  case 79: /* Exp: Exp MINUS error  */
-#line 245 "syntax.y"
-                      {error_type = 1; yyerror("Expect expression after '-'");}
+  case 78: /* Exp: Exp PLUS error  */
+#line 250 "syntax.y"
+                     {error_type = 1; yyerror("Expect expression after '+'");}
 #line 1871 "syntax.tab.c"
     break;
 
-  case 80: /* Exp: Exp MUL error  */
-#line 246 "syntax.y"
-                    {error_type = 1; yyerror("Expect expression after '*'");}
+  case 79: /* Exp: Exp MINUS error  */
+#line 251 "syntax.y"
+                      {error_type = 1; yyerror("Expect expression after '-'");}
 #line 1877 "syntax.tab.c"
     break;
 
-  case 81: /* Exp: Exp DIV error  */
-#line 247 "syntax.y"
-                    {error_type = 1; yyerror("Expect expression after '/'");}
+  case 80: /* Exp: Exp MUL error  */
+#line 252 "syntax.y"
+                    {error_type = 1; yyerror("Expect expression after '*'");}
 #line 1883 "syntax.tab.c"
     break;
 
-  case 82: /* Exp: LP Exp RP  */
-#line 248 "syntax.y"
-                {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
+  case 81: /* Exp: Exp DIV error  */
+#line 253 "syntax.y"
+                    {error_type = 1; yyerror("Expect expression after '/'");}
 #line 1889 "syntax.tab.c"
     break;
 
-  case 83: /* Exp: LP Exp error  */
-#line 249 "syntax.y"
-                   {error_type = 1;yyerror("Missing closing symbol ')'");}
+  case 82: /* Exp: LP Exp RP  */
+#line 254 "syntax.y"
+                {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1895 "syntax.tab.c"
     break;
 
-  case 84: /* Exp: MINUS Exp  */
-#line 250 "syntax.y"
-                {(yyval.type) = getNode("Exp", 2, (yyvsp[-1].type), (yyvsp[0].type));}
+  case 83: /* Exp: LP Exp error  */
+#line 255 "syntax.y"
+                   {error_type = 1;yyerror("Missing closing symbol ')'");}
 #line 1901 "syntax.tab.c"
     break;
 
-  case 85: /* Exp: NOT Exp  */
-#line 251 "syntax.y"
-              {(yyval.type) = getNode("Exp", 2, (yyvsp[-1].type), (yyvsp[0].type));}
+  case 84: /* Exp: MINUS Exp  */
+#line 256 "syntax.y"
+                {(yyval.type) = getNode("Exp", 2, (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1907 "syntax.tab.c"
     break;
 
-  case 86: /* Exp: ID LP Args RP  */
-#line 252 "syntax.y"
-                    {(yyval.type) = getNode("Exp", 4, (yyvsp[-3].type), (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
+  case 85: /* Exp: NOT Exp  */
+#line 257 "syntax.y"
+              {(yyval.type) = getNode("Exp", 2, (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1913 "syntax.tab.c"
     break;
 
-  case 87: /* Exp: ID LP Args error  */
-#line 253 "syntax.y"
-                       {error_type = 1;yyerror("Missing closing symbol ')'");}
+  case 86: /* Exp: ID LP Args RP  */
+#line 258 "syntax.y"
+                    {(yyval.type) = getNode("Exp", 4, (yyvsp[-3].type), (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1919 "syntax.tab.c"
     break;
 
-  case 88: /* Exp: ID LP RP  */
-#line 254 "syntax.y"
-               {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
+  case 87: /* Exp: ID LP Args error  */
+#line 259 "syntax.y"
+                       {error_type = 1;yyerror("Missing closing symbol ')'");}
 #line 1925 "syntax.tab.c"
     break;
 
-  case 89: /* Exp: ID LP error  */
-#line 255 "syntax.y"
-                  {error_type = 1;yyerror("Missing closing symbol ')'");}
+  case 88: /* Exp: ID LP RP  */
+#line 260 "syntax.y"
+               {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1931 "syntax.tab.c"
     break;
 
-  case 90: /* Exp: Exp LB Exp RB  */
-#line 256 "syntax.y"
-                    {(yyval.type) = getNode("Exp", 4, (yyvsp[-3].type), (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
+  case 89: /* Exp: ID LP error  */
+#line 261 "syntax.y"
+                  {error_type = 1;yyerror("Missing closing symbol ')'");}
 #line 1937 "syntax.tab.c"
     break;
 
-  case 91: /* Exp: Exp LB Exp error  */
-#line 257 "syntax.y"
-                       {error_type = 1;yyerror("Missing closing symbol ']'");}
+  case 90: /* Exp: Exp LB Exp RB  */
+#line 262 "syntax.y"
+                    {(yyval.type) = getNode("Exp", 4, (yyvsp[-3].type), (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1943 "syntax.tab.c"
     break;
 
-  case 92: /* Exp: Exp DOT ID  */
-#line 258 "syntax.y"
-                 {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
+  case 91: /* Exp: Exp LB Exp error  */
+#line 263 "syntax.y"
+                       {error_type = 1;yyerror("Missing closing symbol ']'");}
 #line 1949 "syntax.tab.c"
     break;
 
+  case 92: /* Exp: Exp DOT ID  */
+#line 264 "syntax.y"
+                 {(yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
+#line 1955 "syntax.tab.c"
+    break;
+
   case 93: /* Exp: ID  */
-#line 259 "syntax.y"
+#line 265 "syntax.y"
          {
         (yyval.type) = getNode("Exp", 1, (yyvsp[0].type));
         if(check_ID_def((yyvsp[0].type)) == 0){
@@ -1963,53 +1969,53 @@ yyreduce:
             free(msg);
         }
     }
-#line 1967 "syntax.tab.c"
-    break;
-
-  case 94: /* Exp: INT  */
-#line 272 "syntax.y"
-          {(yyval.type) = getNode("Exp", 1, (yyvsp[0].type));}
 #line 1973 "syntax.tab.c"
     break;
 
-  case 95: /* Exp: FLOAT  */
-#line 273 "syntax.y"
-            {(yyval.type) = getNode("Exp", 1, (yyvsp[0].type));}
+  case 94: /* Exp: INT  */
+#line 278 "syntax.y"
+          {(yyval.type) = getNode("Exp", 1, (yyvsp[0].type));}
 #line 1979 "syntax.tab.c"
     break;
 
-  case 96: /* Exp: CHAR  */
-#line 274 "syntax.y"
-           {(yyval.type) = getNode("Exp", 1, (yyvsp[0].type));}
+  case 95: /* Exp: FLOAT  */
+#line 279 "syntax.y"
+            {(yyval.type) = getNode("Exp", 1, (yyvsp[0].type));}
 #line 1985 "syntax.tab.c"
     break;
 
-  case 97: /* Args: Exp COMMA Args  */
-#line 276 "syntax.y"
-                     {(yyval.type) = getNode("Args", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
+  case 96: /* Exp: CHAR  */
+#line 280 "syntax.y"
+           {(yyval.type) = getNode("Exp", 1, (yyvsp[0].type));}
 #line 1991 "syntax.tab.c"
     break;
 
-  case 98: /* Args: COMMA Args  */
-#line 278 "syntax.y"
-                 {error_type = 1;yyerror("Unexpected ','");}
+  case 97: /* Args: Exp COMMA Args  */
+#line 282 "syntax.y"
+                     {(yyval.type) = getNode("Args", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));}
 #line 1997 "syntax.tab.c"
     break;
 
-  case 99: /* Args: Exp COMMA  */
-#line 279 "syntax.y"
-                {error_type = 1;yyerror("Expected another parenthesis after ','");}
+  case 98: /* Args: COMMA Args  */
+#line 284 "syntax.y"
+                 {error_type = 1;yyerror("Unexpected ','");}
 #line 2003 "syntax.tab.c"
     break;
 
-  case 100: /* Args: Exp  */
-#line 280 "syntax.y"
-          {(yyval.type) = getNode("Args", 1, (yyvsp[0].type));}
+  case 99: /* Args: Exp COMMA  */
+#line 285 "syntax.y"
+                {error_type = 1;yyerror("Expected another parenthesis after ','");}
 #line 2009 "syntax.tab.c"
     break;
 
+  case 100: /* Args: Exp  */
+#line 286 "syntax.y"
+          {(yyval.type) = getNode("Args", 1, (yyvsp[0].type));}
+#line 2015 "syntax.tab.c"
+    break;
 
-#line 2013 "syntax.tab.c"
+
+#line 2019 "syntax.tab.c"
 
       default: break;
     }
@@ -2202,4 +2208,4 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 283 "syntax.y"
+#line 289 "syntax.y"

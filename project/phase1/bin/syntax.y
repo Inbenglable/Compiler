@@ -121,8 +121,10 @@ VarDec: ID {
       ;
 FunDec: ID LP VarList RP {$$ = getNode("FunDec", 4, $1, $2, $3, $4);
             new_scope();
-            if(push_var($3)!=0){// == 0 : acc , == x : error in line x 
+            int ret = push_var($3);
+            if(ret!=0){// == 0 : acc , == x : error in line x 
                 error_type = 3;
+                printf("%d", ret);
                 yyerror("Variable aready exists");
             }
             newFuntype($$, $1, $3);
@@ -137,7 +139,7 @@ FunDec: ID LP VarList RP {$$ = getNode("FunDec", 4, $1, $2, $3, $4);
 VarList: ParamDec COMMA VarList {
             $$ = getNode("VarList", 3, $1, $2, $3);
             connect_var($1, $3);
-            extend_var($$, $3);    
+            extend_var($$, $1);    
         }
        | ParamDec {
             $$ = getNode("VarList", 1, $1);

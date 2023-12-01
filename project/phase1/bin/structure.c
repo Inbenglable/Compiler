@@ -98,19 +98,16 @@ int push_type(nodePointer type_node){
 }
 
 int push_var(nodePointer varlist){
-    while(varlist != NULL){
-        if(varlist -> var == NULL){
-            if(varlist -> line != -1)return -1;
-            else break;
-        }
-        int ret = store_ID(varlist -> var -> name, varlist -> var);
+    struct Var* var = varlist -> var;
+    while(var != NULL){
+        //print_var(varlist -> var, 0);
+        int ret = store_ID(var -> name, var);
         if(ret == 0){
+            //printf("push_var error while trying push %s\n", var->name);
+            fflush(stdout);
             return varlist -> line;
         }
-        while(varlist->next != NULL){
-            varlist = varlist -> next;
-        }
-        varlist = varlist -> head;
+        var = var -> next;
     }
     return 0;
 }
@@ -149,6 +146,7 @@ void newStructType(nodePointer spec, nodePointer id, nodePointer varlist){
 }
 
 void assign_type(nodePointer type_provider, nodePointer var_head){
+    //print_var(var_head -> var, 0);
     struct Var* var = var_head->var;
     struct Type* type = type_provider -> type;
     while(var != NULL){
