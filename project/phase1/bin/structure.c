@@ -157,8 +157,8 @@ int check_ID_def(nodePointer node){
 }
 
 nodePointer getNode(char* name, int num, ...){
-    //printf("%s %d %s\n", name, yylineno, yytext);
-    //fflush(stdout);
+    printf("%s %d %s\n", name, yylineno, yytext);
+    fflush(stdout);
     nodePointer f = (nodePointer)malloc(sizeof(struct Node));
     f -> name = name;
     f -> head = f -> next = NULL;
