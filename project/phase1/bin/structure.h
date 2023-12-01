@@ -12,13 +12,13 @@ void yyerror(char *msg);
 typedef struct Type{
     char* type_name;//the name of the type
     char isStruct;//s -> structure, v-> var, f->function
-    int dim;// deep of the array
-    int hash;//type hash
+    unsigned long long hash;//type hash
     struct Var* contain;
 };
 
 typedef struct Var{
     char* name;
+    int dim; // deep of the array, 0 if it is a variable
     struct Type* type;
     struct Var* head, *next;
 };
