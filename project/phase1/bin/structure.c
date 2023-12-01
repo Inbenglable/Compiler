@@ -244,7 +244,7 @@ void yyerror(char *msg)
     }else if(error_type == 0 && strcmp(msg,"syntax error")!=0){
         printf("Error type A at line %d: %s\n",yylineno,msg); // 或者是 lex error
     }
-    else if(error_type == 2){
+    else if(error_type == 3){
         printf("Semantic Error at line %d: %s\n",yylineno,msg); 
     }
     hasError=1;

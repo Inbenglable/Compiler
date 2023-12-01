@@ -54,7 +54,7 @@ ExtDef: Specifier ExtDecList SEMI {
       | Specifier FunDec CompSt {
             $$ = getNode("ExtDef", 3, $1, $2, $3);
             assign_funtype($2, $1);
-            if(push_fun($2))
+            pop_scope();
             if(push_fun($2)!=0){// == 0 : acc , == x : error in line x 
                 error_type = 3;
                 yyerror("Function name aready exists");
