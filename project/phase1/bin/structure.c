@@ -13,7 +13,8 @@ nodePointer getTerminalNode(char *name, int line){
     //printf("Success\n");
     f -> value = (char*)malloc(sizeof(char)*30);
     strcpy(f->value,yytext);
-    f->varList=NULL;
+    f->type = NULL;
+    f->var = NULL;
     return f;
 }
 
@@ -24,14 +25,79 @@ nodePointer getIDNode(char *name, int line){
     f -> line = line;
     f -> value = (char*)malloc(sizeof(char)*30);
     strcpy(f->value,yytext);
-    
-    var temp = {name,0, name, 0};
-    varlistNode varNode = {&temp, NULL}; 
-    f->varList=&varNode;
+    struct Var* temp = (struct Var*)malloc(sizeof(struct Var));
+    temp -> name = (char*)malloc(sizeof(char)*30);
+    temp -> dim = 0;
+    strcpy(temp -> name,yytext);
+    temp -> type = NULL;
+    temp -> head = temp -> next = NULL;
+    f -> var = temp;
     return f;
 }
+
+nodePointer getTypeNode(char *name, int line){
+    nodePointer f = (nodePointer)malloc(sizeof(struct Node));
+    f -> name = name;
+    f -> head = f -> next = NULL;
+    f -> line = line;
+    f -> value = (char*)malloc(sizeof(char)*30);
+    strcpy(f->value,yytext);
+    struct Type* temp = (struct Type*)malloc(sizeof(struct Type));
+    temp -> isStruct = 'v';
+    temp -> hash = 0;
+    temp -> type_name = (char*)malloc(sizeof(char)*30);
+    strcpy(temp -> type_name,yytext);
+    temp -> contain = NULL;
+    f -> var = temp;
+    return f;
+}
+
+void newStructType(nodePointer spec, nodePointer id){
+    struct Type* temp = (struct Type*)malloc(sizeof(struct Type));
+    temp -> isStruct = 's';
+    temp -> type_name = (char*)malloc(sizeof(char)*30);
+    strcpy(temp -> type_name,yytext);
+    temp -> hash = 0;
+    temp -> contain = NULL;
+    spec -> type = temp;
+}
+
+void assign_type(nodePointer var_head, nodePointer type_provider){
+    struct Var* var = var_head->var;
+    struct Type* type = type_provider -> type;
+    while(var != NULL){
+        var -> type = type;
+        var = var -> next;
+    }
+}
+
+void build_struct(nodePointer top_node, nodePointer list_node){
+    top_node -> type -> contain = list_node -> var;
+}
+
+void extend_type(nodePointer to, nodePointer from){
+    to -> type = from -> type;
+}
+
+void connect_var(nodePointer now, nodePointer to){
+    now -> var -> next = to -> var;
+}
+
+void extend_var(nodePointer to, nodePointer from){
+    to -> var = from -> var;
+}
+
+void extend_dim(struct Var* var){
+    var -> dim += 1;
+}
  
-    
+int getdeep(nodePointer f, int deep){
+    //TODO : resolve it 
+    if(f -> head != NULL){
+        return getdeep(f->head, deep+1);
+    }
+    return deep;
+}
 
 nodePointer getNode(char* name, int num, ...){
     //printf("%s %d %s\n", name, yylineno, yytext);
@@ -39,6 +105,7 @@ nodePointer getNode(char* name, int num, ...){
     nodePointer f = (nodePointer)malloc(sizeof(struct Node));
     f -> name = name;
     f -> head = f -> next = NULL;
+    f -> type = f -> var = NULL;
     nodePointer temp = NULL;
 
     va_list ap;
@@ -55,104 +122,6 @@ nodePointer getNode(char* name, int num, ...){
         }
     }
     va_end(ap);
-
-// 变量部分：
-    if(strcmp(name,"VarDec")==0){
-        va_start(ap, num);
-        f->varList = va_arg(ap, nodePointer)->varList;
-        va_end(ap);
-        if (num==4){
-                varlistNode* temp=f->varList;
-                var* temp2=temp->varPoint;
-                temp2->array_layer++;
-                }
-    }
-    if(strcmp(name,"ExtDecList")==0){
-        va_start(ap, num);
-        for(int i = 0;i < num;i++){
-            nodePointer tmp=va_arg(ap, nodePointer);
-            if(i == 0){
-            f->varList = tmp->varList;
-            }
-            if(i==2){
-                f->varList->next=tmp->varList;
-            }
-        }
-        va_end(ap);
-    }
-    if(strcmp(name,"ExtDef")==0 && num==3){
-        va_start(ap, num);
-        for(int i = 0;i < num;i++){
-            nodePointer tmp=va_arg(ap, nodePointer);
-            if(i==1){
-                varlistNode* temp=tmp->varList;
-                while(temp!=NULL){
-                    var* temp2=temp->varPoint;
-                    temp2->value=f->head->value;  //将结构体名,基础类型，函数名都赋值到这里
-                    store(temp2);   //存入符号表
-                    temp=temp->next;
-                }
-            }
-        }
-        va_end(ap);
-    }
-    // 本地声明部分：
-    if(strcmp(name,"Dec")==0){
-        va_start(ap, num);
-        f->varList = va_arg(ap, nodePointer)->varList;
-        va_end(ap);
-    }
-    if(strcmp(name,"DecList")==0){
-        va_start(ap, num);
-        for(int i = 0;i < num;i++){
-            nodePointer tmp=va_arg(ap, nodePointer);
-            if(i == 0){
-            f->varList = tmp->varList;
-            }
-            if(i==2){
-                f->varList->next=tmp->varList;
-            }
-        }
-        va_end(ap);
-    }
-    if(strcmp(name,"Def")==0){
-        va_start(ap, num);
-        for(int i = 0;i < num;i++){
-            nodePointer tmp=va_arg(ap, nodePointer);
-            if(i == 1){
-            f->varList = tmp->varList;
-            varlistNode* temp=tmp->varList;
-                while(temp!=NULL){
-                    var* temp2=temp->varPoint;
-                    temp2->value=f->head->value;  //将结构体名,基础类型，函数名都赋值到这里
-                    store(temp2);   //存入符号表
-                    temp=temp->next;
-                }
-            }
-        }
-        va_end(ap);
-    }
-     if(strcmp(name,"DefList")==0){
-        va_start(ap, num);
-        for(int i = 0;i < num;i++){
-            nodePointer tmp=va_arg(ap, nodePointer);
-            if(i == 0){
-            f->varList = tmp->varList;
-            }
-            if(i==1){
-                f->varList->next=tmp->varList;
-            }
-        }
-        va_end(ap);
-    }
-    if(strcmp(name,"CompSt")==0){
-        //弹出当前作用域符号表内所用变量
-    }
-    if(strcmp(name,"StructSpecifier")==0){
-      //弹出当前作用域符号表内所用变量。 result=popall()
-    //   for var in result: var.name=mystrcat(f->head->value,".",var.name);
-    }
-    //变量
 
     return f;
 }

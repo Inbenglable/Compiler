@@ -62,8 +62,15 @@ StructSpecifier: STRUCT ID LC DefList RC {$$ = getNode("StructSpecifier", 5, $1,
 //              | STRUCT ID LC DefList error {error_type = 1;yyerror("Missing closing symbol '}'");}
               ;
 
-VarDec: ID {$$ = getNode("VarDec", 1, $1);}
-      | VarDec LB INT RB {$$ = getNode("VarDec", 4, $1, $2, $3, $4);}
+VarDec: ID {
+            $$ = getNode("VarDec", 1, $1);
+            extend_var($$, $1);
+        }
+      | VarDec LB INT RB {
+        $$ = getNode("VarDec", 4, $1, $2, $3, $4);
+        extend_dim($1);
+        extend_var($$, $1);
+      }
       | VarDec LB INT error {error_type = 1;yyerror("Missing closing symbol ']'");}
 //      | VarDec LB Exp RB {$$ = getNode("VarDec", 4, $1, $2, $3, $4);}
 //      | VarDec LB Exp error {error_type = 1;yyerror("Missing closing symbol ']'");}
