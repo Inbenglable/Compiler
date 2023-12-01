@@ -44,6 +44,36 @@ nodePointer getTerminalNode(char *name, int line){
     strcpy(f->value,yytext);
     f->type = NULL;
     f->var = NULL;
+    //struct Var* temp = (struct Var*)malloc(sizeof(struct Var));
+    //temp -> name = NULL;
+    //temp -> dim = 0;
+    //strcpy(temp -> name,yytext);
+    //temp -> type = NULL;
+    //temp -> head = temp -> next = NULL;
+    //f -> var = temp;
+//
+    //if(strcmp(name, "INT") == 0){
+    //    temp -> type = (struct Type*)malloc(sizeof(struct Type));
+    //    temp -> type -> isStruct = 'v';
+    //    temp -> type -> hash = 0;
+    //    temp -> type -> type_name = (char*)malloc(sizeof(char)*30);
+    //    strcpy(temp -> type -> type_name, "int");
+    //    temp -> type -> contain = NULL;
+    //}else if(strcmp(name, "FLOAT") == 0){
+    //    temp -> type = (struct Type*)malloc(sizeof(struct Type));
+    //    temp -> type -> isStruct = 'v';
+    //    temp -> type -> hash = 0;
+    //    temp -> type -> type_name = (char*)malloc(sizeof(char)*30);
+    //    strcpy(temp -> type -> type_name, "float");
+    //    temp -> type -> contain = NULL;
+    //}else if(strcmp(name, "CHAR") == 0){
+    //    temp -> type = (struct Type*)malloc(sizeof(struct Type));
+    //    temp -> type -> isStruct = 'v';
+    //    temp -> type -> hash = 0;
+    //    temp -> type -> type_name = (char*)malloc(sizeof(char)*30);
+    //    strcpy(temp -> type -> type_name, "char");
+    //    temp -> type -> contain = NULL;
+    //}
     return f;
 }
 
@@ -180,9 +210,30 @@ int check_ID_def(nodePointer node){
     return 0;
 }
 
+int check_fun_def(nodePointer node){
+    if(query_Fun(node -> var -> name) != NULL){
+        return 1;
+    }
+    return 0;
+}
+
+int check_assign_type(nodePointer lnode, nodePointer rnode){
+    if(lnode -> var -> type == NULL || rnode -> var -> type == NULL)return 0;
+    if(lnode -> var -> type -> hash == rnode -> var -> type -> hash)return 1;
+    return 0;
+}
+
+int check_rvalue(nodePointer node){
+    if(node->var == NULL || node->type == NULL)return 0;
+    if(node -> var -> name == NULL && strcmp(node->type->type_name, "int") == 0)return 1;
+    if(node -> var -> name == NULL && strcmp(node->type->type_name, "float") == 0)return 1;
+    if(node -> var -> name == NULL && strcmp(node->type->type_name, "char") == 0)return 1;
+    return 0;
+}
+
 nodePointer getNode(char* name, int num, ...){
-    // printf("%s %d %s\n", name, yylineno, yytext);
-    // fflush(stdout);
+    //printf("%s %d %s\n", name, yylineno, yytext);
+    //fflush(stdout);
     nodePointer f = (nodePointer)malloc(sizeof(struct Node));
     f -> name = name;
     f -> head = f -> next = NULL;
@@ -274,9 +325,6 @@ void yyerror(char *msg)
         printf("Error type B at line %d: %s\n",yylineno,msg); // 如果是syntax error
     }else if(error_type == 0 && strcmp(msg,"syntax error")!=0){
         printf("Error type A at line %d: %s\n",yylineno,msg); // 或者是 lex error
-    }
-    else if(error_type == 3){
-        printf("!!Semantic Error at line %d: %s\n",yylineno,msg); 
     }
     else if(error_type % 10 == 0){
         printf("!!Error type %d at line %d: %s\n",error_type / 10,yylineno,msg);
