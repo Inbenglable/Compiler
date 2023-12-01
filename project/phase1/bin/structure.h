@@ -9,14 +9,18 @@ extern int error_type;
 extern int hasError;
 void yyerror(char *msg);
 
-typedef struct Type{
+typedef struct Type Type;
+typedef struct Var Var;
+typedef struct Node Node;
+
+struct Type{
     char* type_name;//the name of the type
     char isStruct;//s -> structure, v-> var, f->function
     unsigned long long hash;//type hash
     struct Var* contain;
 };
 
-typedef struct Var{
+struct Var{
     char* name;
     int dim; // deep of the array, 0 if it is a variable
     struct Type* type;
@@ -36,7 +40,7 @@ typedef struct Var{
 //     struct var* varPoint;
 //     struct varlistNode* next;
 // }varlistNode;
-typedef struct Node{
+struct Node{
     int line;
     char* name;
     struct Node *head,*next;
