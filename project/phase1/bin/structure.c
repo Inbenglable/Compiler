@@ -229,7 +229,7 @@ int check_rvalue(nodePointer node){
     return 0;
 }
 
-Type* check_filed(Type* typeptr, char* name){
+Type* check_field(Type* typeptr, char* name){
     Var* var = typeptr->contain;
     while(var != NULL){
         if(strcmp(var->name, name) == 0){
