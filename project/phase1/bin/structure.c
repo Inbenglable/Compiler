@@ -233,6 +233,17 @@ int check_rvalue(nodePointer node){
     return 0;
 }
 
+Type* check_filed(Type* typeptr, char* name){
+    Var* var = typeptr->contain;
+    while(var != NULL){
+        if(strcmp(var->name, name) == 0){
+            return var->type;
+        }
+        var = var->next;
+    }
+    return NULL;
+}
+
 nodePointer getNode(char* name, int num, ...){
     printf("%s %d %s\n", name, yylineno, yytext);
     fflush(stdout);
