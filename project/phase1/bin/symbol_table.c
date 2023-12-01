@@ -60,7 +60,7 @@ int store_ID(char* ID, Var* varptr){
         split(symbol_treap, ID, l, r);
         symbol_treap = merge(merge(l, node), r);
     }
-    else if(node->link->scope == top->scope){
+    else if(node->link != NULL && node->link->scope == top->scope){
         printf("store ID fail\n");
         return 0;
     }
@@ -96,7 +96,7 @@ int store_Type(char* ID, Type* typeptr){
         split(type_treap, ID, l, r);
         type_treap = merge(merge(l, node), r);
     }
-    else if(node->link->scope == top->scope){
+    else if(node->link != NULL && node->link->scope == top->scope){
         printf("store Type fail\n");
         return 0;
     }
