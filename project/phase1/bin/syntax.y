@@ -45,8 +45,16 @@ ExtDef: Specifier ExtDecList SEMI {
             $$ = getNode("ExtDef", 3, $1, $2, $3);
             assign_type($1, $2);
             if(push_var($2)!=0){// == 0 : acc , == x : error in line x 
-                error_type = 3;
-                yyerror("Variable aready exists");
+                error_type = 30;
+                //char* name = $2->value;
+                char* name = "idk";
+                char* msg = (char*)malloc(sizeof(name)+sizeof(char)*100);
+                memset(msg, 0,sizeof(msg));
+                strcat(msg, "variable \"");
+                strcat(msg, name);
+                strcat(msg, "\" is redefined in the same scope");
+                yyerror(msg);
+                free(msg);
             }
         }
       | Specifier ExtDecList error {error_type = 1;yyerror("Missing semicolon ';'");}
@@ -57,8 +65,15 @@ ExtDef: Specifier ExtDecList SEMI {
             assign_funtype($1, $2);
             pop_scope();
             if(push_fun($2)!=0){// == 0 : acc , == x : error in line x 
-                error_type = 3;
-                yyerror("Function name aready exists");
+                error_type = 40;
+                char* name = $2->value;
+                char* msg = (char*)malloc(sizeof(name)+sizeof(char)*100);
+                memset(msg, 0,sizeof(msg));
+                strcat(msg, "\"");
+                strcat(msg, name);
+                strcat(msg, "\" is redefined");
+                yyerror(msg);
+                free(msg);
             }
         }
       |  error ExtDecList SEMI {error_type = 1; yyerror("Missing specifier");}
@@ -93,13 +108,13 @@ StructSpecifier: STRUCT ID LC DefList RC {
                     newStructType($$, $2, $4);
                     fflush(stdout);
                     if(push_type($$)!=0){// == 0 : acc , == x : error in line x 
-                        error_type = 3;
+                        error_type = 150;
                         yyerror("Struct name aready exists");
                     }
                 }
               | STRUCT ID {$$ = getNode("StructSpecifier", 2, $1, $2);
                     if(!getStruct($$, $2)){
-                        error_type = 3;
+                        error_type = 160;
                         yyerror("Undefined structer");
                     }
               }
@@ -121,11 +136,17 @@ VarDec: ID {
       ;
 FunDec: ID LP VarList RP {$$ = getNode("FunDec", 4, $1, $2, $3, $4);
             new_scope();
-            int ret = push_var($3);
-            if(ret!=0){// == 0 : acc , == x : error in line x 
-                error_type = 3;
-                printf("%d", ret);
-                yyerror("Variable aready exists");
+            if(push_var($3)!=0){// == 0 : acc , == x : error in line x 
+                error_type = 30;
+                //char* name = $3->value;
+                char* name = "idk";
+                char* msg = (char*)malloc(sizeof(name)+sizeof(char)*100);
+                memset(msg, 0,sizeof(msg));
+                strcat(msg, "variable \"");
+                strcat(msg, name);
+                strcat(msg, "\" is redefined in the same scope");
+                yyerror(msg);
+                free(msg);
             }
             newFuntype($$, $1, $3);
         }
@@ -197,8 +218,16 @@ Def: Specifier DecList SEMI {
         extend_var($$, $2);
         //print_var(($$)->var, 0);
         if(push_var($2)!=0){// == 0 : acc , == x : error in line x 
-            error_type = 3;
-            yyerror("Variable aready exists");
+            error_type = 30;
+            //char* name = $2->value;
+            char* name = "idk";
+            char* msg = (char*)malloc(sizeof(name)+sizeof(char)*100);
+            memset(msg, 0,sizeof(msg));
+            strcat(msg, "variable \"");
+            strcat(msg, name);
+            strcat(msg, "\" is redefined in the same scope");
+            yyerror(msg);
+            free(msg);
         }
     }
    |error DecList SEMI {error_type = 1; yyerror("Missing specifier");}
@@ -225,7 +254,17 @@ Dec: VarDec {
     }
     ;
 
-Exp: Exp ASSIGN Exp {$$ = getNode("Exp", 3, $1, $2, $3);}
+Exp: Exp ASSIGN Exp {
+        $$ = getNode("Exp", 3, $1, $2, $3);
+        if(check_assign_type($1, $3) == 0){
+            error_type = 50;
+            yyerror("unmatching type on both sides of assignment");
+        }
+        if(check_rvalue($1) == 1){
+            error_type = 60;
+            yyerror("rvalue appears on the left-side of assignment");
+        }
+    }
     | Exp AND Exp {$$ = getNode("Exp", 3, $1, $2, $3);}
     | Exp OR Exp {$$ = getNode("Exp", 3, $1, $2, $3);}
     | Exp LT Exp {$$ = getNode("Exp", 3, $1, $2, $3);}
@@ -255,9 +294,35 @@ Exp: Exp ASSIGN Exp {$$ = getNode("Exp", 3, $1, $2, $3);}
     | LP Exp error {error_type = 1;yyerror("Missing closing symbol ')'");}
     | MINUS Exp {$$ = getNode("Exp", 2, $1, $2);}
     | NOT Exp {$$ = getNode("Exp", 2, $1, $2);}
-    | ID LP Args RP {$$ = getNode("Exp", 4, $1, $2, $3, $4);}
+    | ID LP Args RP {
+        $$ = getNode("Exp", 4, $1, $2, $3, $4);
+        if(check_fun_def($1) == 0){
+            error_type = 20;
+            char* name = $1->value;
+            char* msg = (char*)malloc(sizeof(name)+sizeof(char)*100);
+            memset(msg, 0,sizeof(msg));
+            strcat(msg, "\"");
+            strcat(msg, name);
+            strcat(msg, "\" is invoked without a definition");
+            yyerror(msg);
+            free(msg);
+        }
+    }
     | ID LP Args error {error_type = 1;yyerror("Missing closing symbol ')'");}
-    | ID LP RP {$$ = getNode("Exp", 3, $1, $2, $3);}
+    | ID LP RP {
+        $$ = getNode("Exp", 3, $1, $2, $3);
+        if(check_fun_def($1) == 0){
+            error_type = 20;
+            char* name = $1->value;
+            char* msg = (char*)malloc(sizeof(name)+sizeof(char)*100);
+            memset(msg, 0,sizeof(msg));
+            strcat(msg, "\"");
+            strcat(msg, name);
+            strcat(msg, "\" is invoked without a definition");
+            yyerror(msg);
+            free(msg);
+        }
+    }
     | ID LP error {error_type = 1;yyerror("Missing closing symbol ')'");}
     | Exp LB Exp RB {$$ = getNode("Exp", 4, $1, $2, $3, $4);}
     | Exp LB Exp error {error_type = 1;yyerror("Missing closing symbol ']'");}

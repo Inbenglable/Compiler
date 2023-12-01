@@ -69,6 +69,9 @@ void extend_dim(nodePointer var);
 nodePointer getNode(char* token_name,int num,...);
 
 int check_ID_def(nodePointer node);
+int check_fun_def(nodePointer node);
+int check_assign_type(nodePointer lnode, nodePointer rnode);
+int check_rvalue(nodePointer node);
 
 void writeNode(nodePointer node,int depth);
 void writeTerminalNode(nodePointer node);
