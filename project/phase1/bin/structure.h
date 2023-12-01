@@ -20,7 +20,7 @@ typedef struct Type{
 typedef struct Var{
     char* name;
     struct Type* type;
-    struct Type* head, next;
+    struct Var* head, next;
 };
 
 
