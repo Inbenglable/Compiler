@@ -79,7 +79,11 @@ int push_var(nodePointer varlist){
             if(varlist -> line != -1)return -1;
             else break;
         }
+        printf("CHECK, %s", varlist->var->name);
+        fflush(stdout);
         int ret = store_ID(varlist -> var -> name, varlist -> var);
+        printf("COMPLET, %s", varlist->var->name);
+        fflush(stdout);
         if(ret == 0){
             return varlist -> line;
         }
@@ -158,7 +162,7 @@ int check_ID_def(nodePointer node){
 
 nodePointer getNode(char* name, int num, ...){
     printf("%s %d %s\n", name, yylineno, yytext);
-    //fflush(stdout);
+    fflush(stdout);
     nodePointer f = (nodePointer)malloc(sizeof(struct Node));
     f -> name = name;
     f -> head = f -> next = NULL;
