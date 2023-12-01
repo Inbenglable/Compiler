@@ -68,8 +68,3 @@ void clear_treap(struct Treap* node);
 void clear_intermediate(struct IntermediateLink* link);
 void clear_Type(struct Type* typeptr);
 void clear_Var(struct Var* varptr);
-
-
-const size_t stack_init_size = sizeof(NULL) + sizeof(int) + sizeof(NULL);
-const size_t link_init_size = sizeof(NULL) + sizeof(NULL) + sizeof(NULL) + sizeof(NULL) + sizeof(NULL) + sizeof(int);
-const size_t treap_init_size = sizeof(NULL) + sizeof(NULL) + sizeof(int) + sizeof(NULL) + sizeof(NULL);
