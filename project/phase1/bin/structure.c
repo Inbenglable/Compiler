@@ -150,7 +150,7 @@ void extend_dim(nodePointer var){
 }
 
 nodePointer getNode(char* name, int num, ...){
-    //printf("%s %d %s\n", name, yylineno, yytext);
+    printf("%s %d %s\n", name, yylineno, yytext);
     //fflush(stdout);
     nodePointer f = (nodePointer)malloc(sizeof(struct Node));
     f -> name = name;
