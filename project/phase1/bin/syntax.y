@@ -68,6 +68,7 @@ ExtDef: Specifier ExtDecList SEMI {
             assign_funtype($1, $2);
             if(push_fun($2)!=0){// == 0 : acc , == x : error in line x 
                 error_type = 40;
+                error_line = $2->line;
                 char* name = $2->var->name;
                 char* msg = (char*)malloc(sizeof(name)+sizeof(char)*100);
                 memset(msg, 0,sizeof(msg));
