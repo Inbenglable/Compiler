@@ -1,0 +1,23 @@
+struct InitialD{
+    int fujiwara_takumi;
+    float takahashi_keisuke[86][3];
+    struct InitialD_Car{
+        char name[100];
+        float weight;
+        float power;
+    }cars[2];
+}initial_D;
+struct WanganMidnight{
+    struct Wangan_Car{
+        float power
+        float weight;
+        char name[200];
+    }cars[100];
+    float akio_asakura[30][911];
+    int tatsuya_shima;
+}wangan;
+int main(){
+    initial_D = wangan;
+    wangan = initial_D;
+    return 0;
+}
