@@ -9,7 +9,7 @@ struct InitialD{
 }initial_D;
 struct WanganMidnight{
     struct Wangan_Car{
-        float power
+        float power;
         float weight;
         char name[200];
     }cars[100];
