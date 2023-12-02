@@ -77,13 +77,14 @@ ExtDef: Specifier ExtDecList SEMI {
                 yyerror(msg);
                 free(msg);
             }
+            //printtf("Function check3\n");
+            fflush(stdout);
             if(check_ret_type($1, $3)==0){
                 error_type = 80;
                 yyerror("Return value type mismatches the declared type");                
             }
-            
-            
-            
+            //printtf("Function check4\n");
+            fflush(stdout);
             pop_scope();
             
         }
@@ -211,11 +212,20 @@ Stmt: SEMI {$$ = getNode("Stmt", 1, $1);}
         extend_var($$, $2);
     }
     | RETURN Exp error {error_type = 1;yyerror("Missing semicolon ';'");}
-    | IF LP Exp RP Stmt %prec LOWER_THAN_ELSE {$$ = getNode("Stmt", 5, $1, $2, $3, $4, $5);}
+    | IF LP Exp RP Stmt %prec LOWER_THAN_ELSE {$$ = getNode("Stmt", 5, $1, $2, $3, $4, $5);
+        extend_var($$, $5);
+    }
     | IF LP Exp error Stmt %prec LOWER_THAN_ELSE {error_type = 1;yyerror("This if function miss closing symbol ')'");}
-    | IF LP Exp RP Stmt ELSE Stmt {$$ = getNode("Stmt", 7, $1, $2, $3, $4, $5, $6, $7);}
-    | WHILE LP Exp RP Stmt {$$ = getNode("Stmt", 5, $1, $2, $3, $4, $5);}
-    | WHILE LP RP Stmt {$$ = getNode("Stmt", 4, $1, $2, $3, $4);}
+    | IF LP Exp RP Stmt ELSE Stmt {$$ = getNode("Stmt", 7, $1, $2, $3, $4, $5, $6, $7);
+        connect_link_var($5, $7);
+        extend_var($$, $5);
+    }
+    | WHILE LP Exp RP Stmt {$$ = getNode("Stmt", 5, $1, $2, $3, $4, $5);
+        extend_var($$, $5);
+    }
+    | WHILE LP RP Stmt {$$ = getNode("Stmt", 4, $1, $2, $3, $4);
+        extend_var($$, $4);
+    }
     | IF LP Exp error Stmt ELSE Stmt {error_type = 1;yyerror("This if function miss closing symbol ')'");}
     | WHILE LP Exp error Stmt {error_type = 1;yyerror("Missing closing symbol ')'");}
     // | FOR LP VarList SEMI Exp SEMI Exp RP Stmt {$$ = getNode("Stmt", 9, $1, $2, $3, $4, $5, $6, $7, $8, $9);}
@@ -354,6 +364,8 @@ Exp: Exp ASSIGN Exp {
         generate_exp_var($$, get_int_type());
     }
     | Exp PLUS Exp {$$ = getNode("Exp", 3, $1, $2, $3);
+
+        //print_type($3->type, 0);
         if(check_arithmetic($1, $3) == 0){
             error_type = 70;
             yyerror("unmatching operands");
@@ -417,21 +429,23 @@ Exp: Exp ASSIGN Exp {
         if(check_arithmetic($2, $2) == 0){
             error_type = 70;
             yyerror("unmatching operand");
+            generate_exp_var($$, NULL);
         }
-        generate_exp_var($$, $1->type);
+        generate_exp_var($$, $2->type);
     }
     | NOT Exp {$$ = getNode("Exp", 2, $1, $2);
         if(check_boolean($2, $2) == 0){
             error_type = 70;
             yyerror("unmatching operand");
+            generate_exp_var($$, NULL);
         }
         generate_exp_var($$, get_int_type());
     }
     | ID LP Args RP {
         $$ = getNode("Exp", 4, $1, $2, $3, $4);
         generate_exp_var($$, NULL);
-        $$ -> var = check_fun_def($1);
-        if($$ -> var == NULL){
+        struct Var* var = check_fun_def($1);
+        if(var == NULL){
             if(check_ID_def($1) != NULL){
                 error_type = 110;
                 yyerror("invoking non-function variable");
@@ -448,8 +462,9 @@ Exp: Exp ASSIGN Exp {
                 free(msg);
             }
         }else{
-            $$->type = $$->var->type;
-            int chk = check_fun_varlist($$, $3);
+            $1->var = var;
+            $1->type = var->type;
+            int chk = check_fun_varlist($1, $3);
             if(chk == 0){
                 error_type = 90;
                 yyerror("Function's Argument(s) type mismatch the declared parameters");
@@ -457,6 +472,7 @@ Exp: Exp ASSIGN Exp {
                 error_type = 90;
                 yyerror("Function's Argument(s) number mismatch the declared parameters");
             }
+            generate_exp_var($$, $1->type);
         }
 
 
@@ -480,8 +496,10 @@ Exp: Exp ASSIGN Exp {
                 strcat(msg, "\" is invoked without a definition");
                 yyerror(msg);
                 free(msg);
+                generate_exp_var($$, NULL);
             }
         }
+        generate_exp_var($$, $1->type);
     }
     | ID LP error {error_type = 1;yyerror("Missing closing symbol ')'");}
     | Exp LB Exp RB {
@@ -519,9 +537,10 @@ Exp: Exp ASSIGN Exp {
                     yyerror("accessing an undefined structure member");
                     generate_exp_var($$, NULL);
                 }else{
-                    $1->type = $1->var->type = t;
-                    extend_type($$, $1);
-                    extend_var($$, $1);
+                    generate_exp_var($$, NULL);
+                    ($$) -> type = t;
+                    ($$) -> var -> type = t;
+                    ($$) -> var -> name = $1->name;
                 }
             }
         }

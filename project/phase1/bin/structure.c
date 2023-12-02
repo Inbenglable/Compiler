@@ -23,13 +23,10 @@ void print_var(struct Var* var, int deep){
     for(int i = 1;i <= deep;i++){
         printf("    ");
     }
-    printf("Var-- name:%s dim:%d\n", var->name, var->dim);
+    printf("Var-- name:%s dim:%d addr:%p\n", var->name, var->dim, var);
     print_type(var->type, deep+1);
     var = var->next;
-    while(var != NULL){
-        print_var(var, deep);
-        var = var->next;
-    }
+    print_var(var, deep);
 }
 
 nodePointer getTerminalNode(char *name, int line){
@@ -256,6 +253,11 @@ void extend_type(nodePointer to, nodePointer from){
 }
 
 void connect_var(nodePointer now, nodePointer to){
+    // printf("Connecting   \n");
+    // fflush(stdout);
+    // if(to->var != NULL)printf("Connecting %s to %s\n", now->var->name, to->var->name);
+    // else printf("Connecting %s to NULL\n", now->var->name);
+    // fflush(stdout);
     now -> var -> next = to -> var;
 }
 
@@ -263,11 +265,16 @@ int check_ret_type(nodePointer spec, nodePointer varlist){
     spec->type->hash = get_hash(spec->type);
 
     struct Var* var = varlist->var;
+    //print_var(var, 0);
 
-    if(var == NULL)return 0;
-
+    if(var == NULL)return 1;
+    // printf("ret_check1\n");
+    // fflush(stdout);
     while(var != NULL){
-        if(var -> type == NULL)continue;
+        if(var -> type == NULL){
+            var = var->next;
+            continue;
+        }
         var->type->hash = get_hash(var->type);
         if(var->type->hash != spec->type->hash)return 0;
         var = var->next;
@@ -286,12 +293,14 @@ void connect_link_var(nodePointer head, nodePointer ne){
     // print_var(head->var, 0);
     // printf("ne\n");
     // print_var(ne->var, 0);
-    fflush(stdout);
+    // printf("\nlinking:\n");
+    // fflush(stdout);
     struct Var* var = head->var;
     while(var->next != NULL){
         var = var->next;
     }
     var->next = ne->var;
+
 }
 
 void extend_var(nodePointer to, nodePointer from){
