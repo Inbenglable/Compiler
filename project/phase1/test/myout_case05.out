@@ -1,2 +1,2 @@
-!!Error type 7 at line 11: unmatching operands
-!!Error type 5 at line 12: unmatching type on both sides of assignment
+Error type 7 at line 11: unmatching operands
+Error type 5 at line 12: unmatching type on both sides of assignment

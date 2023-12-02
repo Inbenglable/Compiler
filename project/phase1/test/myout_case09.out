@@ -1,3 +1,3 @@
-!!Error type 9 at line 12: Function's Argument(s) number mismatch the declared parameters
-!!Error type 9 at line 13: Function's Argument(s) number mismatch the declared parameters
-!!Error type 9 at line 14: Function's Argument(s) number mismatch the declared parameters
+Error type 9 at line 12: invalid argument number
+Error type 9 at line 14: invalid argument number
+Error type 9 at line 15: invalid argument number

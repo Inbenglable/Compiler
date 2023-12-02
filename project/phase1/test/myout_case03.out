@@ -1,2 +1,2 @@
-!!Error type 3 at line 4: variable "idk" is redefined in the same scope
-!!Error type 3 at line 10: variable "idk" is redefined in the same scope
+Error type 3 at line 4: variable "weight" is redefined in the same scope
+Error type 3 at line 10: variable "age" is redefined in the same scope

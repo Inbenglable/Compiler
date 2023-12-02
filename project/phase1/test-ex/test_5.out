@@ -1,1 +1,1 @@
-!!Error type 3 at line 3: variable "idk" is redefined in the same scope
+Error type 3 at line 3: variable "a" is redefined in the same scope

@@ -234,10 +234,11 @@ unsigned long long get_hash(Type* typeptr){
             hashval = (hashval * base1 + children_hash[i]) % mod;
         }
         free(children_hash);
+        return hashval * base2 % mod;
     }
     //printf("get hash success\n");
     fflush(stdout);
-    return hashval * base2 % mod;
+    return hashval;
 }
 
 void print_current_scope(){
