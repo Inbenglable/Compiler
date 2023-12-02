@@ -1,0 +1,16 @@
+struct A{
+    struct B{
+        struct C{
+            struct D{
+                int e;
+            }d;
+        }c;
+    }b;
+}a;
+
+int main(){
+    a.b.c.d.e = 1;
+    a.e = 1;
+    a.b.c = 1;
+    return 0;
+}

@@ -7,6 +7,8 @@
 ScopeStack *top;
 Treap *symbol_treap, *type_treap, *fun_treap;
 
+int disable_new_scope = 0;
+
 
 void init_symbol_table(){
     top = (ScopeStack*)malloc(sizeof(ScopeStack));
@@ -29,8 +31,16 @@ void clear_symbol_table(){
     }
 }
 
+void disable_scope(){
+    disable_new_scope = 1;
+}
+
 void new_scope(){
     ////printf("new scope\n");
+    if(disable_new_scope){
+        disable_new_scope = 0;
+        return;
+    }
     ScopeStack* new_node = (ScopeStack*)malloc(sizeof(ScopeStack));
     new_node->next = top;
     new_node->scope = top->scope + 1;
