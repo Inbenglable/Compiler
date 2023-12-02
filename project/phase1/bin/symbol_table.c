@@ -193,7 +193,7 @@ int cmp(const void* a, const void* b){
 unsigned long long get_hash(Type* typeptr){
     //printf("get hash\n");
     fflush(stdout);
-    unsigned long long base1 = 998244353, base2 = 13331, mod = 1610612741, hashval = 0;
+    unsigned long long base1 = 998244353, base2 = 13331, base3 = 19260817, mod = 1610612741, hashval = 0;
     if(strcmp(typeptr->type_name, "int") == 0){
         hashval = 2;
     }
@@ -220,7 +220,7 @@ unsigned long long get_hash(Type* typeptr){
             }
             int dim = tmp->dim;
             while(dim){
-                unsigned long long tmpbase = base1;
+                unsigned long long tmpbase = base3;
                 if(dim & 1){
                     children_hash[i] = children_hash[i] * tmpbase % mod;
                 }
