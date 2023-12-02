@@ -44,8 +44,8 @@ ExtDefList: ExtDef ExtDefList {$$ = getNode("ExtDefList", 2, $1, $2);}
 ExtDef: Specifier ExtDecList SEMI {
             $$ = getNode("ExtDef", 3, $1, $2, $3);
             if(assign_type($1, $2) == 0){
-                error_type = 50;
-                yyerror("unmatching type on both sides of assignment");
+                // error_type = 50;
+                // yyerror("unmatching type on both sides of assignment");
             }
             if(push_var($2)!=0){// == 0 : acc , == x : error in line x 
                 // error_type = 30;
@@ -178,8 +178,8 @@ VarList: ParamDec COMMA VarList {
 ParamDec: Specifier VarDec {
             $$ = getNode("ParamDec", 2, $1, $2);
             if(assign_type($1, $2) == 0){
-                error_type = 50;
-                yyerror("unmatching type on both sides of assignment");
+                // error_type = 50;
+                // yyerror("unmatching type on both sides of assignment");
             }
             extend_var($$, $2);   
         }
@@ -244,8 +244,8 @@ DefList: Def DefList {
 Def: Specifier DecList SEMI {
         $$ = getNode("Def", 3, $1, $2, $3);
         if(assign_type($1, $2) == 0){
-            error_type = 50;
-            yyerror("unmatching type on both sides of assignment");
+            // error_type = 50;
+            // yyerror("unmatching type on both sides of assignment");
         }
         extend_var($$, $2);
         if(push_var($2)!=0){// == 0 : acc , == x : error in line x 
@@ -282,8 +282,8 @@ Dec: VarDec {
     | VarDec ASSIGN Exp {
         $$ = getNode("Dec", 3, $1, $2, $3);
         if(assign_type($3, $1) == 0){
-            error_type = 50;
-            yyerror("unmatching type on both sides of assignment");
+            // error_type = 50;
+            // yyerror("unmatching type on both sides of assignment");
         }
         extend_var($$, $1);
         

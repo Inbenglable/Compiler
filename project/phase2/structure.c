@@ -259,7 +259,11 @@ int assign_type(nodePointer type_provider, nodePointer var_head){
     while(var != NULL){
         if(var->type != NULL){
             var->type->hash = get_hash(var->type);
-            if(var->type->hash != type->hash)ret = 0;
+            if(var->type->hash != type->hash){
+                error_type = 50;
+                error_line = var->line;
+                yyerror("unmatching type on both sides of assignment");
+            }
         }
         var -> type = type;
         var = var -> next;
