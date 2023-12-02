@@ -1,0 +1,7 @@
+int dfs(int x, int f){
+    int x = 0;
+    int res = 0;
+    res = res + dfs(x*2, x);
+    res = res + dfs(x*2+1, x);
+    return res;
+}

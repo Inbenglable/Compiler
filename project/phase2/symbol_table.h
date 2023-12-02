@@ -68,5 +68,6 @@ void clear_treap(struct Treap* node);
 void clear_intermediate(struct IntermediateLink* link);
 void clear_Type(struct Type* typeptr);
 void clear_Var(struct Var* varptr);
+void disable_scope();
 
 #endif // !__SYMBOL_TABLE__
