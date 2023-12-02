@@ -83,15 +83,24 @@ int store_ID(char* ID, Var* varptr){
 }
 
 Var* query_ID(char* ID){
-    //printf("query ID %s!\n", ID);
-    fflush(stdout);
+    // printf("query ID %s!\n", ID);
+    // fflush(stdout);
     Treap* node = find(ID, symbol_treap);
     if(node == NULL){
-        //printf("query ID fail\n");
+        // printf("query ID fail\n");
+        // fflush(stdout);
         return NULL;
     }
-    //printf("query ID success\n");
-    return node->link->varptr;
+    struct Var* ret = (struct Var*)malloc(sizeof(struct Var));
+    ret -> dim = node->link->varptr->dim;
+    ret -> name = (char*)malloc(30*sizeof(char));
+    ret -> head = NULL;
+    ret -> next = NULL;
+    ret -> type = node->link->varptr->type;
+    strcpy(ret -> name,node->link->varptr->name);
+    // printf("query ID success\n");
+    // fflush(stdout);
+    return ret;
 }
 
 int store_Type(char* ID, Type* typeptr){

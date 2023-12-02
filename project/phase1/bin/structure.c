@@ -7,6 +7,7 @@
 
 int hasError = 0;
 int error_type = -1;
+int error_line = -1;
 
 void print_var(struct Var* var, int deep);
 void print_type(struct Type* type, int deep){
@@ -45,6 +46,7 @@ nodePointer getTerminalNode(char *name, int line){
         return f;
     }
     struct Var* temp = (struct Var*)malloc(sizeof(struct Var));
+    temp -> line = yylineno;
     temp -> name = NULL;
     temp -> dim = 0;
     temp -> type = NULL;
@@ -89,6 +91,7 @@ nodePointer getIDNode(char *name, int line){
     struct Var* temp = (struct Var*)malloc(sizeof(struct Var));
     temp -> name = (char*)malloc(sizeof(char)*30);
     temp -> dim = 0;
+    temp -> line = yylineno;
     strcpy(temp -> name,yytext);
     temp -> type = NULL;
     temp -> head = temp -> next = NULL;
@@ -133,17 +136,26 @@ int push_type(nodePointer type_node){
 
 int push_var(nodePointer varlist){
     struct Var* var = varlist -> var;
+    int ret = 0;
     while(var != NULL){
         //print_var(varlist -> var, 0);
         int ret = store_ID(var -> name, var);
         if(ret == 0){
-            //printf("push_var error while trying push %s\n", var->name);
-            fflush(stdout);
-            return varlist -> line;
+            error_type = 30;
+            error_line = var->line;
+            char* name = var->name;
+            char* msg = (char*)malloc(sizeof(name)+sizeof(char)*100);
+            memset(msg, 0,sizeof(msg));
+            strcat(msg, "variable \"");
+            strcat(msg, name);
+            strcat(msg, "\" is redefined in the same scope");
+            yyerror(msg);
+            free(msg);
+            error_line = -1;
         }
         var = var -> next;
     }
-    return 0;
+    return ret;
 }
 
 int getStruct(nodePointer spec, nodePointer id){
@@ -158,6 +170,7 @@ void newFuntype(nodePointer funspec, nodePointer id, nodePointer varlist){
     fun -> head = fun -> next = NULL;
     fun -> type = NULL;
     fun -> name = (char*)malloc(sizeof(char)*30);
+    fun -> line = yylineno;
     strcpy(fun -> name, id -> value);
     if(varlist != NULL)fun -> next = varlist -> var;
     
@@ -182,6 +195,7 @@ void newStructType(nodePointer spec, nodePointer id, nodePointer varlist){
 int check_fun_varlist(nodePointer fun, nodePointer varlist){
     struct Var* funvar = fun->var->next;
     struct Var* var = varlist->var;
+    //print_var(var, 0);
     while(funvar != NULL){
         if(var == NULL){
             return -1;
@@ -219,7 +233,7 @@ void generate_exp_var(nodePointer exp, struct Type* type){
         var -> type = type;
         return;
     }
-    
+    var -> line = yylineno;
     var -> dim = 0;
     var -> head = NULL;
     var -> next = NULL;
@@ -231,7 +245,6 @@ void generate_exp_var(nodePointer exp, struct Type* type){
 }
 
 int assign_type(nodePointer type_provider, nodePointer var_head){
-    //print_var(var_head -> var, 0);
     struct Var* var = var_head->var;
     struct Type* type = type_provider -> type;
     if(type == NULL)return 1;
@@ -276,7 +289,11 @@ int check_ret_type(nodePointer spec, nodePointer varlist){
             continue;
         }
         var->type->hash = get_hash(var->type);
-        if(var->type->hash != spec->type->hash)return 0;
+        if(var->type->hash != spec->type->hash){
+            error_type = 80;
+            error_line = var->line;
+            yyerror("Return value type mismatches the declared type");     
+        }
         var = var->next;
     }
 
@@ -308,6 +325,7 @@ void extend_var(nodePointer to, nodePointer from){
 
 void extend_dim(nodePointer var){
     Var* tmp = (Var*)malloc(sizeof(Var));
+    tmp->line = var->var->line;
     tmp->name = var->var->name;
     tmp->dim = var->var->dim + 1;
     tmp->type = var->var->type;
@@ -318,6 +336,7 @@ void extend_dim(nodePointer var){
 
 void reduce_dim(nodePointer var){
     Var* tmp = (Var*)malloc(sizeof(Var));
+    tmp->line = var->var->line;
     tmp->name = var->var->name;
     tmp->dim = var->var->dim - 1;
     tmp->type = var->var->type;
@@ -327,7 +346,9 @@ void reduce_dim(nodePointer var){
 }
 
 struct Var* check_ID_def(nodePointer node){
+    //print_var(node->var, 0);
     struct Var* var = query_ID(node -> var -> name);
+    if(var != NULL)var->line = yylineno;
     return var;
 }
 
@@ -481,14 +502,16 @@ void writeNode(nodePointer node,int deep){
 void yyerror(char *msg)
 {
     //printf("?? %d %s \"%s\"\n", yylineno, yytext, msg);
+    if(error_line == -1)error_line = yylineno;
     if(error_type == 1 && strcmp(msg,"syntax error")!=0){
-        printf("Error type B at line %d: %s\n",yylineno,msg); // 如果是syntax error
+        printf("Error type B at line %d: %s\n",error_line ,msg); // 如果是syntax error
     }else if(error_type == 0 && strcmp(msg,"syntax error")!=0){
-        printf("Error type A at line %d: %s\n",yylineno,msg); // 或者是 lex error
+        printf("Error type A at line %d: %s\n",error_line ,msg); // 或者是 lex error
     }
     else if(error_type % 10 == 0){
-        printf("!!Error type %d at line %d: %s\n",error_type / 10,yylineno,msg);
+        printf("!!Error type %d at line %d: %s\n",error_type / 10,error_line ,msg);
     }
+    error_line = -1;
     fflush(stdout);
     hasError=1;
 }

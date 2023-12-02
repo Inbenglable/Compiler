@@ -4,6 +4,7 @@
 extern char* yytext;
 extern int yylineno;
 extern int error_type;
+extern int error_line;
 extern int hasError;
 void yyerror(char *msg);
 
@@ -21,6 +22,7 @@ struct Type{
 struct Var{
     char* name;
     int dim; // deep of the array, 0 if it is a variable
+    int line;
     struct Type* type;
     struct Var *head, *next;
 };
