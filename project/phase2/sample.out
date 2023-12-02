@@ -1,0 +1,62 @@
+new scope
+new scope success
+store ID
+store ID check point1
+store ID point2
+sym
+l
+r
+store ID point3
+store ID success
+query ID
+query ID fail
+!!Error type 1 at line 3: "x" is used without a definition
+query ID
+query ID success
+query ID
+query ID fail
+!!Error type 1 at line 3: "z" is used without a definition
+store ID
+store ID check point1
+store ID point2
+l
+store ID point3
+Check point4store ID success
+query ID
+query ID success
+pop scope
+pop scope success
+store Fun
+store Fun success
+new scope
+new scope success
+store ID
+store ID check point1
+store ID point2
+l
+store ID point3
+Check point4store ID success
+query ID
+query ID success
+query ID
+query ID fail
+!!Error type 1 at line 9: "a" is used without a definition
+store ID
+store ID check point1
+store ID point2
+store ID point3
+Check point4Check point4store ID success
+query ID
+query ID fail
+!!Error type 1 at line 10: "a" is used without a definition
+query ID
+query ID success
+query Fun
+query Fun success
+store ID
+store ID fail
+!!Error type 3 at line 10: variable "idk" is redefined in the same scope
+pop scope
+pop scope success
+store Fun
+Check point4store Fun success
