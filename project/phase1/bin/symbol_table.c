@@ -86,7 +86,7 @@ Var* query_ID(char* ID){
     // printf("query ID %s!\n", ID);
     // fflush(stdout);
     Treap* node = find(ID, symbol_treap);
-    if(node == NULL){
+    if(node == NULL || node->link == NULL){
         // printf("query ID fail\n");
         // fflush(stdout);
         return NULL;
@@ -131,7 +131,7 @@ int store_Type(char* ID, Type* typeptr){
 Type* query_Type(char* ID){
     //printf("query Type %s\n", ID);
     Treap* node = find(ID, type_treap);
-    if(node == NULL){
+    if(node == NULL || node->link == NULL){
         //printf("query Type fail\n");
         return NULL;
     }
@@ -168,7 +168,7 @@ int store_Fun(char* ID, Var* varptr){
 Var* query_Fun(char* ID){
     //printf("query Fun\n");
     Treap* node = find(ID, fun_treap);
-    if(node == NULL){
+    if(node == NULL || node->link == NULL){
         //printf("query Fun fail\n");
         return NULL;
     }
