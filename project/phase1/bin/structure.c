@@ -204,7 +204,23 @@ void extend_var(nodePointer to, nodePointer from){
 }
 
 void extend_dim(nodePointer var){
-    var -> var -> dim += 1;
+    Var* tmp = (Var*)malloc(sizeof(Var));
+    tmp->name = var->var->name;
+    tmp->dim = var->var->dim + 1;
+    tmp->type = var->var->type;
+    tmp->head = var->var->head;
+    tmp->next = var->var->next;
+    var->var = tmp;
+}
+
+void reduce_dim(nodePointer var){
+    Var* tmp = (Var*)malloc(sizeof(Var));
+    tmp->name = var->var->name;
+    tmp->dim = var->var->dim - 1;
+    tmp->type = var->var->type;
+    tmp->head = var->var->head;
+    tmp->next = var->var->next;
+    var->var = tmp;
 }
 
 struct Var* check_ID_def(nodePointer node){
@@ -232,12 +248,8 @@ int check_arithmetic(nodePointer node1, nodePointer node2){
 }
 
 int check_assign_type(nodePointer lnode, nodePointer rnode){
-    if(lnode -> var == NULL || rnode -> var == NULL){
-        printf("!!!!\n");
-        return 0;
-    }
-    if(lnode -> var -> type == NULL || rnode -> var -> type == NULL)return 0;
-    if(lnode -> var -> type -> hash == rnode -> var -> type -> hash)return 1;
+    if(lnode -> type == NULL || rnode -> type == NULL)return 0;
+    if(lnode -> type -> hash == rnode -> type -> hash)return 1;
     return 0;
 }
 
@@ -260,6 +272,24 @@ Type* check_field(Type* typeptr, char* name){
         var = var->next;
     }
     return NULL;
+}
+
+int check_dim(nodePointer node){
+    if(node->var == NULL)return 0;
+    if(node->var->dim > 0)return 1;
+    return 0;
+}
+
+int check_index(nodePointer node){
+    if(node->type == NULL)return 0;
+    if(strcmp(node->type->type_name, "int") == 0)return 1;
+    return 0;
+}
+
+int check_struct(nodePointer node){
+    if(node->type == NULL)return 0;
+    if(node->type->isStruct == 's')return 1;
+    return 0;
 }
 
 nodePointer getNode(char* name, int num, ...){

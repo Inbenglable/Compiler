@@ -66,6 +66,7 @@ void extend_type(nodePointer to, nodePointer from);
 void connect_var(nodePointer now, nodePointer to);
 void extend_var(nodePointer to, nodePointer from);
 void extend_dim(nodePointer var);
+void reduce_dim(nodePointer var);
 nodePointer getNode(char* token_name,int num,...);
 
 struct Var* check_ID_def(nodePointer node);
@@ -75,6 +76,9 @@ int check_rvalue(nodePointer node);
 Type* check_field(Type* typeptr, char* name);
 int check_boolean(nodePointer node1, nodePointer node2);
 int check_arithmetic(nodePointer node1, nodePointer node2);
+int check_dim(nodePointer node);
+int check_index(nodePointer node);
+int check_struct(nodePointer node);
 
 void writeNode(nodePointer node,int depth);
 void writeTerminalNode(nodePointer node);
