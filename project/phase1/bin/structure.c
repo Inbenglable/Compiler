@@ -195,7 +195,9 @@ void newStructType(nodePointer spec, nodePointer id, nodePointer varlist){
 int check_fun_varlist(nodePointer fun, nodePointer varlist){
     struct Var* funvar = fun->var->next;
     struct Var* var = varlist->var;
-    //print_var(var, 0);
+    // print_var(funvar, 0);
+    // printf("\n");
+    // print_var(var, 0);
     while(funvar != NULL){
         if(var == NULL){
             return -1;
@@ -231,7 +233,6 @@ void generate_exp_var(nodePointer exp, struct Type* type){
     }else{
         var = exp->var;
         var -> type = type;
-        return;
     }
     var -> line = yylineno;
     var -> dim = 0;
@@ -377,7 +378,7 @@ int check_assign_type(nodePointer lnode, nodePointer rnode){
 }
 
 int check_rvalue(nodePointer node){
-    //print_var(node -> var, 0);
+    // print_var(node -> var, 0);
     if(node->var == NULL || node->type == NULL)return 0;
     if(node -> var -> name == NULL || strcmp(node -> var -> name, "-expression") == 0)return 1;
     return 0;
