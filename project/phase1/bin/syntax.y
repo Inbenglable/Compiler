@@ -81,7 +81,7 @@ ExtDef: Specifier ExtDecList SEMI {
             fflush(stdout);
             if(check_ret_type($1, $3)==0){
                 error_type = 80;
-                yyerror("Return value type mismatches the declared type");                
+                yyerror("incompatiable return type");                
             }
             //printtf("Function check4\n");
             fflush(stdout);
@@ -121,13 +121,13 @@ StructSpecifier: STRUCT ID LC DefList RC {
                     if(push_type($$)!=0){// == 0 : acc , == x : error in line x 
                         error_type = 150;
                         error_line = $2->line;
-                        yyerror("Struct name aready exists");
+                        yyerror("redefine the same structure type");
                     }
                 }
               | STRUCT ID {$$ = getNode("StructSpecifier", 2, $1, $2);
                     if(!getStruct($$, $2)){
                         error_type = 160;
-                        yyerror("Undefined structer");
+                        yyerror("undefined structure");
                     }
               }
 //              | STRUCT ID LC DefList error {error_type = 1;yyerror("Missing closing symbol '}'");}
@@ -469,10 +469,10 @@ Exp: Exp ASSIGN Exp {
             int chk = check_fun_varlist($1, $3);
             if(chk == 0){
                 error_type = 90;
-                yyerror("Function's Argument(s) type mismatch the declared parameters");
+                yyerror("invalid argument type");
             }else if (chk == -1){
                 error_type = 90;
-                yyerror("Function's Argument(s) number mismatch the declared parameters");
+                yyerror("invalid argument number");
             }
             generate_exp_var($$, $1->type);
         }
@@ -503,7 +503,7 @@ Exp: Exp ASSIGN Exp {
             }
         }else if(var->next != NULL){
             error_type = 90;
-            yyerror("Function's Argument(s) number mismatch the declared parameters");
+            yyerror("invalid argument number");
         }
         generate_exp_var($$, var->type);
     }
@@ -516,7 +516,7 @@ Exp: Exp ASSIGN Exp {
                 ($$)->var->type = NULL;
             }
             error_type = 100;
-            yyerror("applying indexing operator ([…]) on non-array type variable");
+            yyerror("indexing on non-array variable");
         }
         else{
             ($$)->type = ($1)->type;
@@ -525,7 +525,7 @@ Exp: Exp ASSIGN Exp {
         }
         if(check_index($3) == 0){
             error_type = 120;
-            yyerror("array indexing with a non-integer type expression");
+            yyerror("indexing by non-integer");
         }
     }
     | Exp LB Exp error {error_type = 1;yyerror("Missing closing symbol ']'");}
@@ -533,7 +533,7 @@ Exp: Exp ASSIGN Exp {
             $$ = getNode("Exp", 3, $1, $2, $3);
             if(check_struct($1) == 0){
                 error_type = 130;
-                yyerror("accessing members of a non-structure variable");
+                yyerror("accessing with non-struct variable");
                 generate_exp_var($$, NULL);
             }
             else{

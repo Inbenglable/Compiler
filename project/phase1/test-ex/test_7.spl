@@ -1,0 +1,10 @@
+struct A{
+    struct B{
+        int b;
+    }a;
+}aa;
+int main(){
+    struct B cc;
+    aa.a = cc;
+	return 0;
+}
