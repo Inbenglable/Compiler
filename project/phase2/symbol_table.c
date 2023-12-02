@@ -104,7 +104,6 @@ Var* query_ID(char* ID){
     struct Var* ret = (struct Var*)malloc(sizeof(struct Var));
     ret -> dim = node->link->varptr->dim;
     ret -> name = (char*)malloc(30*sizeof(char));
-    ret -> head = NULL;
     ret -> next = NULL;
     ret -> type = node->link->varptr->type;
     strcpy(ret -> name,node->link->varptr->name);

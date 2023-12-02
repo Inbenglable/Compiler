@@ -50,7 +50,7 @@ nodePointer getTerminalNode(char *name, int line){
     temp -> name = NULL;
     temp -> dim = 0;
     temp -> type = NULL;
-    temp -> head = temp -> next = NULL;
+    temp -> next = NULL;
     f -> var = temp;
 
     if(strcmp(name, "INT") == 0){
@@ -94,7 +94,7 @@ nodePointer getIDNode(char *name, int line){
     temp -> line = yylineno;
     strcpy(temp -> name,yytext);
     temp -> type = NULL;
-    temp -> head = temp -> next = NULL;
+    temp -> next = NULL;
     f -> var = temp;
     return f;
 }
@@ -167,7 +167,7 @@ int getStruct(nodePointer spec, nodePointer id){
 void newFuntype(nodePointer funspec, nodePointer id, nodePointer varlist){
     struct Var* fun = (struct Var*)malloc(sizeof(struct Var));
     fun -> dim = 0;
-    fun -> head = fun -> next = NULL;
+    fun -> next = NULL;
     fun -> type = NULL;
     fun -> name = (char*)malloc(sizeof(char)*30);
     fun -> line = yylineno;
@@ -241,7 +241,6 @@ void generate_exp_var(nodePointer exp, struct Type* type){
     }
     var -> line = yylineno;
     var -> dim = 0;
-    var -> head = NULL;
     var -> next = NULL;
     var -> name = (char*)malloc(30*sizeof(char));
     strcpy(var->name, "-expression");
@@ -339,7 +338,6 @@ void extend_dim(nodePointer var){
     tmp->name = var->var->name;
     tmp->dim = var->var->dim + 1;
     tmp->type = var->var->type;
-    tmp->head = var->var->head;
     tmp->next = var->var->next;
     var->var = tmp;
 }
@@ -350,7 +348,6 @@ void reduce_dim(nodePointer var){
     tmp->name = var->var->name;
     tmp->dim = var->var->dim - 1;
     tmp->type = var->var->type;
-    tmp->head = var->var->head;
     tmp->next = var->var->next;
     var->var = tmp;
 }
