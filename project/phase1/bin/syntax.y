@@ -34,8 +34,8 @@
 
 Program: ExtDefList {
     $$ = getNode("Program", 1, $1);
-    if(!hasError)
-        writeNode($$, 0);
+    if(!hasError);
+        //writeNode($$, 0);
     }
         ;
 ExtDefList: ExtDef ExtDefList {$$ = getNode("ExtDefList", 2, $1, $2);}
@@ -480,7 +480,8 @@ Exp: Exp ASSIGN Exp {
     | ID LP Args error {error_type = 1;yyerror("Missing closing symbol ')'");}
     | ID LP RP {
         $$ = getNode("Exp", 3, $1, $2, $3);
-        if(check_fun_def($1) == 0){
+        struct Var* var = check_fun_def($1);
+        if(var == NULL){
             if(check_ID_def($1) != NULL){
                 error_type = 110;
                 yyerror("invoking non-function variable");
@@ -499,7 +500,7 @@ Exp: Exp ASSIGN Exp {
                 generate_exp_var($$, NULL);
             }
         }
-        generate_exp_var($$, $1->type);
+        generate_exp_var($$, var->type);
     }
     | ID LP error {error_type = 1;yyerror("Missing closing symbol ')'");}
     | Exp LB Exp RB {

@@ -293,7 +293,6 @@ void connect_link_var(nodePointer head, nodePointer ne){
     // print_var(head->var, 0);
     // printf("ne\n");
     // print_var(ne->var, 0);
-    // printf("\nlinking:\n");
     // fflush(stdout);
     struct Var* var = head->var;
     while(var->next != NULL){
