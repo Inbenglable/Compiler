@@ -563,9 +563,9 @@ static const yytype_int16 yyrline[] =
      267,   268,   270,   274,   281,   285,   296,   310,   317,   324,
      331,   338,   345,   352,   359,   366,   379,   390,   401,   410,
      411,   412,   413,   414,   415,   416,   417,   418,   419,   420,
-     421,   422,   423,   427,   428,   436,   444,   480,   481,   504,
-     505,   525,   526,   547,   567,   571,   575,   580,   585,   586,
-     587
+     421,   422,   423,   427,   428,   436,   444,   480,   481,   505,
+     506,   526,   527,   548,   568,   572,   576,   581,   586,   587,
+     588
 };
 #endif
 
@@ -1309,8 +1309,8 @@ yyreduce:
 #line 35 "syntax.y"
                     {
     (yyval.type) = getNode("Program", 1, (yyvsp[0].type));
-    if(!hasError)
-        writeNode((yyval.type), 0);
+    if(!hasError);
+        //writeNode($$, 0);
     }
 #line 1316 "syntax.tab.c"
     break;
@@ -2149,7 +2149,8 @@ yyreduce:
 #line 481 "syntax.y"
                {
         (yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));
-        if(check_fun_def((yyvsp[-2].type)) == 0){
+        struct Var* var = check_fun_def((yyvsp[-2].type));
+        if(var == NULL){
             if(check_ID_def((yyvsp[-2].type)) != NULL){
                 error_type = 110;
                 yyerror("invoking non-function variable");
@@ -2168,19 +2169,19 @@ yyreduce:
                 generate_exp_var((yyval.type), NULL);
             }
         }
-        generate_exp_var((yyval.type), (yyvsp[-2].type)->type);
+        generate_exp_var((yyval.type), var->type);
     }
-#line 2174 "syntax.tab.c"
+#line 2175 "syntax.tab.c"
     break;
 
   case 89: /* Exp: ID LP error  */
-#line 504 "syntax.y"
+#line 505 "syntax.y"
                   {error_type = 1;yyerror("Missing closing symbol ')'");}
-#line 2180 "syntax.tab.c"
+#line 2181 "syntax.tab.c"
     break;
 
   case 90: /* Exp: Exp LB Exp RB  */
-#line 505 "syntax.y"
+#line 506 "syntax.y"
                     {
         (yyval.type) = getNode("Exp", 4, (yyvsp[-3].type), (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));
         if(check_dim((yyvsp[-3].type)) == 0){
@@ -2201,17 +2202,17 @@ yyreduce:
             yyerror("array indexing with a non-integer type expression");
         }
     }
-#line 2205 "syntax.tab.c"
+#line 2206 "syntax.tab.c"
     break;
 
   case 91: /* Exp: Exp LB Exp error  */
-#line 525 "syntax.y"
+#line 526 "syntax.y"
                        {error_type = 1;yyerror("Missing closing symbol ']'");}
-#line 2211 "syntax.tab.c"
+#line 2212 "syntax.tab.c"
     break;
 
   case 92: /* Exp: Exp DOT ID  */
-#line 526 "syntax.y"
+#line 527 "syntax.y"
                  {
             (yyval.type) = getNode("Exp", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));
             if(check_struct((yyvsp[-2].type)) == 0){
@@ -2233,11 +2234,11 @@ yyreduce:
                 }
             }
         }
-#line 2237 "syntax.tab.c"
+#line 2238 "syntax.tab.c"
     break;
 
   case 93: /* Exp: ID  */
-#line 547 "syntax.y"
+#line 548 "syntax.y"
          {
         (yyval.type) = getNode("Exp", 1, (yyvsp[0].type));
         struct Var* var = check_ID_def((yyvsp[0].type));
@@ -2258,67 +2259,67 @@ yyreduce:
         }
         
     }
-#line 2262 "syntax.tab.c"
+#line 2263 "syntax.tab.c"
     break;
 
   case 94: /* Exp: INT  */
-#line 567 "syntax.y"
+#line 568 "syntax.y"
           {(yyval.type) = getNode("Exp", 1, (yyvsp[0].type));
         extend_var((yyval.type), (yyvsp[0].type));
         extend_type((yyval.type), (yyvsp[0].type));
     }
-#line 2271 "syntax.tab.c"
+#line 2272 "syntax.tab.c"
     break;
 
   case 95: /* Exp: FLOAT  */
-#line 571 "syntax.y"
+#line 572 "syntax.y"
             {(yyval.type) = getNode("Exp", 1, (yyvsp[0].type));
         extend_var((yyval.type), (yyvsp[0].type));
         extend_type((yyval.type), (yyvsp[0].type));
     }
-#line 2280 "syntax.tab.c"
+#line 2281 "syntax.tab.c"
     break;
 
   case 96: /* Exp: CHAR  */
-#line 575 "syntax.y"
+#line 576 "syntax.y"
            {(yyval.type) = getNode("Exp", 1, (yyvsp[0].type));
         extend_var((yyval.type), (yyvsp[0].type));
         extend_type((yyval.type), (yyvsp[0].type));
     }
-#line 2289 "syntax.tab.c"
+#line 2290 "syntax.tab.c"
     break;
 
   case 97: /* Args: Exp COMMA Args  */
-#line 580 "syntax.y"
+#line 581 "syntax.y"
                      {(yyval.type) = getNode("Args", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));
         connect_var((yyvsp[-2].type), (yyvsp[0].type));
         extend_var((yyval.type), (yyvsp[-2].type));
     }
-#line 2298 "syntax.tab.c"
+#line 2299 "syntax.tab.c"
     break;
 
   case 98: /* Args: COMMA Args  */
-#line 585 "syntax.y"
+#line 586 "syntax.y"
                  {error_type = 1;yyerror("Unexpected ','");}
-#line 2304 "syntax.tab.c"
+#line 2305 "syntax.tab.c"
     break;
 
   case 99: /* Args: Exp COMMA  */
-#line 586 "syntax.y"
+#line 587 "syntax.y"
                 {error_type = 1;yyerror("Expected another parenthesis after ','");}
-#line 2310 "syntax.tab.c"
+#line 2311 "syntax.tab.c"
     break;
 
   case 100: /* Args: Exp  */
-#line 587 "syntax.y"
+#line 588 "syntax.y"
           {(yyval.type) = getNode("Args", 1, (yyvsp[0].type));
         extend_var((yyval.type), (yyvsp[0].type));
     }
-#line 2318 "syntax.tab.c"
+#line 2319 "syntax.tab.c"
     break;
 
 
-#line 2322 "syntax.tab.c"
+#line 2323 "syntax.tab.c"
 
       default: break;
     }
@@ -2511,4 +2512,4 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 592 "syntax.y"
+#line 593 "syntax.y"
