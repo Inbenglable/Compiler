@@ -231,6 +231,16 @@ unsigned long long get_hash(Type* typeptr){
     return hashval;
 }
 
+void print_current_scope(){
+    printf("print current scope:\n");
+    IntermediateLink* l1 = top->link_start;
+    while(l1 != NULL){
+        printf("%s ", l1->from->val);
+        l1 = l1->next_ID;
+    }
+    printf("\n");
+}
+
 Treap* new_node(char* val){
     Treap* node = (Treap*)malloc(sizeof(Treap));
     node->key = rand();

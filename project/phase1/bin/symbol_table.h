@@ -57,6 +57,7 @@ struct Type* query_Type(char* ID);
 int store_Fun(char* ID, struct Var* varptr);
 struct Var* query_Fun(char* ID);
 unsigned long long get_hash(struct Type* typeptr);
+void print_current_scope();
 
 
 struct Treap* new_node(char* val);
