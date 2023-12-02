@@ -1,0 +1,12 @@
+int foo(int a, float b, char c){
+    a = 1;
+    b = 1.111;
+    c = '1';
+    return a;
+}
+int main(){
+    foo(1,1.0,'1');
+    foo(1,1.0);
+    foo(1,f,'1');
+    return 0;
+}
