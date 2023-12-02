@@ -202,6 +202,11 @@ int check_fun_varlist(nodePointer fun, nodePointer varlist){
         if(var == NULL){
             return -1;
         }
+        if(var->type == NULL){
+            funvar = funvar->next;
+            var = var->next;
+            continue;
+        }
         var->type->hash = get_hash(var->type);
         funvar->type->hash = get_hash(funvar->type);
         if(funvar->type->hash != var->type->hash){

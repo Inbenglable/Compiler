@@ -15,7 +15,7 @@
 %token <type> ID TYPE STRUCT RETURN IF ELSE WHILE FOR COMMENT SPACE SEMI COMMA ASSIGN PLUS
 %token <type> MINUS MUL DIV AND OR DOT NOT LP RP LB RB LC RC AERROR LT LE GT GE NE EQ EOL
 
-%type <type> Program ExtDefList ExtDef ExtDecList Specifier StructSpecifier 
+%type <type> Program ExtDefList ExtDef ExtDecList Funspecifier Specifier StructSpecifier 
 %type <type> VarDec FunDec VarList ParamDec CompSt StmtList Stmt DefList Def DecList Dec Exp Args
 
 %right ASSIGN
@@ -63,30 +63,17 @@ ExtDef: Specifier ExtDecList SEMI {
       | Specifier ExtDecList error {error_type = 1;yyerror("Missing semicolon ';'");}
       | Specifier SEMI {$$ = getNode("ExtDef", 2, $1, $2);}
       | Specifier error {error_type = 1;yyerror("Missing semicolon ';'");}
-      | Specifier FunDec CompSt {
-            $$ = getNode("ExtDef", 3, $1, $2, $3);
-            assign_funtype($1, $2);
-            if(push_fun($2)!=0){// == 0 : acc , == x : error in line x 
-                error_type = 40;
-                error_line = $2->line;
-                char* name = $2->var->name;
-                char* msg = (char*)malloc(sizeof(name)+sizeof(char)*100);
-                memset(msg, 0,sizeof(msg));
-                strcat(msg, "\"");
-                strcat(msg, name);
-                strcat(msg, "\" is redefined");
-                yyerror(msg);
-                free(msg);
-            }
-            //printtf("Function check3\n");
-            fflush(stdout);
-            if(check_ret_type($1, $3)==0){
+      | Funspecifier CompSt {
+            $$ = getNode("ExtDef", 2, $1, $2);
+            // printf("Function check1\n");
+            // fflush(stdout);
+            if(check_ret_type($1, $2)==0){
                 error_type = 80;
                 yyerror("incompatiable return type");                
             }
-            //printtf("Function check4\n");
-            fflush(stdout);
-            pop_scope();
+            // printf("Function check2\n");
+            // fflush(stdout);
+            //pop_scope();
             
         }
       |  error ExtDecList SEMI {error_type = 1; yyerror("Missing specifier");}
@@ -105,6 +92,24 @@ ExtDecList: VarDec {
           | COMMA ExtDecList {error_type = 1;yyerror("Unexpected ','");}
           | VarDec COMMA {error_type = 1;yyerror("Unexpected ','");}
           ;
+Funspecifier: Specifier FunDec{
+    $$ = getNode("Funspecifier", 2, $1, $2);
+    assign_funtype($1, $2);
+    if(push_fun($2)!=0){// == 0 : acc , == x : error in line x 
+        error_type = 40;
+        error_line = $2->line;
+        char* name = $2->var->name;
+        char* msg = (char*)malloc(sizeof(name)+sizeof(char)*100);
+        memset(msg, 0,sizeof(msg));
+        strcat(msg, "\"");
+        strcat(msg, name);
+        strcat(msg, "\" is redefined");
+        yyerror(msg);
+        free(msg);
+    }
+    extend_type($$, $1);
+}       
+;
 
 Specifier: TYPE {
                 $$ = getNode("Specifier", 1, $1);
@@ -149,18 +154,8 @@ VarDec: ID {
       ;
 FunDec: ID LP VarList RP {$$ = getNode("FunDec", 4, $1, $2, $3, $4);
             new_scope();
-            if(push_var($3)!=0){// == 0 : acc , == x : error in line x 
-                // error_type = 30;
-                // //char* name = $3->value;
-                // char* name = "idk";
-                // char* msg = (char*)malloc(sizeof(name)+sizeof(char)*100);
-                // memset(msg, 0,sizeof(msg));
-                // strcat(msg, "variable \"");
-                // strcat(msg, name);
-                // strcat(msg, "\" is redefined in the same scope");
-                // yyerror(msg);
-                // free(msg);
-            }
+            disable_scope();
+            push_var($3);
             newFuntype($$, $1, $3);
         }
       | ID LP RP {$$ = getNode("FunDec", 3, $1, $2, $3);
@@ -445,7 +440,6 @@ Exp: Exp ASSIGN Exp {
         generate_exp_var($$, get_int_type());
     }
     | ID LP Args RP {
-        
         $$ = getNode("Exp", 4, $1, $2, $3, $4);
         generate_exp_var($$, NULL);
         struct Var* var = check_fun_def($1);
@@ -477,8 +471,6 @@ Exp: Exp ASSIGN Exp {
             }
             generate_exp_var($$, $1->type);
         }
-
-
     }
     | ID LP Args error {error_type = 1;yyerror("Missing closing symbol ')'");}
     | ID LP RP {
