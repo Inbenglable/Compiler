@@ -58,8 +58,14 @@ return { yylval.type=getTerminalNode("RETURN", yylineno);return RETURN; }
 ")" { yylval.type = getTerminalNode("RP", yylineno); return RP; }
 "[" { yylval.type = getTerminalNode("LB", yylineno); return LB; }
 "]" { yylval.type = getTerminalNode("RB", yylineno); return RB; }
-"{" { yylval.type = getTerminalNode("LC", yylineno) ; return LC; new_scope();}
-"}" { yylval.type = getTerminalNode("RC", yylineno); return RC; pop_scope();}
+"{" { yylval.type = getTerminalNode("LC", yylineno);
+    new_scope();
+    return LC;
+}
+"}" { yylval.type = getTerminalNode("RC", yylineno);
+    pop_scope();
+    return RC;
+    }
 "//" { 
   int c;
   while((c = input()) != '\n');
