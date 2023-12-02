@@ -13,8 +13,8 @@ struct WanganMidnight{
         float weight;
         char name[200];
     }cars[100];
-    float akio_asakura[30][911];
-    int tatsuya_shima;
+    float asakura_akio[30][911];
+    int shima_tatsuya;
 }wangan;
 int main(){
     initial_D = wangan;
