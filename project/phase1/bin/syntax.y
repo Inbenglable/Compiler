@@ -120,6 +120,7 @@ StructSpecifier: STRUCT ID LC DefList RC {
                     
                     if(push_type($$)!=0){// == 0 : acc , == x : error in line x 
                         error_type = 150;
+                        error_line = $2->line;
                         yyerror("Struct name aready exists");
                     }
                 }
