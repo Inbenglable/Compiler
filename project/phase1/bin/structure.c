@@ -510,7 +510,7 @@ void yyerror(char *msg)
         printf("Error type A at line %d: %s\n",error_line ,msg); // 或者是 lex error
     }
     else if(error_type % 10 == 0){
-        printf("!!Error type %d at line %d: %s\n",error_type / 10,error_line ,msg);
+        printf("Error type %d at line %d: %s\n",error_type / 10,error_line ,msg);
     }
     error_line = -1;
     fflush(stdout);
