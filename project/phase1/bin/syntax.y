@@ -48,16 +48,16 @@ ExtDef: Specifier ExtDecList SEMI {
                 yyerror("unmatching type on both sides of assignment");
             }
             if(push_var($2)!=0){// == 0 : acc , == x : error in line x 
-                error_type = 30;
-                //char* name = $2->value;
-                char* name = "idk";
-                char* msg = (char*)malloc(sizeof(name)+sizeof(char)*100);
-                memset(msg, 0,sizeof(msg));
-                strcat(msg, "variable \"");
-                strcat(msg, name);
-                strcat(msg, "\" is redefined in the same scope");
-                yyerror(msg);
-                free(msg);
+                // error_type = 30;
+                // //char* name = $2->value;
+                // char* name = "idk";
+                // char* msg = (char*)malloc(sizeof(name)+sizeof(char)*100);
+                // memset(msg, 0,sizeof(msg));
+                // strcat(msg, "variable \"");
+                // strcat(msg, name);
+                // strcat(msg, "\" is redefined in the same scope");
+                // yyerror(msg);
+                // free(msg);
             }
         }
       | Specifier ExtDecList error {error_type = 1;yyerror("Missing semicolon ';'");}
@@ -148,16 +148,16 @@ VarDec: ID {
 FunDec: ID LP VarList RP {$$ = getNode("FunDec", 4, $1, $2, $3, $4);
             new_scope();
             if(push_var($3)!=0){// == 0 : acc , == x : error in line x 
-                error_type = 30;
-                //char* name = $3->value;
-                char* name = "idk";
-                char* msg = (char*)malloc(sizeof(name)+sizeof(char)*100);
-                memset(msg, 0,sizeof(msg));
-                strcat(msg, "variable \"");
-                strcat(msg, name);
-                strcat(msg, "\" is redefined in the same scope");
-                yyerror(msg);
-                free(msg);
+                // error_type = 30;
+                // //char* name = $3->value;
+                // char* name = "idk";
+                // char* msg = (char*)malloc(sizeof(name)+sizeof(char)*100);
+                // memset(msg, 0,sizeof(msg));
+                // strcat(msg, "variable \"");
+                // strcat(msg, name);
+                // strcat(msg, "\" is redefined in the same scope");
+                // yyerror(msg);
+                // free(msg);
             }
             newFuntype($$, $1, $3);
         }
@@ -252,16 +252,16 @@ Def: Specifier DecList SEMI {
         }
         extend_var($$, $2);
         if(push_var($2)!=0){// == 0 : acc , == x : error in line x 
-            error_type = 30;
-            //char* name = $2->value;
-            char* name = "idk";
-            char* msg = (char*)malloc(sizeof(name)+sizeof(char)*100);
-            memset(msg, 0,sizeof(msg));
-            strcat(msg, "variable \"");
-            strcat(msg, name);
-            strcat(msg, "\" is redefined in the same scope");
-            yyerror(msg);
-            free(msg);
+            // error_type = 30;
+            // //char* name = $2->value;
+            // char* name = "idk";
+            // char* msg = (char*)malloc(sizeof(name)+sizeof(char)*100);
+            // memset(msg, 0,sizeof(msg));
+            // strcat(msg, "variable \"");
+            // strcat(msg, name);
+            // strcat(msg, "\" is redefined in the same scope");
+            // yyerror(msg);
+            // free(msg);
         }
     }
    |error DecList SEMI {error_type = 1; yyerror("Missing specifier");}
@@ -294,6 +294,7 @@ Dec: VarDec {
     ;
 
 Exp: Exp ASSIGN Exp {
+        fflush(stdout);
         $$ = getNode("Exp", 3, $1, $2, $3);
         if(check_rvalue($1) == 1){
             error_type = 60;
@@ -442,6 +443,7 @@ Exp: Exp ASSIGN Exp {
         generate_exp_var($$, get_int_type());
     }
     | ID LP Args RP {
+        
         $$ = getNode("Exp", 4, $1, $2, $3, $4);
         generate_exp_var($$, NULL);
         struct Var* var = check_fun_def($1);
@@ -449,8 +451,7 @@ Exp: Exp ASSIGN Exp {
             if(check_ID_def($1) != NULL){
                 error_type = 110;
                 yyerror("invoking non-function variable");
-            }
-            else{
+            }else{
                 error_type = 20;
                 char* name = $1->value;
                 char* msg = (char*)malloc(sizeof(name)+sizeof(char)*100);
@@ -499,6 +500,9 @@ Exp: Exp ASSIGN Exp {
                 free(msg);
                 generate_exp_var($$, NULL);
             }
+        }else if(var->next != NULL){
+            error_type = 90;
+            yyerror("Function's Argument(s) number mismatch the declared parameters");
         }
         generate_exp_var($$, var->type);
     }
