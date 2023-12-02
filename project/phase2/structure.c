@@ -302,7 +302,7 @@ int check_ret_type(nodePointer spec, nodePointer varlist){
         if(var->type->hash != spec->type->hash){
             error_type = 80;
             error_line = var->line;
-            yyerror("Return value type mismatches the declared type");     
+            yyerror("incompatiable return type");     
         }
         var = var->next;
     }

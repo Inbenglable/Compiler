@@ -1336,8 +1336,8 @@ yyreduce:
                                   {
             (yyval.type) = getNode("ExtDef", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));
             if(assign_type((yyvsp[-2].type), (yyvsp[-1].type)) == 0){
-                error_type = 50;
-                yyerror("unmatching type on both sides of assignment");
+                // error_type = 50;
+                // yyerror("unmatching type on both sides of assignment");
             }
             if(push_var((yyvsp[-1].type))!=0){// == 0 : acc , == x : error in line x 
                 // error_type = 30;
@@ -1575,8 +1575,8 @@ yyreduce:
                            {
             (yyval.type) = getNode("ParamDec", 2, (yyvsp[-1].type), (yyvsp[0].type));
             if(assign_type((yyvsp[-1].type), (yyvsp[0].type)) == 0){
-                error_type = 50;
-                yyerror("unmatching type on both sides of assignment");
+                // error_type = 50;
+                // yyerror("unmatching type on both sides of assignment");
             }
             extend_var((yyval.type), (yyvsp[0].type));   
         }
@@ -1731,8 +1731,8 @@ yyreduce:
                             {
         (yyval.type) = getNode("Def", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));
         if(assign_type((yyvsp[-2].type), (yyvsp[-1].type)) == 0){
-            error_type = 50;
-            yyerror("unmatching type on both sides of assignment");
+            // error_type = 50;
+            // yyerror("unmatching type on both sides of assignment");
         }
         extend_var((yyval.type), (yyvsp[-1].type));
         if(push_var((yyvsp[-1].type))!=0){// == 0 : acc , == x : error in line x 
@@ -1796,8 +1796,8 @@ yyreduce:
                         {
         (yyval.type) = getNode("Dec", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));
         if(assign_type((yyvsp[0].type), (yyvsp[-2].type)) == 0){
-            error_type = 50;
-            yyerror("unmatching type on both sides of assignment");
+            // error_type = 50;
+            // yyerror("unmatching type on both sides of assignment");
         }
         extend_var((yyval.type), (yyvsp[-2].type));
         

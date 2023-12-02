@@ -1,1 +1,0 @@
-./splc < ../test/mytest.spl > ../test/myout.out
