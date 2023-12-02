@@ -122,6 +122,7 @@ int push_fun(nodePointer fun_node){
     if(store_Fun(fun_node->var->name, fun_node->var)){
         return 0;
     }
+    fflush(stdout);
     return fun_node->line;
 }
 
@@ -202,14 +203,52 @@ int check_fun_varlist(nodePointer fun, nodePointer varlist){
     return 1;
 }
 
-void assign_type(nodePointer type_provider, nodePointer var_head){
+struct Type* get_int_type(){
+    struct Type* type = (struct Type*)malloc(sizeof(struct Type));
+    type->contain = NULL;
+    type->hash = 2;
+    type->isStruct = 'V';
+    type->type_name = (char*)malloc(30*sizeof(char));
+    strcpy(type->type_name, "int");
+    return type;
+}
+
+void generate_exp_var(nodePointer exp, struct Type* type){
+    struct Var* var = NULL;
+    if(exp->var == NULL){
+        var = (struct Var*)malloc(sizeof(struct Var));
+    }else{
+        var = exp->var;
+        var -> type = type;
+        return;
+    }
+    
+    var -> dim = 0;
+    var -> head = NULL;
+    var -> next = NULL;
+    var -> name = (char*)malloc(30*sizeof(char));
+    strcpy(var->name, "-expression");
+    var->type = type;
+    exp->var = var;
+    exp->type = type;
+}
+
+int assign_type(nodePointer type_provider, nodePointer var_head){
     //print_var(var_head -> var, 0);
     struct Var* var = var_head->var;
     struct Type* type = type_provider -> type;
+    if(type == NULL)return 1;
+    type->hash = get_hash(type);
+    int ret = 1;
     while(var != NULL){
+        if(var->type != NULL){
+            var->type->hash = get_hash(var->type);
+            if(var->type->hash != type->hash)ret = 0;
+        }
         var -> type = type;
         var = var -> next;
     }
+    return ret;
 }
 
 void extend_type(nodePointer to, nodePointer from){
@@ -289,19 +328,21 @@ struct Var* check_fun_def(nodePointer node){
 }
 
 int check_boolean(nodePointer node1, nodePointer node2){
+    if(node1->type == NULL || node2->type == NULL)return -1;
     if(check_assign_type(node1, node2) == 0)return 0;
     if (strcmp(node1 -> type->type_name, "int") == 0)return 1;
     return 0;
 }
 
 int check_arithmetic(nodePointer node1, nodePointer node2){
+    if(node1->type == NULL || node2->type == NULL)return -1;
     if(check_assign_type(node1, node2) == 0)return 0;
     if (strcmp(node1 -> type->type_name, "int") == 0 || strcmp(node1 -> type->type_name, "float") == 0)return 1;
     return 0;
 }
 
 int check_assign_type(nodePointer lnode, nodePointer rnode){
-    if(lnode -> type == NULL || rnode -> type == NULL)return 0;
+    if(lnode -> type == NULL || rnode -> type == NULL)return -1;
     if(lnode -> type -> hash == rnode -> type -> hash)return 1;
     return 0;
 }
@@ -309,9 +350,7 @@ int check_assign_type(nodePointer lnode, nodePointer rnode){
 int check_rvalue(nodePointer node){
     //print_var(node -> var, 0);
     if(node->var == NULL || node->type == NULL)return 0;
-    if(node -> var -> name == NULL && strcmp(node->var->type->type_name, "int") == 0)return 1;
-    if(node -> var -> name == NULL && strcmp(node->var->type->type_name, "float") == 0)return 1;
-    if(node -> var -> name == NULL && strcmp(node->var->type->type_name, "char") == 0)return 1;
+    if(node -> var -> name == NULL || strcmp(node -> var -> name, "-expression") == 0)return 1;
     return 0;
 }
 

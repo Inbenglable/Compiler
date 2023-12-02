@@ -1,5 +1,12 @@
-struct Student
+int sum(int x, int y)
 {
-    int weight;
-    float weight;
-};
+  int res = x + y + Z;
+  return res;
+}
+int test_2_r01()
+{
+  int a1 = 1;
+  float b = 8;
+  b = sum(a1, b, a1);
+  return 0.3;
+}

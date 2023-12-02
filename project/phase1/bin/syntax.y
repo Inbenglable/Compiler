@@ -43,7 +43,10 @@ ExtDefList: ExtDef ExtDefList {$$ = getNode("ExtDefList", 2, $1, $2);}
         ;
 ExtDef: Specifier ExtDecList SEMI {
             $$ = getNode("ExtDef", 3, $1, $2, $3);
-            assign_type($1, $2);
+            if(assign_type($1, $2) == 0){
+                error_type = 50;
+                yyerror("unmatching type on both sides of assignment");
+            }
             if(push_var($2)!=0){// == 0 : acc , == x : error in line x 
                 error_type = 30;
                 //char* name = $2->value;
@@ -62,17 +65,10 @@ ExtDef: Specifier ExtDecList SEMI {
       | Specifier error {error_type = 1;yyerror("Missing semicolon ';'");}
       | Specifier FunDec CompSt {
             $$ = getNode("ExtDef", 3, $1, $2, $3);
-
-            writeNode($3, 0);
             assign_funtype($1, $2);
-            if(check_ret_type($1, $3)==0){
-                error_type = 80;
-                yyerror("Return value type mismatches the declared type");                
-            }
-            pop_scope();
             if(push_fun($2)!=0){// == 0 : acc , == x : error in line x 
                 error_type = 40;
-                char* name = $2->value;
+                char* name = $2->var->name;
                 char* msg = (char*)malloc(sizeof(name)+sizeof(char)*100);
                 memset(msg, 0,sizeof(msg));
                 strcat(msg, "\"");
@@ -81,6 +77,15 @@ ExtDef: Specifier ExtDecList SEMI {
                 yyerror(msg);
                 free(msg);
             }
+            if(check_ret_type($1, $3)==0){
+                error_type = 80;
+                yyerror("Return value type mismatches the declared type");                
+            }
+            
+            
+            
+            pop_scope();
+            
         }
       |  error ExtDecList SEMI {error_type = 1; yyerror("Missing specifier");}
       ;
@@ -174,7 +179,10 @@ VarList: ParamDec COMMA VarList {
        ;
 ParamDec: Specifier VarDec {
             $$ = getNode("ParamDec", 2, $1, $2);
-            assign_type($1, $2);
+            if(assign_type($1, $2) == 0){
+                error_type = 50;
+                yyerror("unmatching type on both sides of assignment");
+            }
             extend_var($$, $2);   
         }
         | error VarDec {error_type = 1;yyerror("Missing specifier");}
@@ -228,7 +236,10 @@ DefList: Def DefList {
         ;
 Def: Specifier DecList SEMI {
         $$ = getNode("Def", 3, $1, $2, $3);
-        assign_type($1, $2);
+        if(assign_type($1, $2) == 0){
+            error_type = 50;
+            yyerror("unmatching type on both sides of assignment");
+        }
         extend_var($$, $2);
         if(push_var($2)!=0){// == 0 : acc , == x : error in line x 
             error_type = 30;
@@ -263,13 +274,17 @@ Dec: VarDec {
         }
     | VarDec ASSIGN Exp {
         $$ = getNode("Dec", 3, $1, $2, $3);
+        if(assign_type($3, $1) == 0){
+            error_type = 50;
+            yyerror("unmatching type on both sides of assignment");
+        }
         extend_var($$, $1);
+        
     }
     ;
 
 Exp: Exp ASSIGN Exp {
         $$ = getNode("Exp", 3, $1, $2, $3);
-        
         if(check_rvalue($1) == 1){
             error_type = 60;
             yyerror("rvalue appears on the left-side of assignment");
@@ -278,6 +293,8 @@ Exp: Exp ASSIGN Exp {
             error_type = 50;
             yyerror("unmatching type on both sides of assignment");
         }
+
+        generate_exp_var($$, $1->type);
         
     }
     | Exp AND Exp {$$ = getNode("Exp", 3, $1, $2, $3);
@@ -285,76 +302,97 @@ Exp: Exp ASSIGN Exp {
             error_type = 70;
             yyerror("unmatching operands");
         }
+        generate_exp_var($$, get_int_type());
     }
     | Exp OR Exp {$$ = getNode("Exp", 3, $1, $2, $3);
             if(check_boolean($1, $3) == 0){
-            error_type = 70;
-            yyerror("unmatching operands");
-        }
+                error_type = 70;
+                yyerror("unmatching operands");
+            }
+            generate_exp_var($$, get_int_type());
     }
     | Exp LT Exp {$$ = getNode("Exp", 3, $1, $2, $3);
         if(check_arithmetic($1, $3) == 0){
             error_type = 70;
             yyerror("unmatching operands");
         }
+        generate_exp_var($$, get_int_type());
     }
     | Exp LE Exp {$$ = getNode("Exp", 3, $1, $2, $3);
         if(check_arithmetic($1, $3) == 0){
             error_type = 70;
             yyerror("unmatching operands");
         }
+        generate_exp_var($$, get_int_type());
     }
     | Exp GT Exp {$$ = getNode("Exp", 3, $1, $2, $3);
         if(check_arithmetic($1, $3) == 0){
             error_type = 70;
             yyerror("unmatching operands");
         }
+        generate_exp_var($$, get_int_type());
     }
     | Exp GE Exp {$$ = getNode("Exp", 3, $1, $2, $3);
         if(check_arithmetic($1, $3) == 0){
             error_type = 70;
             yyerror("unmatching operands");
         }
+        generate_exp_var($$, get_int_type());
     }
     | Exp NE Exp {$$ = getNode("Exp", 3, $1, $2, $3);
         if(check_arithmetic($1, $3) == 0){
             error_type = 70;
             yyerror("unmatching operands");
         }
+        generate_exp_var($$, get_int_type());
     }
     | Exp EQ Exp {$$ = getNode("Exp", 3, $1, $2, $3);
         if(check_arithmetic($1, $3) == 0){
             error_type = 70;
             yyerror("unmatching operands");
         }
+        generate_exp_var($$, get_int_type());
     }
     | Exp PLUS Exp {$$ = getNode("Exp", 3, $1, $2, $3);
-        // printf("PLUS\n");
-        // print_type($1->var->type, 0);
-        // printf("PLUS\n");
-        // print_type($3->var->type, 0);
-        fflush(stdout);
         if(check_arithmetic($1, $3) == 0){
             error_type = 70;
             yyerror("unmatching operands");
+            generate_exp_var($$, NULL);
+        }else if(check_arithmetic($1, $3) == -1){
+            generate_exp_var($$, NULL);
+        }else{
+            generate_exp_var($$, $1->type);
         }
     }
     | Exp MINUS Exp {$$ = getNode("Exp", 3, $1, $2, $3);
         if(check_arithmetic($1, $3) == 0){
             error_type = 70;
             yyerror("unmatching operands");
+            generate_exp_var($$, NULL);
+        }else if(check_arithmetic($1, $3) == -1){
+            generate_exp_var($$, NULL);
+        }else{
+            generate_exp_var($$, $1->type);
         }
     }
     | Exp MUL Exp {$$ = getNode("Exp", 3, $1, $2, $3);
         if(check_arithmetic($1, $3) == 0){
             error_type = 70;
             yyerror("unmatching operands");
+            generate_exp_var($$, NULL);
+        }else if(check_arithmetic($1, $3) == -1){
+            generate_exp_var($$, NULL);
+        }else{
+            generate_exp_var($$, $1->type);
         }
     }
     | Exp DIV Exp {$$ = getNode("Exp", 3, $1, $2, $3);
         if(check_arithmetic($1, $3) == 0){
             error_type = 70;
             yyerror("unmatching operands");
+            generate_exp_var($$, NULL);
+        }else{
+            generate_exp_var($$, $1->type);
         }
     }
     | Exp ASSIGN error {error_type = 1; yyerror("Expect expression after '='");}
@@ -380,15 +418,18 @@ Exp: Exp ASSIGN Exp {
             error_type = 70;
             yyerror("unmatching operand");
         }
+        generate_exp_var($$, $1->type);
     }
     | NOT Exp {$$ = getNode("Exp", 2, $1, $2);
         if(check_boolean($2, $2) == 0){
             error_type = 70;
             yyerror("unmatching operand");
         }
+        generate_exp_var($$, get_int_type());
     }
     | ID LP Args RP {
         $$ = getNode("Exp", 4, $1, $2, $3, $4);
+        generate_exp_var($$, NULL);
         $$ -> var = check_fun_def($1);
         if($$ -> var == NULL){
             if(check_ID_def($1) != NULL){
@@ -427,6 +468,7 @@ Exp: Exp ASSIGN Exp {
             if(check_ID_def($1) != NULL){
                 error_type = 110;
                 yyerror("invoking non-function variable");
+                generate_exp_var($$, NULL);
             }
             else{
                 error_type = 20;
@@ -468,16 +510,18 @@ Exp: Exp ASSIGN Exp {
             if(check_struct($1) == 0){
                 error_type = 130;
                 yyerror("accessing members of a non-structure variable");
-                ($$)->type = NULL;
+                generate_exp_var($$, NULL);
             }
             else{
                 struct Type* t = check_field(($1)->type, ($3)->value);
                 if(t == NULL) {
                     error_type = 140;
                     yyerror("accessing an undefined structure member");
-                    ($$)->type = NULL;
+                    generate_exp_var($$, NULL);
                 }else{
-                    ($$)->type = t;
+                    $1->type = $1->var->type = t;
+                    extend_type($$, $1);
+                    extend_var($$, $1);
                 }
             }
         }
@@ -494,9 +538,12 @@ Exp: Exp ASSIGN Exp {
             strcat(msg, "\" is used without a definition");
             yyerror(msg);
             free(msg);
+            generate_exp_var($$, NULL);
+        }else{
+            ($$) -> type = var -> type;
+            ($$) -> var = var;
         }
-        ($$) -> type = var -> type;
-        ($$) -> var = var;
+        
     }
     | INT {$$ = getNode("Exp", 1, $1);
         extend_var($$, $1);

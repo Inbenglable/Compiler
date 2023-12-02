@@ -61,7 +61,7 @@ int getStruct(nodePointer spec, nodePointer id);
 void newFuntype(nodePointer funspec, nodePointer id, nodePointer varlist);
 void assign_funtype(nodePointer fun, nodePointer spec);
 void newStructType(nodePointer spec, nodePointer id, nodePointer varlist);
-void assign_type(nodePointer var_head, nodePointer type_provider);
+int  assign_type(nodePointer var_head, nodePointer type_provider);
 void extend_type(nodePointer to, nodePointer from);
 void connect_var(nodePointer now, nodePointer to);
 void extend_var(nodePointer to, nodePointer from);
@@ -82,6 +82,9 @@ int check_struct(nodePointer node);
 int check_ret_type(nodePointer spec, nodePointer varlist);
 void connect_link_var(nodePointer head, nodePointer ne);
 int check_fun_varlist(nodePointer fun, nodePointer varlist);
+
+struct Type* get_int_type();
+void generate_exp_var(nodePointer exp, struct Type* type);
 
 void writeNode(nodePointer node,int depth);
 void writeTerminalNode(nodePointer node);
