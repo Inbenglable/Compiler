@@ -181,6 +181,27 @@ void newStructType(nodePointer spec, nodePointer id, nodePointer varlist){
     spec -> type = temp;
 }
 
+int check_fun_varlist(nodePointer fun, nodePointer varlist){
+    struct Var* funvar = fun->var->next;
+    struct Var* var = varlist->var;
+    while(funvar != NULL){
+        if(var == NULL){
+            return -1;
+        }
+        var->type->hash = get_hash(var->type);
+        funvar->type->hash = get_hash(funvar->type);
+        if(funvar->type->hash != var->type->hash){
+            return 0;
+        }
+        funvar = funvar->next;
+        var = var->next;
+    }
+    if(var != NULL){
+        return -1;
+    }
+    return 1;
+}
+
 void assign_type(nodePointer type_provider, nodePointer var_head){
     //print_var(var_head -> var, 0);
     struct Var* var = var_head->var;
@@ -199,6 +220,41 @@ void connect_var(nodePointer now, nodePointer to){
     now -> var -> next = to -> var;
 }
 
+int check_ret_type(nodePointer spec, nodePointer varlist){
+    spec->type->hash = get_hash(spec->type);
+
+    struct Var* var = varlist->var;
+
+    if(var == NULL)return 0;
+
+    while(var != NULL){
+        if(var -> type == NULL)continue;
+        var->type->hash = get_hash(var->type);
+        if(var->type->hash != spec->type->hash)return 0;
+        var = var->next;
+    }
+
+    return 1;
+
+}
+
+void connect_link_var(nodePointer head, nodePointer ne){
+    if(head -> var == NULL){
+        head -> var = ne -> var;
+        return;
+    }
+    // printf("Head\n");
+    // print_var(head->var, 0);
+    // printf("ne\n");
+    // print_var(ne->var, 0);
+    fflush(stdout);
+    struct Var* var = head->var;
+    while(var->next != NULL){
+        var = var->next;
+    }
+    var->next = ne->var;
+}
+
 void extend_var(nodePointer to, nodePointer from){
     to -> var = from -> var;
 }
@@ -212,11 +268,8 @@ struct Var* check_ID_def(nodePointer node){
     return var;
 }
 
-int check_fun_def(nodePointer node){
-    if(query_Fun(node -> var -> name) != NULL){
-        return 1;
-    }
-    return 0;
+struct Var* check_fun_def(nodePointer node){
+    return query_Fun(node -> var -> name);
 }
 
 int check_boolean(nodePointer node1, nodePointer node2){
@@ -242,9 +295,8 @@ int check_assign_type(nodePointer lnode, nodePointer rnode){
 }
 
 int check_rvalue(nodePointer node){
-    print_var(node -> var, 0);
+    //print_var(node -> var, 0);
     if(node->var == NULL || node->type == NULL)return 0;
-    
     if(node -> var -> name == NULL && strcmp(node->var->type->type_name, "int") == 0)return 1;
     if(node -> var -> name == NULL && strcmp(node->var->type->type_name, "float") == 0)return 1;
     if(node -> var -> name == NULL && strcmp(node->var->type->type_name, "char") == 0)return 1;

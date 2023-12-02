@@ -62,7 +62,13 @@ ExtDef: Specifier ExtDecList SEMI {
       | Specifier error {error_type = 1;yyerror("Missing semicolon ';'");}
       | Specifier FunDec CompSt {
             $$ = getNode("ExtDef", 3, $1, $2, $3);
+
+            writeNode($3, 0);
             assign_funtype($1, $2);
+            if(check_ret_type($1, $3)==0){
+                error_type = 80;
+                yyerror("Return value type mismatches the declared type");                
+            }
             pop_scope();
             if(push_fun($2)!=0){// == 0 : acc , == x : error in line x 
                 error_type = 40;
@@ -175,17 +181,27 @@ ParamDec: Specifier VarDec {
         | Specifier error {error_type = 1;yyerror("Missing variable name");}
          ;
 
-CompSt: LC DefList StmtList RC {$$ = getNode("CompSt", 4, $1, $2, $3, $4);}
+CompSt: LC DefList StmtList RC {$$ = getNode("CompSt", 4, $1, $2, $3, $4);
+            extend_var($$, $3);
+        }
     //   | LC DefList StmtList error {error_type = 1;yyerror("Missing closing symbol '}'");}
       ;
-StmtList: Stmt StmtList {$$ = getNode("StmtList", 2, $1, $2);}
+StmtList: Stmt StmtList {
+            $$ = getNode("StmtList", 2, $1, $2);
+            connect_link_var($1, $2);
+            extend_var($$, $1);
+        }
         |{$$=getTerminalNode("StmtList", -1);}
         ;
 Stmt: SEMI {$$ = getNode("Stmt", 1, $1);}
     | Exp SEMI {$$ = getNode("Stmt", 2, $1, $2);}
     | Exp error {error_type = 1;yyerror("Missing semicolon ';'");}
-    | CompSt {$$ = getNode("Stmt", 1, $1);}
-    | RETURN Exp SEMI {$$ = getNode("Stmt", 3, $1, $2, $3);}
+    | CompSt {$$ = getNode("Stmt", 1, $1);
+        extend_var($$, $1);
+    }
+    | RETURN Exp SEMI {$$ = getNode("Stmt", 3, $1, $2, $3);
+        extend_var($$, $2);
+    }
     | RETURN Exp error {error_type = 1;yyerror("Missing semicolon ';'");}
     | IF LP Exp RP Stmt %prec LOWER_THAN_ELSE {$$ = getNode("Stmt", 5, $1, $2, $3, $4, $5);}
     | IF LP Exp error Stmt %prec LOWER_THAN_ELSE {error_type = 1;yyerror("This if function miss closing symbol ')'");}
@@ -213,9 +229,7 @@ DefList: Def DefList {
 Def: Specifier DecList SEMI {
         $$ = getNode("Def", 3, $1, $2, $3);
         assign_type($1, $2);
-        //print_var(($2)->var, 0);
         extend_var($$, $2);
-        //print_var(($$)->var, 0);
         if(push_var($2)!=0){// == 0 : acc , == x : error in line x 
             error_type = 30;
             //char* name = $2->value;
@@ -315,10 +329,10 @@ Exp: Exp ASSIGN Exp {
         }
     }
     | Exp PLUS Exp {$$ = getNode("Exp", 3, $1, $2, $3);
-        printf("PLUS\n");
-        print_type($1->var->type, 0);
-        printf("PLUS\n");
-        print_type($3->var->type, 0);
+        // printf("PLUS\n");
+        // print_type($1->var->type, 0);
+        // printf("PLUS\n");
+        // print_type($3->var->type, 0);
         fflush(stdout);
         if(check_arithmetic($1, $3) == 0){
             error_type = 70;
@@ -375,7 +389,8 @@ Exp: Exp ASSIGN Exp {
     }
     | ID LP Args RP {
         $$ = getNode("Exp", 4, $1, $2, $3, $4);
-        if(check_fun_def($1) == 0){
+        $$ -> var = check_fun_def($1);
+        if($$ -> var == NULL){
             error_type = 20;
             char* name = $1->value;
             char* msg = (char*)malloc(sizeof(name)+sizeof(char)*100);
@@ -385,7 +400,19 @@ Exp: Exp ASSIGN Exp {
             strcat(msg, "\" is invoked without a definition");
             yyerror(msg);
             free(msg);
+        }else{
+            $$->type = $$->var->type;
+            int chk = check_fun_varlist($$, $3);
+            if(chk == 0){
+                error_type = 90;
+                yyerror("Function's Argument(s) type mismatch the declared parameters");
+            }else if (chk == -1){
+                error_type = 90;
+                yyerror("Function's Argument(s) number mismatch the declared parameters");
+            }
         }
+
+
     }
     | ID LP Args error {error_type = 1;yyerror("Missing closing symbol ')'");}
     | ID LP RP {
@@ -444,11 +471,16 @@ Exp: Exp ASSIGN Exp {
         extend_type($$, $1);
     }
     ;
-Args: Exp COMMA Args {$$ = getNode("Args", 3, $1, $2, $3);}
+Args: Exp COMMA Args {$$ = getNode("Args", 3, $1, $2, $3);
+        connect_var($1, $3);
+        extend_var($$, $1);
+    }
 //    | Exp error Args {error_type = 1;yyerror("Missing comma ','");}
     | COMMA Args {error_type = 1;yyerror("Unexpected ','");}
     | Exp COMMA {error_type = 1;yyerror("Expected another parenthesis after ','");}
-    | Exp {$$ = getNode("Args", 1, $1);}
+    | Exp {$$ = getNode("Args", 1, $1);
+        extend_var($$, $1);
+    }
     ;
 
 %%
