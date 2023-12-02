@@ -1007,16 +1007,22 @@ YY_RULE_SETUP
 case 38:
 YY_RULE_SETUP
 #line 61 "my_lex.l"
-{ yylval.type = getTerminalNode("LC", yylineno) ; return LC; new_scope();}
+{ yylval.type = getTerminalNode("LC", yylineno);
+    new_scope();
+    return LC;
+}
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 62 "my_lex.l"
-{ yylval.type = getTerminalNode("RC", yylineno); return RC; pop_scope();}
+#line 65 "my_lex.l"
+{ yylval.type = getTerminalNode("RC", yylineno);
+    pop_scope();
+    return RC;
+    }
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 63 "my_lex.l"
+#line 69 "my_lex.l"
 { 
   int c;
   while((c = input()) != '\n');
@@ -1025,7 +1031,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 68 "my_lex.l"
+#line 74 "my_lex.l"
 { 
   int c;
   while(1){
@@ -1042,7 +1048,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 82 "my_lex.l"
+#line 88 "my_lex.l"
 { 
   error_type=0;
   sprintf(tmp,"Illegal hex char: %s",yytext);
@@ -1053,7 +1059,7 @@ return CHAR;
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 89 "my_lex.l"
+#line 95 "my_lex.l"
 {
   error_type=0;
     yylval.type = getTerminalNode("ERROR", yylineno);
@@ -1064,7 +1070,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 96 "my_lex.l"
+#line 102 "my_lex.l"
 {
   error_type=0;
     yylval.type = getTerminalNode("ERROR", yylineno);
@@ -1075,7 +1081,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 103 "my_lex.l"
+#line 109 "my_lex.l"
 { 
   error_type=0;
     yylval.type = getTerminalNode("ERROR", yylineno);
@@ -1086,7 +1092,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 110 "my_lex.l"
+#line 116 "my_lex.l"
 { 
   error_type=0;
     yylval.type = getTerminalNode("ERROR", yylineno);
@@ -1097,7 +1103,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 118 "my_lex.l"
+#line 124 "my_lex.l"
 {
   error_type=0;
     yylval.type = getTerminalNode("ERROR", yylineno);
@@ -1108,7 +1114,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 126 "my_lex.l"
+#line 132 "my_lex.l"
 {
   error_type=0;
     yylval.type = getTerminalNode("ERROR", yylineno);
@@ -1119,10 +1125,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 134 "my_lex.l"
+#line 140 "my_lex.l"
 ECHO;
 	YY_BREAK
-#line 1126 "lex.yy.c"
+#line 1132 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2127,7 +2133,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 134 "my_lex.l"
+#line 140 "my_lex.l"
 
 
 int yywrap()
