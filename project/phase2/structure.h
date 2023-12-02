@@ -24,7 +24,7 @@ struct Var{
     int dim; // deep of the array, 0 if it is a variable
     int line;
     struct Type* type;
-    struct Var *head, *next;
+    struct Var *next;
 };
 
 
