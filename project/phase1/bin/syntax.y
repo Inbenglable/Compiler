@@ -391,15 +391,21 @@ Exp: Exp ASSIGN Exp {
         $$ = getNode("Exp", 4, $1, $2, $3, $4);
         $$ -> var = check_fun_def($1);
         if($$ -> var == NULL){
-            error_type = 20;
-            char* name = $1->value;
-            char* msg = (char*)malloc(sizeof(name)+sizeof(char)*100);
-            memset(msg, 0,sizeof(msg));
-            strcat(msg, "\"");
-            strcat(msg, name);
-            strcat(msg, "\" is invoked without a definition");
-            yyerror(msg);
-            free(msg);
+            if(check_ID_def($1) != NULL){
+                error_type = 110;
+                yyerror("invoking non-function variable");
+            }
+            else{
+                error_type = 20;
+                char* name = $1->value;
+                char* msg = (char*)malloc(sizeof(name)+sizeof(char)*100);
+                memset(msg, 0,sizeof(msg));
+                strcat(msg, "\"");
+                strcat(msg, name);
+                strcat(msg, "\" is invoked without a definition");
+                yyerror(msg);
+                free(msg);
+            }
         }else{
             $$->type = $$->var->type;
             int chk = check_fun_varlist($$, $3);
@@ -418,27 +424,61 @@ Exp: Exp ASSIGN Exp {
     | ID LP RP {
         $$ = getNode("Exp", 3, $1, $2, $3);
         if(check_fun_def($1) == 0){
-            error_type = 20;
-            char* name = $1->value;
-            char* msg = (char*)malloc(sizeof(name)+sizeof(char)*100);
-            memset(msg, 0,sizeof(msg));
-            strcat(msg, "\"");
-            strcat(msg, name);
-            strcat(msg, "\" is invoked without a definition");
-            yyerror(msg);
-            free(msg);
+            if(check_ID_def($1) != NULL){
+                error_type = 110;
+                yyerror("invoking non-function variable");
+            }
+            else{
+                error_type = 20;
+                char* name = $1->value;
+                char* msg = (char*)malloc(sizeof(name)+sizeof(char)*100);
+                memset(msg, 0,sizeof(msg));
+                strcat(msg, "\"");
+                strcat(msg, name);
+                strcat(msg, "\" is invoked without a definition");
+                yyerror(msg);
+                free(msg);
+            }
         }
     }
     | ID LP error {error_type = 1;yyerror("Missing closing symbol ')'");}
-    | Exp LB Exp RB {$$ = getNode("Exp", 4, $1, $2, $3, $4);}
+    | Exp LB Exp RB {
+        $$ = getNode("Exp", 4, $1, $2, $3, $4);
+        if(check_dim($1) == 0){
+            ($$)->type = NULL;
+            if(($$)->var!=NULL){
+                ($$)->var->type = NULL;
+            }
+            error_type = 100;
+            yyerror("applying indexing operator ([…]) on non-array type variable");
+        }
+        else{
+            ($$)->type = ($1)->type;
+            ($$)->var = ($1)->var;
+            reduce_dim($$);
+        }
+        if(check_index($3) == 0){
+            error_type = 120;
+            yyerror("array indexing with a non-integer type expression");
+        }
+    }
     | Exp LB Exp error {error_type = 1;yyerror("Missing closing symbol ']'");}
     | Exp DOT ID {
             $$ = getNode("Exp", 3, $1, $2, $3);
-            struct Type* t = check_field(($1)->type, ($3)->value);
-            if(t == NULL) {
-                //yyerror
-            }else{
-                ($$)->type = t;
+            if(check_struct($1) == 0){
+                error_type = 130;
+                yyerror("accessing members of a non-structure variable");
+                ($$)->type = NULL;
+            }
+            else{
+                struct Type* t = check_field(($1)->type, ($3)->value);
+                if(t == NULL) {
+                    error_type = 140;
+                    yyerror("accessing an undefined structure member");
+                    ($$)->type = NULL;
+                }else{
+                    ($$)->type = t;
+                }
             }
         }
     | ID {
