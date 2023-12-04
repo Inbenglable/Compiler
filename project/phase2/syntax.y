@@ -476,6 +476,7 @@ Exp: Exp ASSIGN Exp {
     | ID LP RP {
         $$ = getNode("Exp", 3, $1, $2, $3);
         struct Var* var = check_fun_def($1);
+        generate_exp_var($$, NULL);
         if(var == NULL){
             if(check_ID_def($1) != NULL){
                 error_type = 110;
@@ -498,7 +499,8 @@ Exp: Exp ASSIGN Exp {
             error_type = 90;
             yyerror("invalid argument number");
         }
-        generate_exp_var($$, var->type);
+        if(var != NULL)generate_exp_var($$, var->type);
+        else generate_exp_var($$, NULL);
     }
     | ID LP error {error_type = 1;yyerror("Missing closing symbol ')'");}
     | Exp LB Exp RB {
