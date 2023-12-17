@@ -1,3 +1,0 @@
-int a(int b, struct A b){
-    return 1;
-}

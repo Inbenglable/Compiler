@@ -1,8 +1,0 @@
-int foo(int i){
-    int i = 1;
-    return i;
-}
-int main(){
-    foo(1);
-    return 0;
-}
