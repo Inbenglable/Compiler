@@ -1,0 +1,16 @@
+char upchar(char a){
+    int b = a;
+    a = a+26;
+    return a;
+}
+
+int upchar(){
+    int a = 1;
+    int b = 1;
+}
+
+char lowchar(char a){
+    char ret;
+    a[2]-26 = ret;
+    return ret;
+}

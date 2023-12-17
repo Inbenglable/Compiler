@@ -1,0 +1,10 @@
+struct foo{
+    int foo;
+} foo;
+float foo(int foo){
+    return 0.0;
+}
+int main(){
+    foo.foo = 0;
+    return 0;
+}
