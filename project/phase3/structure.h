@@ -48,8 +48,8 @@ struct Node{
     char* value;
     struct Type* type;
     struct Var* var;
-    struct Code* head;
-    struct Code* tail;
+    struct Code* code_head;
+    struct Code* code_tail;
     char* tmp_name;
 };
 
