@@ -4,6 +4,7 @@
     #include<stdio.h>   
     #include "structure.h"
     #include "symbol_table.h"
+    #include "ir_translate.h"
     int yylex();
 %}
 
@@ -34,8 +35,7 @@
 
 Program: ExtDefList {
     $$ = getNode("Program", 1, $1);
-    if(!hasError);
-        //writeNode($$, 0);
+    root = $$;
     }
         ;
 ExtDefList: ExtDef ExtDefList {$$ = getNode("ExtDefList", 2, $1, $2);}

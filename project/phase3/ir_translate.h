@@ -29,7 +29,7 @@ struct Code{
     type 17: READ tk1
     type 18: WRITE tk1
     */
-    struct Code* tk1;
+    char* tk1;
     int relop;
     /*
     relop 0: <
@@ -39,8 +39,8 @@ struct Code{
     relop 4: !=
     relop 5: ==
     */
-    struct Code* tk2;
-    struct Code* tk3;
+    char* tk2;
+    char* tk3;
     int is_const;
     int value;
     int is_tmp;
@@ -57,5 +57,11 @@ char* new_tmp_name();
 struct Code* construct(int type, char* tk1, int relop, char* tk2, char* tk3);
 struct Code* append(struct Code* code1_head, struct Code* code1_tail, struct Code* code2_head, struct Code* code2_tail);
 void dump(struct Code* head, char* filename);
+void translate(struct Node* node, char* filename);
+
+/////////////////
+int char_to_int(const char* str);
+int var_to_int(const char* str);
+int start_with_hash(const char* str);
 
 #endif // !__IR_TRANSLATE__

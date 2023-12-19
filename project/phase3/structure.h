@@ -54,6 +54,9 @@ struct Node{
 };
 
 typedef struct Node* nodePointer;
+
+extern nodePointer root;
+
 void print_var(struct Var* var, int deep);
 void print_type(struct Type* type, int deep);
 

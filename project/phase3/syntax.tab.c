@@ -74,9 +74,10 @@
     #include<stdio.h>   
     #include "structure.h"
     #include "symbol_table.h"
+    #include "ir_translate.h"
     int yylex();
 
-#line 80 "syntax.tab.c"
+#line 81 "syntax.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -556,7 +557,7 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int16 yyrline[] =
 {
-       0,    35,    35,    41,    42,    44,    63,    64,    65,    66,
+       0,    36,    36,    41,    42,    44,    63,    64,    65,    66,
       79,    83,    87,    92,    93,    95,   114,   118,   123,   133,
      142,   146,   151,   155,   161,   165,   166,   168,   173,   178,
      186,   187,   190,   195,   200,   202,   203,   204,   205,   208,
@@ -1310,11 +1311,10 @@ yyreduce:
   switch (yyn)
     {
   case 2: /* Program: ExtDefList  */
-#line 35 "syntax.y"
+#line 36 "syntax.y"
                     {
     (yyval.type) = getNode("Program", 1, (yyvsp[0].type));
-    if(!hasError);
-        writeNode((yyval.type), 0);
+    root = (yyval.type);
     }
 #line 1320 "syntax.tab.c"
     break;

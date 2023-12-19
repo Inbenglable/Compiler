@@ -1,4 +1,5 @@
 #include "ir_translate.h"
+#include "structure.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -130,6 +131,10 @@ void dump(struct Code* head, char* filename){
         head = head->next;
     }
     fclose(fp);
+}
+
+void translate(struct Node* node, char* filename){
+    printf("Translation requires implementation, the name of the root is %s, the translation result will be output to %s\n", node->name, filename);
 }
 
 

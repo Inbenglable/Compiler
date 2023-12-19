@@ -10,6 +10,8 @@ int hasError = 0;
 int error_type = -1;
 int error_line = -1;
 
+nodePointer root = NULL;
+
 void print_var(struct Var* var, int deep);
 void print_type(struct Type* type, int deep){
     if(type == NULL)return;
@@ -572,5 +574,16 @@ int main(int argc, char **argv) {
         fclose(f);
         
     }
+    char* out_file = (char*)malloc(sizeof(char)*strlen(argv[1]));
+    memset(out_file, 0, sizeof(out_file));
+    strcat(out_file, argv[1]);
+    for(int i = strlen(out_file)-1;i >= 0;i--){
+        if(out_file[i] == '.'){
+            out_file[i] = '\0';
+            break;
+        }
+    }
+    strcat(out_file, ".ir");
+    translate(root, out_file);
     //clear_symbol_table();
 }
