@@ -57,6 +57,8 @@ typedef struct Node* nodePointer;
 void print_var(struct Var* var, int deep);
 void print_type(struct Type* type, int deep);
 
+char* get_son_list(nodePointer node);
+
 nodePointer getTerminalNode(char *name, int line);
 nodePointer getIDNode(char *name, int line);
 nodePointer getTypeNode(char *name, int line);
