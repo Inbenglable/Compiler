@@ -1,4 +1,5 @@
 #include "ir_translate.h"
+#include <stdio.h>
 
 int label_count = 0;
 int tmp_count = 0;
