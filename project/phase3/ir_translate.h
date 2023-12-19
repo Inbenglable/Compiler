@@ -1,12 +1,9 @@
 #include "structure.h"
-#include <stdlib.h>
-#include <string.h>
-#include <stdarg.h>
 
 #ifndef __IR_TRANSLATE__
 #define __IR_TRANSLATE__
 
-typedef struct Code;
+typedef struct Code Code;
 
 struct Code{
     struct Code* from;
@@ -61,4 +58,4 @@ struct Code* construct(int type, char* tk1, int relop, char* tk2, char* tk3);
 struct Code* append(struct Code* code1_head, struct Code* code1_tail, struct Code* code2_head, struct Code* code2_tail);
 void dump(struct Code* head, char* filename);
 
-#endif __IR_TRANSLATE__
+#endif // !__IR_TRANSLATE__

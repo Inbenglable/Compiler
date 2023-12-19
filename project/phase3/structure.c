@@ -33,7 +33,7 @@ void print_var(struct Var* var, int deep){
 
 char* get_son_list(nodePointer node){
     if(node == NULL)return NULL;
-    char* ret = (char*)malloc(sizeof(char)*100);
+    char* ret = (char*)malloc(sizeof(char)*200);
     memset(ret, 0, sizeof(ret));
     nodePointer son = node->head;
     while(son != NULL){
@@ -519,7 +519,7 @@ void writeNode(nodePointer node,int deep){
     }
 
     if(node -> head != NULL){
-        printf("%s (%d)\n",node->name, node -> line);
+        printf("%s (%d, %s)\n",node->name, node -> line, get_son_list(node));
         writeNode(node->head,deep+1);
         writeNode(node->next,deep);
     }else{

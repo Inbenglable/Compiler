@@ -1,35 +1,38 @@
 #include "ir_translate.h"
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdarg.h>
 
 int label_count = 0;
 int tmp_count = 0;
 
 char* to_literal(int val){
-    char* ret = (char*)malloc(sizeof(char) * 20);
+    char* ret = (char*)malloc(sizeof(char) * 30);
     sprintf(ret, "#%d", val);
     return ret;
 }
 
 char* to_size(int val){
-    char* ret = (char*)malloc(sizeof(char) * 20);
+    char* ret = (char*)malloc(sizeof(char) * 30);
     sprintf(ret, "%d", val);
     return ret;
 }
 
 char* to_var(char* name){
-    char* ret = (char*)malloc(sizeof(char) * 20);
+    char* ret = (char*)malloc(sizeof(char) * 30);
     sprintf(ret, "var_%s", name);
     return ret;
 }
 
 char* new_label_name(){
-    char* ret = (char*)malloc(sizeof(char) * 20);
+    char* ret = (char*)malloc(sizeof(char) * 30);
     sprintf(ret, "label_%d", label_count++);
     return ret;
 }
 
 char* new_tmp_name(){
-    char* ret = (char*)malloc(sizeof(char) * 20);
+    char* ret = (char*)malloc(sizeof(char) * 30);
     sprintf(ret, "tmp_%d", tmp_count++);
     return ret;
 }
