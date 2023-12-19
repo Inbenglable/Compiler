@@ -210,10 +210,43 @@ struct Code* translate_cond(struct Node* node, char* label_true, char* label_fal
 
 struct Code* translate_stmt(struct Node* node){
     char* son_list = get_son_list(node);
+    if(strcmp(son_list, "ExpSEMI") == 0){
+
+    }
+    else if(strcmp(son_list, "ExpSEMI") == 0){
+
+    }
+    else if(strcmp(son_list, "CompSt") == 0){
+
+    }
+    else if(strcmp(son_list, "RETURNExpSEMI") == 0){
+
+    }
+    else if(strcmp(son_list, "IFLPExpRPStmt") == 0){
+
+    }
+    else if(strcmp(son_list, "IFLPExpRPStmtELSEStmt") == 0){
+
+    }
+    else if(strcmp(son_list, "WHILELPExpRPStmt") == 0){
+
+    }
+    else{
+
+    }
 }
 
 struct Code* translate_args(struct Node* node, struct ArgList** arg_list){
     char* son_list = get_son_list(node);
+    if(strcmp(son_list, "Exp") == 0){
+
+    }
+    else if(strcmp(son_list, "ExpCOMMAArgs") == 0){
+
+    }
+    else{
+
+    }
 }
 
 void translate(struct Node* node, char* filename){
