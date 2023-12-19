@@ -25,7 +25,7 @@ struct Code{
     type 10: GOTO tk1
     type 11: IF tk1 relop tk2 GOTO tk3
     type 12: RETURN tk1
-    type 13: DEC tk1 tk2
+    type 13: DEC tk1 size
     type 14: PARAM tk1
     type 15: ARG tk1
     type 16: tk1 := CALL tk2
@@ -50,9 +50,15 @@ struct Code{
     struct Code* next;
 };
 
+extern int label_count, tmp_count;
+
 char* to_literal(int val);
+char* to_size(int val);
 char* to_var(char* name);
-struct Code* construct(int type, struct Code* tk1, int relop, struct Code* tk2, struct Code* tk3);
+char* new_label_name();
+char* new_tmp_name();
+struct Code* construct(int type, char* tk1, int relop, char* tk2, char* tk3);
 struct Code* append(struct Code* code1_head, struct Code* code1_tail, struct Code* code2_head, struct Code* code2_tail);
+void dump(struct Code* head, char* filename);
 
 #endif __IR_TRANSLATE__
