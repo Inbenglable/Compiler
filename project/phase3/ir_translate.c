@@ -133,6 +133,47 @@ void dump(struct Code* head, char* filename){
     fclose(fp);
 }
 
+struct Code* translate_exp(struct Node* node, char* place){
+    char* son_list = get_son_list(node);
+    if(strcmp(son_list, "INT") == 0){
+
+    }
+    else if(strcmp(son_list, "ID") == 0){
+
+    }
+    else if(strcmp(son_list, "ExpPLUSExp") == 0){
+
+    }
+    else if(strcmp(son_list, "ExpMINUSExp") == 0){
+
+    }
+    else if(strcmp(son_list, "ExpMULExp") == 0){
+
+    }
+    else if(strcmp(son_list, "ExpDIVExp") == 0){
+
+    }
+    else if(strcmp(son_list, "LPExpRP") == 0){
+
+    }
+    
+    else{
+
+    }
+}
+
+struct Code* translate_cond(struct Node* node, char* label_true, char* label_false){
+    char* son_list = get_son_list(node);
+}
+
+struct Code* translate_stmt(struct Node* node){
+    char* son_list = get_son_list(node);
+}
+
+struct Code* translate_args(struct Node* node, struct ArgList** arg_list){
+    char* son_list = get_son_list(node);
+}
+
 void translate(struct Node* node, char* filename){
     printf("Translation requires implementation, the name of the root is %s, the translation result will be output to %s\n", node->name, filename);
 }

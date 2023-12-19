@@ -4,6 +4,7 @@
 #define __IR_TRANSLATE__
 
 typedef struct Code Code;
+typedef struct ArgList ArgList;
 
 struct Code{
     struct Code* from;
@@ -47,6 +48,11 @@ struct Code{
     struct Code* next;
 };
 
+struct ArgList{
+    char* name;
+    struct ArgList* next;
+};
+
 extern int label_count, tmp_count;
 
 char* to_literal(int val);
@@ -57,6 +63,10 @@ char* new_tmp_name();
 struct Code* construct(int type, char* tk1, int relop, char* tk2, char* tk3);
 struct Code* append(struct Code* code1_head, struct Code* code1_tail, struct Code* code2_head, struct Code* code2_tail);
 void dump(struct Code* head, char* filename);
+struct Code* translate_exp(struct Node* node, char* place);
+struct Code* translate_cond(struct Node* node, char* label_true, char* label_false);
+struct Code* translate_stmt(struct Node* node);
+struct Code* translate_args(struct Node* node, struct ArgList** arg_list);
 void translate(struct Node* node, char* filename);
 
 /////////////////
