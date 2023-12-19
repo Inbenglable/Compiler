@@ -60,14 +60,6 @@ struct Code* append(struct Code* code1_head, struct Code* code1_tail, struct Cod
     return code1_head;
 }
 
-
-
-///////////////////////////////////////////////////////////////////////////////////////
-
-//By radiance: 我写的部分都写下面好了
-
-
-
 void dump(struct Code* head, char* filename){
     FILE* fp = fopen(filename, "w");
     while(head != NULL){
@@ -134,3 +126,8 @@ void dump(struct Code* head, char* filename){
     }
     fclose(fp);
 }
+
+
+///////////////////////////////////////////////////////////////////////////////////////
+
+//By radiance: 我写的部分都写下面好了
