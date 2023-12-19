@@ -7,7 +7,7 @@
 ScopeStack *top;
 Treap *symbol_treap, *type_treap, *fun_treap;
 
-int disable_new_scope = 0;
+int disable_new_scope = 1;
 
 
 void init_symbol_table(){
@@ -38,7 +38,6 @@ void disable_scope(){
 void new_scope(){
     ////printf("new scope\n");
     if(disable_new_scope){
-        disable_new_scope = 0;
         return;
     }
     ScopeStack* new_node = (ScopeStack*)malloc(sizeof(ScopeStack));
@@ -51,6 +50,9 @@ void new_scope(){
 
 void pop_scope(){
     //printf("pop scope\n");
+    if(disable_new_scope){
+        return;
+    }
     IntermediateLink* l1 = top->link_start;
     while(l1!=NULL){
         l1->from->link = l1->next_scope;
