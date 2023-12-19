@@ -5,6 +5,7 @@ tmp1919 := tmp114 - tmp514
 WRITE tmp1919
 RETURN #0
 FUNCTION main :
+DEC tmp14 40
 READ jshfjlae[114514]
 tmp2 := #0
 IF jshfjlae[114514] > #0 GOTO label1

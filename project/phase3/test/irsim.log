@@ -1,0 +1,11 @@
+[DEBUG] 2023-12-19 07:06:58,342 (irsim.py 620): Parsed arguments: {'irpath': 'ir_demo.ir', 'inputs': '', 'logpath': 'irsim.log'}
+[INFO] 2023-12-19 07:06:58,356 (irsim.py 567): File loaded successfully
+[ERROR] 2023-12-19 07:07:07,886 (irsim.py 581): An error occurred at line 9: Illegal memory access
+[INFO] 2023-12-19 07:07:17,033 (irsim.py 567): KeyboardInterrupt raised, quit program
+[DEBUG] 2023-12-19 07:07:21,415 (irsim.py 620): Parsed arguments: {'irpath': 'ir_demo.ir', 'inputs': '-4', 'logpath': 'irsim.log'}
+[INFO] 2023-12-19 07:07:21,423 (irsim.py 567): File loaded successfully
+[INFO] 2023-12-19 07:07:29,960 (irsim.py 567): KeyboardInterrupt raised, quit program
+[DEBUG] 2023-12-19 07:07:36,051 (irsim.py 620): Parsed arguments: {'irpath': 'ir_demo.ir', 'inputs': '-4', 'logpath': 'irsim.log'}
+[ERROR] 2023-12-19 07:07:36,064 (irsim.py 581): Syntax error at line 8:
+DEC tmp14 #40
+[INFO] 2023-12-19 07:07:36,067 (irsim.py 567): File loaded successfully
