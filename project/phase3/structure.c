@@ -35,7 +35,8 @@ nodePointer getTerminalNode(char *name, int line){
     // printf("terminal: %s %d %s\n", name, line, yytext);
     // fflush(stdout);
     nodePointer f = (nodePointer)malloc(sizeof(struct Node));
-    f -> head = f ->tail = NULL;
+    f -> tmp_name = NULL;
+    f -> code_head = f ->code_tail = NULL;
     f -> name = name;
     f -> head = f -> next = NULL;
     f -> line = line;
@@ -85,7 +86,8 @@ nodePointer getTerminalNode(char *name, int line){
 
 nodePointer getIDNode(char *name, int line){
     nodePointer f = (nodePointer)malloc(sizeof(struct Node));
-    f -> head = f ->tail = NULL;
+    f -> tmp_name = NULL;
+    f -> code_head = f ->code_tail = NULL;
     f -> name = name;
     f -> head = f -> next = NULL;
     f -> line = line;
@@ -104,7 +106,8 @@ nodePointer getIDNode(char *name, int line){
 
 nodePointer getTypeNode(char *name, int line){
     nodePointer f = (nodePointer)malloc(sizeof(struct Node));
-    f -> head = f ->tail = NULL;
+    f -> tmp_name = NULL;
+    f -> code_head = f ->code_tail = NULL;
     f -> name = name;
     f -> head = f -> next = NULL;
     f -> line = line;
@@ -427,7 +430,8 @@ nodePointer getNode(char* name, int num, ...){
     // printf("%s %d %s\n", name, yylineno, yytext);
     // fflush(stdout);
     nodePointer f = (nodePointer)malloc(sizeof(struct Node));
-    f -> head = f ->tail = NULL;
+    f -> tmp_name = NULL;
+    f -> code_head = f ->code_tail = NULL;
     f -> name = name;
     f -> head = f -> next = NULL;
     f -> type = NULL;

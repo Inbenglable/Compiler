@@ -574,7 +574,7 @@ Exp: Exp ASSIGN Exp {
         extend_type($$, $1);
     }
     | CHAR {$$ = getNode("Exp", 1, $1);
-        extend_var($$, $1);
+        extend_var($$, $1); 
         extend_type($$, $1);
     }
     ;

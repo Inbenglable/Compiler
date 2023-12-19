@@ -133,3 +133,34 @@ void dump(struct Code* head, char* filename){
 ///////////////////////////////////////////////////////////////////////////////////////
 
 //By radiance: 我写的部分都写下面好了
+
+int char_to_int(const char* str) {
+    // 使用atoi函数将字符串转换为整数
+    int result = atoi(str);
+
+    return result;
+}
+
+
+int var_to_int(const char* str) {
+    int result;
+    
+    // 使用sscanf解析字符串，跳过'#'字符，将整数部分存储到result中
+    sscanf(str, "#%d", &result);
+
+    return result;
+}
+
+int start_with_hash(const char* str) {
+    // 检查输入指针是否为NULL
+    if (str == NULL) {
+        return 0;
+    }
+
+    // 使用 strncmp 函数比较字符串的前缀是否为 "#"
+    if (strncmp(str, "#", 1) == 0) {
+        return 1;  // 字符串以 '#' 开头
+    } else {
+        return 0; // 字符串不以 '#' 开头
+    }
+}
