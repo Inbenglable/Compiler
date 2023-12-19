@@ -31,6 +31,19 @@ void print_var(struct Var* var, int deep){
     print_var(var, deep);
 }
 
+char* get_son_list(nodePointer node){
+    if(node == NULL)return NULL;
+    char* ret = (char*)malloc(sizeof(char)*100);
+    memset(ret, 0, sizeof(ret));
+    nodePointer son = node->head;
+    while(son != NULL){
+        strcat(ret, son->name);
+        // strcat(ret, " ");
+        son = son->next;
+    }
+    return ret;
+}
+
 nodePointer getTerminalNode(char *name, int line){
     // printf("terminal: %s %d %s\n", name, line, yytext);
     // fflush(stdout);

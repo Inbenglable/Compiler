@@ -48,14 +48,16 @@ struct Node{
     char* value;
     struct Type* type;
     struct Var* var;
-    struct Code* head;
-    struct Code* tail;
+    struct Code* code_head;
+    struct Code* code_tail;
     char* tmp_name;
 };
 
 typedef struct Node* nodePointer;
 void print_var(struct Var* var, int deep);
 void print_type(struct Type* type, int deep);
+
+char* get_son_list(nodePointer node);
 
 nodePointer getTerminalNode(char *name, int line);
 nodePointer getIDNode(char *name, int line);
