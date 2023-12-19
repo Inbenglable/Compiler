@@ -47,9 +47,13 @@ struct Code{
     struct Code* next;
 };
 
+extern int label_count, tmp_count;
+
 char* to_literal(int val);
 char* to_size(int val);
 char* to_var(char* name);
+char* new_label_name();
+char* new_tmp_name();
 struct Code* construct(int type, char* tk1, int relop, char* tk2, char* tk3);
 struct Code* append(struct Code* code1_head, struct Code* code1_tail, struct Code* code2_head, struct Code* code2_tail);
 void dump(struct Code* head, char* filename);
