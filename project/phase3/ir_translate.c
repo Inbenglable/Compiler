@@ -61,7 +61,6 @@ struct Code* append(struct Code* code1_head, struct Code* code1_tail, struct Cod
 }
 
 
-
 void dump(struct Code* head, char* filename){
     FILE* fp = fopen(filename, "w");
     while(head != NULL){
