@@ -156,7 +156,16 @@ struct Code* translate_exp(struct Node* node, char* place){
     else if(strcmp(son_list, "LPExpRP") == 0){
 
     }
-    
+    else if(strcmp(son_list, "MINUSExp") == 0){
+
+    }
+    //below are function invocations
+    else if(strcmp(son_list, "IDLPRP") == 0){
+
+    }
+    else if(strcmp(son_list, "IDLPArgsRP") == 0){
+
+    }
     else{
 
     }
@@ -164,6 +173,39 @@ struct Code* translate_exp(struct Node* node, char* place){
 
 struct Code* translate_cond(struct Node* node, char* label_true, char* label_false){
     char* son_list = get_son_list(node);
+    if(strcmp(son_list, "ExpLTExp") == 0){
+
+    }
+    else if(strcmp(son_list, "ExpLEExp") == 0){
+
+    }
+    else if(strcmp(son_list, "ExpGTExp") == 0){
+
+    }
+    else if(strcmp(son_list, "ExpGEExp") == 0){
+
+    }
+    else if(strcmp(son_list, "ExpNEExp") == 0){
+
+    }
+    else if(strcmp(son_list, "ExpEQExp") == 0){
+
+    }
+    else if(strcmp(son_list, "ExpANDExp") == 0){
+
+    }
+    else if(strcmp(son_list, "ExpORExp") == 0){
+
+    }
+    else if(strcmp(son_list, "NOTExp") == 0){
+
+    }
+    else if(strcmp(son_list, "LPExpRP") == 0){
+
+    }
+    else{
+
+    }
 }
 
 struct Code* translate_stmt(struct Node* node){
