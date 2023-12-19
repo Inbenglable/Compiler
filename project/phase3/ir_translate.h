@@ -12,6 +12,7 @@ struct Code{
     struct Code* from;
     int type;
     /*
+    type -1: a special case for a single ID
     type 0: LABEL tk1 :
     type 1: FUNCTION tk1 :
     type 2: tk1 := tk2
