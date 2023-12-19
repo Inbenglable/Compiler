@@ -50,6 +50,7 @@ struct Node{
     struct Var* var;
     struct Code* head;
     struct Code* tail;
+    char* tmp_name;
 };
 
 typedef struct Node* nodePointer;

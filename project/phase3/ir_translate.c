@@ -38,3 +38,11 @@ struct Code* append(struct Code* code1_head, struct Code* code1_tail, struct Cod
     code2_head->from = code1_tail;
     return code1_head;
 }
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////
+
+//By radiance: 我写的部分都写下面好了
+
+

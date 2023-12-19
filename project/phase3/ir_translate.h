@@ -1,4 +1,7 @@
 #include "structure.h"
+#include <stdlib.h>
+#include <string.h>
+#include <stdarg.h>
 
 #ifndef __IR_TRANSLATE__
 #define __IR_TRANSLATE__
@@ -29,7 +32,7 @@ struct Code{
     type 17: READ tk1
     type 18: WRITE tk1
     */
-    Code* tk1;
+    struct Code* tk1;
     int relop;
     /*
     relop 0: <
@@ -39,8 +42,8 @@ struct Code{
     relop 4: !=
     relop 5: ==
     */
-    Code* tk2;
-    Code* tk3;
+    struct Code* tk2;
+    struct Code* tk3;
     int is_const;
     int value;
     int is_tmp;
