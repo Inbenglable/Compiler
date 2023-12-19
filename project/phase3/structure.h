@@ -21,6 +21,7 @@ struct Type{
 
 struct Var{
     char* name;
+    char* alias;
     int dim; // deep of the array, 0 if it is a variable
     int line;
     struct Type* type;
@@ -47,6 +48,8 @@ struct Node{
     char* value;
     struct Type* type;
     struct Var* var;
+    struct Code* head;
+    struct Code* tail;
 };
 
 typedef struct Node* nodePointer;
