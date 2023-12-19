@@ -42,7 +42,7 @@ struct Code* construct(int type, char* tk1, int relop, char* tk2, char* tk3){
     ret->tk2 = tk2;
     ret->tk3 = tk3;
     ret->is_const = 0;
-    retue = 0;
+    ret->value = 0;
     ret->is_tmp = 0;
     ret->next = NULL;
     ret->from = NULL;
@@ -50,16 +50,17 @@ struct Code* construct(int type, char* tk1, int relop, char* tk2, char* tk3){
 }
 
 struct Code* append(struct Code* code1_head, struct Code* code1_tail, struct Code* code2_head, struct Code* code2_tail){
-    if(code1_head == NULL){
+    if(code1_head == NULL || code1_head->type == -1){
         return code2_head;
     }
-    if(code2_head == NULL){
+    if(code2_head == NULL || code2_head->type == -1){
         return code1_head;
     }
     code1_tail->next = code2_head;
     code2_head->from = code1_tail;
     return code1_head;
 }
+
 
 void dump(struct Code* head, char* filename){
     FILE* fp = fopen(filename, "w");
