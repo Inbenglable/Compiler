@@ -68,6 +68,8 @@ struct Code* translate_exp(struct Node* node, char* place);
 struct Code* translate_cond(struct Node* node, char* label_true, char* label_false);
 struct Code* translate_stmt(struct Node* node);
 struct Code* translate_args(struct Node* node, struct ArgList** arg_list);
+struct Code* translate_fundec(struct Node* node);
+struct Code* translate_other(struct Node* node);
 void translate(struct Node* node, char* filename);
 
 /////////////////
