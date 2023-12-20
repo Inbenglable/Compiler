@@ -168,6 +168,7 @@ struct Code* translate_exp(struct Node* node, char* place){
         nodePointer id = node -> head;
         struct Code* code = construct(2, place, -1, to_var(id->value), NULL);
         id->tmp_name = code->tk2;
+        node->tmp_name = id->tmp_name;
         connect_code_to_node(node, code);
         return code;
     }
@@ -175,18 +176,16 @@ struct Code* translate_exp(struct Node* node, char* place){
         nodePointer tk1 = node->head;
         nodePointer tk2 = tk1->next->next;
         char* tmp1 = new_tmp_name();
-        char* tmp2 = new_tmp_name();
-        struct Code* block1 = translate_exp(tk1, tmp1);
-        struct Code* block2 = translate_exp(tk2, tmp2);
-        struct Code* code = construct(2, tmp1, -1, tmp2, NULL);
-        if(start_with_well(code->tk3)){
-            ret_head = block1;
+        translate_exp(tk1, tmp1);
+        struct Code* block1 = translate_exp(tk2, tmp1);
+        struct Code* code = construct(2, tk1->tmp_name, -1, tmp1, NULL);
+        if(start_with_well(code->tk2)){
+            ret_head = NULL;
             append_wo_tail(ret_head, code);
             connect_code_to_node(node, ret_head);
             return ret_head;
         }else{
             ret_head = block1;
-            append_wo_tail(ret_head, block2);
             append_wo_tail(ret_head, code);
             connect_code_to_node(node, ret_head);
             return ret_head;
@@ -686,7 +685,7 @@ struct Code* translate_local_definition(struct Node* node){
     }
     else if(strcmp(son_list, "VarDecASSIGNExp") == 0){
         char* var = node->head->head->value;
-        return translate_exp(node->head->next->next, var);
+        return translate_exp(node->head->next->next, to_var(var));
     }
     else{
         return NULL;
