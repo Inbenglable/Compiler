@@ -187,12 +187,12 @@ struct Code* translate_exp(struct Node* node, char* place){
             connect_code_to_node(node, code);
             return code;
         }else if(start_with_well(code->tk2)){
-            ret_head = block1;
+            ret_head = block2;
             append_wo_tail(ret_head, code);
             connect_code_to_node(node, ret_head);
             return ret_head;
         }else if(start_with_well(code->tk3)){
-            ret_head = block2;
+            ret_head = block1;
             append_wo_tail(ret_head, code);
             connect_code_to_node(node, ret_head);
             return ret_head;
@@ -221,12 +221,12 @@ struct Code* translate_exp(struct Node* node, char* place){
             connect_code_to_node(node, code);
             return code;
         }else if(start_with_well(code->tk2)){
-            ret_head = block1;
+            ret_head = block2;
             append_wo_tail(ret_head, code);
             connect_code_to_node(node, ret_head);
             return ret_head;
         }else if(start_with_well(code->tk3)){
-            ret_head = block2;
+            ret_head = block1;
             append_wo_tail(ret_head, code);
             connect_code_to_node(node, ret_head);
             return ret_head;
@@ -255,12 +255,12 @@ struct Code* translate_exp(struct Node* node, char* place){
             connect_code_to_node(node, code);
             return code;
         }else if(start_with_well(code->tk2)){
-            ret_head = block1;
+            ret_head = block2;
             append_wo_tail(ret_head, code);
             connect_code_to_node(node, ret_head);
             return ret_head;
         }else if(start_with_well(code->tk3)){
-            ret_head = block2;
+            ret_head = block1;
             append_wo_tail(ret_head, code);
             connect_code_to_node(node, ret_head);
             return ret_head;
@@ -289,12 +289,12 @@ struct Code* translate_exp(struct Node* node, char* place){
             connect_code_to_node(node, code);
             return code;
         }else if(start_with_well(code->tk2)){
-            ret_head = block1;
+            ret_head = block2;
             append_wo_tail(ret_head, code);
             connect_code_to_node(node, ret_head);
             return ret_head;
         }else if(start_with_well(code->tk3)){
-            ret_head = block2;
+            ret_head = block1;
             append_wo_tail(ret_head, code);
             connect_code_to_node(node, ret_head);
             return ret_head;
@@ -378,6 +378,7 @@ struct Code* translate_exp(struct Node* node, char* place){
 
 struct Code* translate_cond(struct Node* node, char* label_true, char* label_false){
     char* son_list = get_son_list(node);
+    struct Code* ret_head = NULL;
     if(strcmp(son_list, "ExpLTExp") == 0){
 
     }
@@ -400,13 +401,17 @@ struct Code* translate_cond(struct Node* node, char* label_true, char* label_fal
 
     }
     else if(strcmp(son_list, "ExpORExp") == 0){
-
+        
     }
     else if(strcmp(son_list, "NOTExp") == 0){
-
+        nodePointer ftk1 = node->head->next;
+        ret_head = translate_cond(ftk1, label_false, label_true);
+        return ret_head; 
     }
     else if(strcmp(son_list, "LPExpRP") == 0){
-        
+        nodePointer ftk1 = node->head->next;
+        ret_head = translate_cond(ftk1, label_true, label_false);
+        return ret_head; 
     }
     else{
 
