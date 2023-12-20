@@ -547,6 +547,44 @@ void yyerror(char *msg)
     hasError=1;
 }
 
+void initial_read_write(){
+    //void newFuntype(nodePointer funspec, nodePointer id, nodePointer varlist){
+    struct Type* type_int = (struct Type*)malloc(sizeof(struct Type));
+    type_int -> isStruct = 'v';
+    type_int -> hash = 2;
+    type_int -> type_name = (char*)malloc(sizeof(char)*30);
+    strcpy(type_int -> type_name, "int");
+    type_int -> contain = NULL;
+
+    struct Var* read = (struct Var*)malloc(sizeof(struct Var));
+    read -> dim = 0;
+    read -> next = NULL;
+    read -> type = type_int;
+    read -> name = (char*)malloc(sizeof(char)*30);
+    read -> line = -1;
+    strcpy(read -> name, "read");
+
+    struct Var* write = (struct Var*)malloc(sizeof(struct Var));
+    write -> dim = 0;
+    write -> next = NULL;
+    write -> type = type_int;
+    write -> name = (char*)malloc(sizeof(char)*30);
+    write -> line = -1;
+    strcpy(read -> name, "write");
+
+    struct Var* write_arg = (struct Var*)malloc(sizeof(struct Var));
+    write_arg -> dim = 0;
+    write_arg -> next = NULL;
+    write_arg -> type = type_int;
+    write_arg -> name = (char*)malloc(sizeof(char)*30);
+    write_arg -> line = -1;
+    strcpy(read -> name, "-write_arg");
+    write->next = write_arg;
+
+    store_Fun(read->name, read);
+    store_Fun(write->name, write);
+}
+
 
 int main(int argc, char **argv) {
     //printf("oooooooo\n");
@@ -567,6 +605,8 @@ int main(int argc, char **argv) {
             perror(argv[i]);
             return 1;
         }
+
+        initial_read_write();
         yyrestart(f);
         //printf("oooooooo%s\n", argv[i]);
         fflush(stdout);

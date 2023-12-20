@@ -99,6 +99,7 @@ void generate_exp_var(nodePointer exp, struct Type* type);
 
 void writeNode(nodePointer node,int depth);
 void writeTerminalNode(nodePointer node);
+void initial_read_write();
 
 char* mystrcat(char* str1,char* str2,char* str3);
 
