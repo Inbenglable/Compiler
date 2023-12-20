@@ -324,7 +324,7 @@ struct Code* translate_exp(struct Node* node, char* place){
             ret_head = block1;
             struct Code* code = construct(4, place, -1, to_literal(0), ftk1->tmp_name);
             append_wo_tail(ret_head, code);
-            connect_code_to_node(code, ret_head);
+            connect_code_to_node(node, ret_head);
             return ret_head;
         }
     }
@@ -347,7 +347,7 @@ struct Code* translate_exp(struct Node* node, char* place){
         nodePointer args = fun->next->next;
         char* fun_name = fun->value;
         struct ArgList* arg_list = NULL;
-        struct Code* block1 = translate_args(args, arg_list);
+        struct Code* block1 = translate_args(args, &(arg_list));
         
         if(strcmp(fun_name, "write") == 0){
             ret_head = block1;
@@ -546,19 +546,19 @@ struct Code* translate_fundec(struct Node* node){
     if(strcmp(son_list, "IDLPVarListRP") == 0){
         struct Code* code = construct(1, node->head->value, -1, NULL, NULL);
         struct Code* code1 = translate_fundec(node->head->next->next);
-        return append(code, code1);
+        return append_wo_tail(code, code1);
     }
     else if(strcmp(son_list, "IDLPRP") == 0){
         struct Code* code = construct(1, node->head->value, -1, NULL, NULL);
         return code;
     }
     else if(strcmp(son_list, "ParamDecCOMMAVarList") == 0){
-        struct Code* code1 = translate_other(node->head);
-        struct Code* code2 = translate_other(node->head->next->next);
+        struct Code* code1 = translate_fundec(node->head);
+        struct Code* code2 = translate_fundec(node->head->next->next);
         return append_wo_tail(code1, code2);
     }
     else if(strcmp(son_list, "ParamDec") == 0){
-        return translate_other(node->head);
+        return translate_fundec(node->head);
     }
     else if(strcmp(son_list, "SpecifierVarDec") == 0){
         return translate_fundec(node->head->next);
@@ -579,11 +579,11 @@ struct Code* translate_fundec(struct Node* node){
 struct Code* translate_high_level_def(struct Node* node){
     char* son_list = get_son_list(node);
     if(strcmp(son_list, "ExtDefList") == 0){
-        return translate_other(node->head);
+        return translate_high_level_def(node->head);
     }
     else if(strcmp(son_list, "ExtDefExtDefList") == 0){
-        struct Code* code1 = translate_other(node->head);
-        struct Code* code2 = translate_other(node->head->next);
+        struct Code* code1 = translate_high_level_def(node->head);
+        struct Code* code2 = translate_high_level_def(node->head->next);
         return append_wo_tail(code1, code2);
     }
     // TODO: now we don't consider struct, but we may modify it in the future
@@ -662,7 +662,7 @@ struct Code* translate_local_definition(struct Node* node){
 
 void translate(struct Node* node, char* filename){
     printf("Translation requires implementation, the name of the root is %s, the translation result will be output to %s\n", node->name, filename);
-    struct Code* raw_code = translate_other(node);
+    struct Code* raw_code = translate_high_level_def(node);
     struct Code* optimized_code = optimize(raw_code);
     dump(optimized_code, filename);
 }
