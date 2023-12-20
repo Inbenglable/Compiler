@@ -711,3 +711,8 @@ struct Code* get_tail(struct Code* code){
     }
     return tmp;
 }
+
+void connect_code_to_node(nodePointer node, struct Code* code){
+    node->code_head = code;
+    node->code_tail = get_tail(code);
+}
