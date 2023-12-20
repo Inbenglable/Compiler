@@ -75,6 +75,8 @@ void translate(struct Node* node, char* filename);
 /////////////////
 int char_to_int(const char* str);
 int var_to_int(const char* str);
-int start_with_hash(const char* str);
+int start_with_well(const char* str);
+struct Code* get_tail(struct Code* code);
+void connect_code_to_node(nodePointer node, struct Code* code);
 
 #endif // !__IR_TRANSLATE__

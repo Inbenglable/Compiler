@@ -144,54 +144,228 @@ void dump(struct Code* head, char* filename){
 
 struct Code* translate_exp(struct Node* node, char* place){
     char* son_list = get_son_list(node);
+    node->tmp_name = place;
+    struct Code* ret_head = NULL;
     if(strcmp(son_list, "INT") == 0){
         nodePointer con = node -> head;
-        struct Code* code = construct(3, place, -1, to_literal(char_to_int(con -> value)), NULL);
+        struct Code* code = construct(2, place, -1, to_literal(char_to_int(con -> value)), NULL);
         code->is_const = 1;
         code->value = var_to_int(code->tk2);
         con->tmp_name = code->tk2;
-        node->code_head = code;
-        node->code_tail = get_tail(code);
+        connect_code_to_node(node, code);
+        node->tmp_name = con->tmp_name;
         return code;
     }
     else if(strcmp(son_list, "ID") == 0){
         nodePointer id = node -> head;
-        struct Code* code = construct(3, place, -1, to_var(id->value), NULL);
+        struct Code* code = construct(2, place, -1, to_var(id->value), NULL);
         id->tmp_name = code->tk2;
+        connect_code_to_node(node, code);
         return code;
     }
     else if(strcmp(son_list, "ExpPLUSExp") == 0){
         nodePointer tk1 = node->head;
         nodePointer tk2 = tk1->next->next;
-        struct Code* code = construct(4, place, -1, tk1->tmp_name, tk2->tmp_name);
+        char* tmp1 = new_tmp_name();
+        char* tmp2 = new_tmp_name();
+        struct code* block1 = translate_exp(tk1, tmp1);
+        struct code* block2 = translate_exp(tk2, tmp2);
+        struct Code* code = construct(3, place, -1, tk1->tmp_name, tk2->tmp_name);
         if(start_with_well(code->tk2) && start_with_hash(code->tk3)){
-            
+            int res = var_to_int(code->tk2)+var_to_int(code->tk3);
+            code->type = 3;
+            code->tk2 = to_literal(res);
+            code->tk3 = NULL;
+            node->tmp_name = code->tk2;
+            connect_code_to_node(node, code);
+            return code;
+        }else if(start_with_well(code->tk2)){
+            ret_head = block1;
+            append_wo_tail(ret_head, code);
+            connect_code_to_node(node, ret_head);
+            return ret_head;
+        }else if(start_with_well(code->tk3)){
+            ret_head = block2;
+            append_wo_tail(ret_head, code);
+            connect_code_to_node(node, ret_head);
+            return ret_head;
+        }else{
+            ret_head = block1;
+            append_wo_tail(ret_head, block2);
+            append_wo_tail(ret_head, code);
+            connect_code_to_node(node, ret_head);
+            return ret_head;
         }
     }
     else if(strcmp(son_list, "ExpMINUSExp") == 0){
-
+        nodePointer tk1 = node->head;
+        nodePointer tk2 = tk1->next->next;
+        char* tmp1 = new_tmp_name();
+        char* tmp2 = new_tmp_name();
+        struct code* block1 = translate_exp(tk1, tmp1);
+        struct code* block2 = translate_exp(tk2, tmp2);
+        struct Code* code = construct(4, place, -1, tk1->tmp_name, tk2->tmp_name);
+        if(start_with_well(code->tk2) && start_with_hash(code->tk3)){
+            int res = var_to_int(code->tk2)-var_to_int(code->tk3);
+            code->type = 2;
+            code->tk2 = to_literal(res);
+            code->tk3 = NULL;
+            node->tmp_name = code->tk2;
+            connect_code_to_node(node, code);
+            return code;
+        }else if(start_with_well(code->tk2)){
+            ret_head = block1;
+            append_wo_tail(ret_head, code);
+            connect_code_to_node(node, ret_head);
+            return ret_head;
+        }else if(start_with_well(code->tk3)){
+            ret_head = block2;
+            append_wo_tail(ret_head, code);
+            connect_code_to_node(node, ret_head);
+            return ret_head;
+        }else{
+            ret_head = block1;
+            append_wo_tail(ret_head, block2);
+            append_wo_tail(ret_head, code);
+            connect_code_to_node(node, ret_head);
+            return ret_head;
+        }
     }
     else if(strcmp(son_list, "ExpMULExp") == 0){
-
+        nodePointer tk1 = node->head;
+        nodePointer tk2 = tk1->next->next;
+        char* tmp1 = new_tmp_name();
+        char* tmp2 = new_tmp_name();
+        struct code* block1 = translate_exp(tk1, tmp1);
+        struct code* block2 = translate_exp(tk2, tmp2);
+        struct Code* code = construct(5, place, -1, tk1->tmp_name, tk2->tmp_name);
+        if(start_with_well(code->tk2) && start_with_hash(code->tk3)){
+            int res = var_to_int(code->tk2)*var_to_int(code->tk3);
+            code->type = 2;
+            code->tk2 = to_literal(res);
+            code->tk3 = NULL;
+            node->tmp_name = code->tk2;
+            connect_code_to_node(node, code);
+            return code;
+        }else if(start_with_well(code->tk2)){
+            ret_head = block1;
+            append_wo_tail(ret_head, code);
+            connect_code_to_node(node, ret_head);
+            return ret_head;
+        }else if(start_with_well(code->tk3)){
+            ret_head = block2;
+            append_wo_tail(ret_head, code);
+            connect_code_to_node(node, ret_head);
+            return ret_head;
+        }else{
+            ret_head = block1;
+            append_wo_tail(ret_head, block2);
+            append_wo_tail(ret_head, code);
+            connect_code_to_node(node, ret_head);
+            return ret_head;
+        }
     }
     else if(strcmp(son_list, "ExpDIVExp") == 0){
-
+        nodePointer tk1 = node->head;
+        nodePointer tk2 = tk1->next->next;
+        char* tmp1 = new_tmp_name();
+        char* tmp2 = new_tmp_name();
+        struct code* block1 = translate_exp(tk1, tmp1);
+        struct code* block2 = translate_exp(tk2, tmp2);
+        struct Code* code = construct(6, place, -1, tk1->tmp_name, tk2->tmp_name);
+        if(start_with_well(code->tk2) && start_with_hash(code->tk3)){
+            int res = var_to_int(code->tk2)/var_to_int(code->tk3);
+            code->type = 2;
+            code->tk2 = to_literal(res);
+            code->tk3 = NULL;
+            node->tmp_name = code->tk2;
+            connect_code_to_node(node, code);
+            return code;
+        }else if(start_with_well(code->tk2)){
+            ret_head = block1;
+            append_wo_tail(ret_head, code);
+            connect_code_to_node(node, ret_head);
+            return ret_head;
+        }else if(start_with_well(code->tk3)){
+            ret_head = block2;
+            append_wo_tail(ret_head, code);
+            connect_code_to_node(node, ret_head);
+            return ret_head;
+        }else{
+            ret_head = block1;
+            append_wo_tail(ret_head, block2);
+            append_wo_tail(ret_head, code);
+            connect_code_to_node(node, ret_head);
+            return ret_head;
+        }
     }
     else if(strcmp(son_list, "LPExpRP") == 0){
-
+        nodePointer ftk1 = node->head->next;
+        ret_head = translate_exp(ftk1, place);
+        return ret_head; 
     }
     else if(strcmp(son_list, "MINUSExp") == 0){
-
+        nodePointer ftk1 = node->head->next;
+        char* tmp = new_tmp_name();
+        struct Code* block1 = translate_exp(ftk1, tmp);
+        if(start_with_well(ftk1->tmp_name)){
+            int res = var_to_int(ftk1->tmp_name)*(-1);
+            struct Code* code = construct(2, place, -1, to_literal(res), NULL);
+            connect_code_to_node(node, ret_head);
+            return code;
+        }else{
+            ret_head = block1;
+            struct Code* code = construct(4, place, -1, to_literal(0), ftk1->tmp_name);
+            append_wo_tail(ret_head, code);
+            connect_code_to_node(code, ret_head);
+            return ret_head;
+        }
     }
     //below are function invocations
     else if(strcmp(son_list, "IDLPRP") == 0){
-
+        nodePointer fun = node->head;
+        char* fun_name = fun->value;
+        if(strcmp(fun_name, "read") == 0){
+            struct Code* code = construct(17, place, -1, NULL, NULL);
+            connect_code_to_node(node, code);
+            return code;
+        }else{
+            struct Code* code = construct(16, place, -1, fun_name, NULL);
+            connect_code_to_node(node, code);
+            return code;
+        }
     }
     else if(strcmp(son_list, "IDLPArgsRP") == 0){
-
+        nodePointer fun = node->head;
+        nodePointer args = fun->next->next;
+        char* fun_name = fun->value;
+        struct ArgList* arg_list = NULL;
+        struct Code* block1 = translate_args(args, arg_list);
+        
+        if(strcmp(fun_name, "write") == 0){
+            ret_head = block1;
+            struct Code* code = construct(18, arg_list->name, -1, NULL, NULL);
+            append_wo_tail(ret_head, code);
+            connect_code_to_node(node, code);
+            return ret_head;
+        }else{
+            struct Code* block2 = NULL;
+            struct Code* tmp = NULL;
+            while(arg_list != NULL){
+                tmp = construct(15, arg_list->name, -1, NULL, NULL);
+                append_wo_tail(block2, tmp);
+                arg_list = arg_list->next;
+            }
+            ret_head = block1;
+            append_wo_tail(ret_head, block2);
+            struct Code* code = construct(16, place, -1, fun_name, NULL);
+            append_wo_tail(ret_head, code);
+            connect_code_to_node(node, ret_head);
+            return ret_head;
+        }
     }
     else{
-
+        Print("Match expression Fail")
     }
 }
 
