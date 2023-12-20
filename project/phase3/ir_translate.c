@@ -150,6 +150,7 @@ void dump(struct Code* head, char* filename){
 }
 
 struct Code* translate_exp(struct Node* node, char* place){
+    print_node(node);
     char* son_list = get_son_list(node);
     node->tmp_name = place;
     struct Code* ret_head = NULL;
@@ -398,6 +399,7 @@ struct Code* translate_exp(struct Node* node, char* place){
 }
 
 struct Code* translate_cond(struct Node* node, char* label_true, char* label_false){
+    print_node(node);
     char* son_list = get_son_list(node);
     struct Code* ret_head = NULL;
     if(strcmp(son_list, "ExpLTExp") == 0){
@@ -484,6 +486,7 @@ struct Code* translate_cond(struct Node* node, char* label_true, char* label_fal
 }
 
 struct Code* translate_stmt(struct Node* node){
+    print_node(node);
     char* son_list = get_son_list(node);
     if(strcmp(son_list, "LCDefListStmtListRC") == 0){
         struct Code* code1 = translate_local_definition(node->head->next);
@@ -536,6 +539,7 @@ struct Code* translate_stmt(struct Node* node){
 }
 
 struct Code* translate_args(struct Node* node, struct ArgList** arg_list){
+    print_node(node);
     char* son_list = get_son_list(node);
     if(strcmp(son_list, "Exp") == 0){
         char* tmp = new_tmp_name();
@@ -563,6 +567,7 @@ struct Code* translate_args(struct Node* node, struct ArgList** arg_list){
 }
 
 struct Code* translate_fundec(struct Node* node){
+    print_node(node);
     char* son_list = get_son_list(node);
     if(strcmp(son_list, "IDLPVarListRP") == 0){
         struct Code* code = construct(1, node->head->value, -1, NULL, NULL);
@@ -598,6 +603,7 @@ struct Code* translate_fundec(struct Node* node){
 }
 
 struct Code* translate_high_level_def(struct Node* node){
+    print_node(node);
     char* son_list = get_son_list(node);
     if(strcmp(son_list, "ExtDefList") == 0){
         return translate_high_level_def(node->head);
@@ -615,16 +621,20 @@ struct Code* translate_high_level_def(struct Node* node){
     else if(strcmp(son_list, "SpecifierSEMI") == 0){
         return NULL;
     }
-    else if(strcmp(son_list, "SpecifierFunDecCompSt") == 0){
-        struct Code* code1 = translate_fundec(node->head->next);
-        struct Code* code2 = translate_stmt(node->head->next->next);
+    else if(strcmp(son_list, "FunspecifierCompSt") == 0){
+        struct Code* code1 = translate_high_level_def(node->head);
+        struct Code* code2 = translate_stmt(node->head->next);
         return append_wo_tail(code1, code2);
     }
-    else if(strcmp(son_list, "SpecifierFunDecSEMI") == 0){
+    else if(strcmp(son_list, "FunspecifierSEMI") == 0){
         // struct Code* code = translate_fundec(node->head->next);
         // return code;
         // we don't consider function declaration, so return NULL.
         return NULL;
+    }
+    else if(strcmp(son_list, "SpecifierFunDec") == 0){
+        struct Code* code = translate_fundec(node->head->next);
+        return code;
     }
     else{
         return NULL;
@@ -632,6 +642,7 @@ struct Code* translate_high_level_def(struct Node* node){
 }
 
 struct Code* translate_specifier(struct Node* node){
+    print_node(node);
     // Seems that we don't need to translate specifier, but we leave it temporarily.
     char* son_list = get_son_list(node);
     if(strcmp(son_list, "TYPE") == 0){
@@ -651,6 +662,7 @@ struct Code* translate_specifier(struct Node* node){
 }
 
 struct Code* translate_local_definition(struct Node* node){
+    print_node(node);
     char* son_list = get_son_list(node);
     if(strcmp(son_list, "DefDefList") == 0){
         struct Code* code1 = translate_local_definition(node->head);
@@ -736,4 +748,11 @@ struct Code* get_tail(struct Code* code){
 void connect_code_to_node(nodePointer node, struct Code* code){
     node->code_head = code;
     node->code_tail = get_tail(code);
+}
+
+void print_node(nodePointer node){
+    printf("node name: %s\n", node->name);
+    printf("node value: %s\n", node->value);
+    printf("node tmp_name: %s\n", node->tmp_name);
+    printf("node son: %s\n\n", get_son_list(node));
 }

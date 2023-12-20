@@ -80,5 +80,6 @@ int var_to_int(const char* str);
 int start_with_well(const char* str);
 struct Code* get_tail(struct Code* code);
 void connect_code_to_node(nodePointer node, struct Code* code);
+void print_node(nodePointer node);
 
 #endif // !__IR_TRANSLATE__
