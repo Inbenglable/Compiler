@@ -1,4 +1,5 @@
 #include "ir_translate.h"
+#include "ir_optimization.h"
 #include "structure.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -65,7 +66,13 @@ struct Code* append(struct Code* code1_head, struct Code* code1_tail, struct Cod
     return code1_head;
 }
 
-struct Code* append(struct Code* code1, struct Code* code2){
+struct Code* append_wo_tail(struct Code* code1, struct Code* code2){
+    if(code1 == NULL || code1->type == -1){
+        return code2;
+    }
+    if(code2 == NULL || code2->type == -1){
+        return code1;
+    }
     struct Code* code1_tail = code1;
     while(code1_tail->next != NULL){
         code1_tail = code1_tail->next;
@@ -408,11 +415,21 @@ struct Code* translate_cond(struct Node* node, char* label_true, char* label_fal
 
 struct Code* translate_stmt(struct Node* node){
     char* son_list = get_son_list(node);
-    if(strcmp(son_list, "ExpSEMI") == 0){
+    if(strcmp(son_list, "LCDefListStmtListRC") == 0){
+        struct Code* code1 = translate_local_definition(node->head->next);
+        struct Code* code2 = translate_stmt(node->head->next->next);
+        return append_wo_tail(code1, code2);
+    }
+    else if(strcmp(son_list, "StmtStmtList") == 0){
+        struct Code* code1 = translate_stmt(node->head->next);
+        struct Code* code2 = translate_stmt(node->head->next->next);
+        return append_wo_tail(code1, code2);
+    }
+    else if(strcmp(son_list, "ExpSEMI") == 0){
         return translate_exp(node->head, NULL); // TODO: probably can be optimized
     }
     else if(strcmp(son_list, "CompSt") == 0){
-        return translate_other(node->head);
+        return translate_stmt(node->head);
     }
     else if(strcmp(son_list, "RETURNExpSEMI") == 0){
         char* tmp = new_tmp_name();
@@ -444,7 +461,6 @@ struct Code* translate_stmt(struct Node* node){
         return append_wo_tail(append_wo_tail(code1, code2), construct(0, label3, -1, NULL, NULL));
     }
     else{
-        printf("Seems that some unexpected things have happened!\n");
         return NULL;
     }
 }
@@ -477,16 +493,33 @@ struct Code* translate_args(struct Node* node, struct ArgList** arg_list){
 }
 
 struct Code* translate_fundec(struct Node* node){
-    // TODO: below are auto-generated code, need to be modified
     char* son_list = get_son_list(node);
     if(strcmp(son_list, "IDLPVarListRP") == 0){
         struct Code* code = construct(1, node->head->value, -1, NULL, NULL);
-        struct Code* code1 = translate_varlist(node->head->next->next);
+        struct Code* code1 = translate_fundec(node->head->next->next);
         return append(code, code1);
     }
-    else if(strcmp(son_list, "IDLPVarListRP") == 0){
+    else if(strcmp(son_list, "IDLPRP") == 0){
         struct Code* code = construct(1, node->head->value, -1, NULL, NULL);
         return code;
+    }
+    else if(strcmp(son_list, "ParamDecCOMMAVarList") == 0){
+        struct Code* code1 = translate_other(node->head);
+        struct Code* code2 = translate_other(node->head->next->next);
+        return append_wo_tail(code1, code2);
+    }
+    else if(strcmp(son_list, "ParamDec") == 0){
+        return translate_other(node->head);
+    }
+    else if(strcmp(son_list, "SpecifierVarDec") == 0){
+        return translate_fundec(node->head->next);
+    }
+    else if(strcmp(son_list, "ID") == 0){
+        return construct(14, node->head->value, -1, NULL, NULL);
+    }
+    else if(strccmp(son_list, "VarDecLBINTRB")){
+        // TODO: may be modified, if consider array
+        return translate_fundec(node->head);
     }
     else{
         printf("Seems that some unexpected things have happened!\n");
@@ -494,12 +527,95 @@ struct Code* translate_fundec(struct Node* node){
     }
 }
 
-struct Code* translate_other(struct Node* node){
-    // TODO: requires implementation
+struct Code* translate_high_level_def(struct Node* node){
+    char* son_list = get_son_list(node);
+    if(strcmp(son_list, "ExtDefList") == 0){
+        return translate_other(node->head);
+    }
+    else if(strcmp(son_list, "ExtDefExtDefList") == 0){
+        struct Code* code1 = translate_other(node->head);
+        struct Code* code2 = translate_other(node->head->next);
+        return append_wo_tail(code1, code2);
+    }
+    // TODO: now we don't consider struct, but we may modify it in the future
+    else if(strcmp(son_list, "SpecifierExtDecListSEMI") == 0){
+        // do not consider global variable, so return NULL.
+        return NULL;
+    }
+    else if(strcmp(son_list, "SpecifierSEMI") == 0){
+        return NULL;
+    }
+    else if(strcmp(son_list, "SpecifierFunDecCompSt") == 0){
+        struct Code* code1 = translate_fundec(node->head->next);
+        struct Code* code2 = translate_stmt(node->head->next->next);
+        return append_wo_tail(code1, code2);
+    }
+    else if(strcmp(son_list, "SpecifierFunDecSEMI") == 0){
+        // struct Code* code = translate_fundec(node->head->next);
+        // return code;
+        // we don't consider function declaration, so return NULL.
+        return NULL;
+    }
+    else{
+        return NULL;
+    }
+}
+
+struct Code* translate_specifier(struct Node* node){
+    // Seems that we don't need to translate specifier, but we leave it temporarily.
+    char* son_list = get_son_list(node);
+    if(strcmp(son_list, "TYPE") == 0){
+        return NULL;
+    }
+    // TODO: now we don't consider struct, but we may modify it in the future
+    else if(strcmp(son_list, "StructSpecifier") == 0){
+        return NULL;
+    }
+    else if(strcmp(son_list, "STRUCTIDLCDefListRC") == 0){
+        return NULL;
+    }
+    else{
+        printf("Seems that some unexpected things have happened!\n");
+        return NULL;
+    }
+}
+
+struct Code* translate_local_definition(struct Node* node){
+    char* son_list = get_son_list(node);
+    if(strcmp(son_list, "DefDefList") == 0){
+        struct Code* code1 = translate_local_definition(node->head);
+        struct Code* code2 = translate_local_definition(node->head->next);
+        return append_wo_tail(code1, code2);
+    }
+    else if(strcmp(son_list, "SpecifierDecListSEMI") == 0){
+        // TODO: now we don't consider struct, but we may modify it in the future
+        return translate_local_definition(node->head->next);
+    }
+    else if(strcmp(son_list, "Dec") == 0){
+        return translate_local_definition(node->head);
+    }
+    else if(strcmp(son_list, "DecCOMMADecList") == 0){
+        struct Code* code1 = translate_local_definition(node->head);
+        struct Code* code2 = translate_local_definition(node->head->next->next);
+        return append_wo_tail(code1, code2);
+    }
+    else if(strcmp(son_list, "VarDec") == 0){
+        return NULL;
+    }
+    else if(strcmp(son_list, "VarDecASSIGNExp") == 0){
+        char* var = node->head->head->value;
+        return translate_exp(node->head->next->next, var);
+    }
+    else{
+        return NULL;
+    }
 }
 
 void translate(struct Node* node, char* filename){
     printf("Translation requires implementation, the name of the root is %s, the translation result will be output to %s\n", node->name, filename);
+    struct Code* raw_code = translate_other(node);
+    struct Code* optimized_code = optimize(raw_code);
+    dump(optimized_code, filename);
 }
 
 
