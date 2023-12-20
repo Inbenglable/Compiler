@@ -607,6 +607,12 @@ int main(int argc, char **argv) {
         }
 
         initial_read_write();
+        Var* read = query_Fun("read");
+        Var* write = query_Fun("write");
+        if(read == NULL || write == NULL){
+            printf("Error: read or write function not found\n");
+            return 1;
+        }
         yyrestart(f);
         //printf("oooooooo%s\n", argv[i]);
         fflush(stdout);
