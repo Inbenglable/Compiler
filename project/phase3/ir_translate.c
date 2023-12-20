@@ -136,7 +136,7 @@ void dump(struct Code* head, char* filename){
 struct Code* translate_exp(struct Node* node, char* place){
     char* son_list = get_son_list(node);
     if(strcmp(son_list, "INT") == 0){
-
+        struct Code* code = construct()
     }
     else if(strcmp(son_list, "ID") == 0){
 
