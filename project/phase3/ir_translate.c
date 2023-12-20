@@ -175,10 +175,10 @@ struct Code* translate_exp(struct Node* node, char* place){
         nodePointer tk2 = tk1->next->next;
         char* tmp1 = new_tmp_name();
         char* tmp2 = new_tmp_name();
-        struct code* block1 = translate_exp(tk1, tmp1);
-        struct code* block2 = translate_exp(tk2, tmp2);
+        struct Code* block1 = translate_exp(tk1, tmp1);
+        struct Code* block2 = translate_exp(tk2, tmp2);
         struct Code* code = construct(3, place, -1, tk1->tmp_name, tk2->tmp_name);
-        if(start_with_well(code->tk2) && start_with_hash(code->tk3)){
+        if(start_with_well(code->tk2) && start_with_well(code->tk3)){
             int res = var_to_int(code->tk2)+var_to_int(code->tk3);
             code->type = 3;
             code->tk2 = to_literal(res);
@@ -209,10 +209,10 @@ struct Code* translate_exp(struct Node* node, char* place){
         nodePointer tk2 = tk1->next->next;
         char* tmp1 = new_tmp_name();
         char* tmp2 = new_tmp_name();
-        struct code* block1 = translate_exp(tk1, tmp1);
-        struct code* block2 = translate_exp(tk2, tmp2);
+        struct Code* block1 = translate_exp(tk1, tmp1);
+        struct Code* block2 = translate_exp(tk2, tmp2);
         struct Code* code = construct(4, place, -1, tk1->tmp_name, tk2->tmp_name);
-        if(start_with_well(code->tk2) && start_with_hash(code->tk3)){
+        if(start_with_well(code->tk2) && start_with_well(code->tk3)){
             int res = var_to_int(code->tk2)-var_to_int(code->tk3);
             code->type = 2;
             code->tk2 = to_literal(res);
@@ -243,10 +243,10 @@ struct Code* translate_exp(struct Node* node, char* place){
         nodePointer tk2 = tk1->next->next;
         char* tmp1 = new_tmp_name();
         char* tmp2 = new_tmp_name();
-        struct code* block1 = translate_exp(tk1, tmp1);
-        struct code* block2 = translate_exp(tk2, tmp2);
+        struct Code* block1 = translate_exp(tk1, tmp1);
+        struct Code* block2 = translate_exp(tk2, tmp2);
         struct Code* code = construct(5, place, -1, tk1->tmp_name, tk2->tmp_name);
-        if(start_with_well(code->tk2) && start_with_hash(code->tk3)){
+        if(start_with_well(code->tk2) && start_with_well(code->tk3)){
             int res = var_to_int(code->tk2)*var_to_int(code->tk3);
             code->type = 2;
             code->tk2 = to_literal(res);
@@ -277,10 +277,10 @@ struct Code* translate_exp(struct Node* node, char* place){
         nodePointer tk2 = tk1->next->next;
         char* tmp1 = new_tmp_name();
         char* tmp2 = new_tmp_name();
-        struct code* block1 = translate_exp(tk1, tmp1);
-        struct code* block2 = translate_exp(tk2, tmp2);
+        struct Code* block1 = translate_exp(tk1, tmp1);
+        struct Code* block2 = translate_exp(tk2, tmp2);
         struct Code* code = construct(6, place, -1, tk1->tmp_name, tk2->tmp_name);
-        if(start_with_well(code->tk2) && start_with_hash(code->tk3)){
+        if(start_with_well(code->tk2) && start_with_well(code->tk3)){
             int res = var_to_int(code->tk2)/var_to_int(code->tk3);
             code->type = 2;
             code->tk2 = to_literal(res);
