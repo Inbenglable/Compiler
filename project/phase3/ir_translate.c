@@ -170,6 +170,27 @@ struct Code* translate_exp(struct Node* node, char* place){
         connect_code_to_node(node, code);
         return code;
     }
+    else if(strcmp(son_list, "ExpASSIGNExp") == 0){
+        nodePointer tk1 = node->head;
+        nodePointer tk2 = tk1->next->next;
+        char* tmp1 = new_tmp_name();
+        char* tmp2 = new_tmp_name();
+        struct Code* block1 = translate_exp(tk1, tmp1);
+        struct Code* block2 = translate_exp(tk2, tmp2);
+        struct Code* code = construct(2, tmp1, -1, tmp2, NULL);
+        if(start_with_well(code->tk3)){
+            ret_head = block1;
+            append_wo_tail(ret_head, code);
+            connect_code_to_node(node, ret_head);
+            return ret_head;
+        }else{
+            ret_head = block1;
+            append_wo_tail(ret_head, block2);
+            append_wo_tail(ret_head, code);
+            connect_code_to_node(node, ret_head);
+            return ret_head;
+        }
+    }
     else if(strcmp(son_list, "ExpPLUSExp") == 0){
         nodePointer tk1 = node->head;
         nodePointer tk2 = tk1->next->next;
@@ -566,7 +587,7 @@ struct Code* translate_fundec(struct Node* node){
     else if(strcmp(son_list, "ID") == 0){
         return construct(14, node->head->value, -1, NULL, NULL);
     }
-    else if(strccmp(son_list, "VarDecLBINTRB")){
+    else if(strcmp(son_list, "VarDecLBINTRB") == 0){
         // TODO: may be modified, if consider array
         return translate_fundec(node->head);
     }
