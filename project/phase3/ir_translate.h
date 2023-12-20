@@ -62,12 +62,14 @@ char* new_label_name();
 char* new_tmp_name();
 struct Code* construct(int type, char* tk1, int relop, char* tk2, char* tk3);
 struct Code* append(struct Code* code1_head, struct Code* code1_tail, struct Code* code2_head, struct Code* code2_tail);
-struct Code* append(struct Code* code1, struct Code* code2);
+struct Code* append_wo_tail(struct Code* code1, struct Code* code2);
 void dump(struct Code* head, char* filename);
 struct Code* translate_exp(struct Node* node, char* place);
 struct Code* translate_cond(struct Node* node, char* label_true, char* label_false);
 struct Code* translate_stmt(struct Node* node);
 struct Code* translate_args(struct Node* node, struct ArgList** arg_list);
+struct Code* translate_fundec(struct Node* node);
+struct Code* translate_other(struct Node* node);
 void translate(struct Node* node, char* filename);
 
 /////////////////

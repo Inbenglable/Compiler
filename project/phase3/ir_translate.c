@@ -235,28 +235,43 @@ struct Code* translate_cond(struct Node* node, char* label_true, char* label_fal
 struct Code* translate_stmt(struct Node* node){
     char* son_list = get_son_list(node);
     if(strcmp(son_list, "ExpSEMI") == 0){
-
-    }
-    else if(strcmp(son_list, "ExpSEMI") == 0){
-
+        return translate_exp(node->head, NULL); // TODO: probably can be optimized
     }
     else if(strcmp(son_list, "CompSt") == 0){
-
+        return translate_other(node->head);
     }
     else if(strcmp(son_list, "RETURNExpSEMI") == 0){
-
+        char* tmp = new_tmp_name();
+        struct Code* code = translate_exp(node->head->next, tmp);
+        return append_wo_tail(code, construct(12, tmp, -1, NULL, NULL));
     }
     else if(strcmp(son_list, "IFLPExpRPStmt") == 0){
-
+        char* label1 = new_label_name();
+        char* label2 = new_label_name();
+        struct Code* code1 = append_wo_tail(translate_cond(node->head->next->next, label1, label2), construct(0, label1, -1, NULL, NULL));
+        struct Code* code2 = append_wo_tail(translate_stmt(node->head->next->next->next->next), construct(0, label2, -1, NULL, NULL));
+        return append_wo_tail(code1, code2);
     }
     else if(strcmp(son_list, "IFLPExpRPStmtELSEStmt") == 0){
-
+        char* label1 = new_label_name();
+        char* label2 = new_label_name();
+        char* label3 = new_label_name();
+        struct Code* code1 = append_wo_tail(translate_cond(node->head->next->next, label1, label2), construct(0, label1, -1, NULL, NULL));
+        struct Code* code2 = append_wo_tail(translate_stmt(node->head->next->next->next->next), append_wo_tail(construct(10, label3, -1, NULL, NULL), construct(0, label2, -1, NULL, NULL)));
+        struct Code* code3 = append_wo_tail(translate_stmt(node->head->next->next->next->next->next->next), construct(0, label3, -1, NULL, NULL));
+        return append_wo_tail(append_wo_tail(code1, code2), code3);
     }
     else if(strcmp(son_list, "WHILELPExpRPStmt") == 0){
-
+        char* label1 = new_label_name();
+        char* label2 = new_label_name();
+        char* label3 = new_label_name();
+        struct Code* code1 = append_wo_tail(construct(0, label1, -1, NULL, NULL), translate_cond(node->head->next->next, label2, label3));
+        struct Code* code2 = append_wo_tail(construct(0, label2, -1, NULL, NULL), append_wo_tail(translate_stmt(node->head->next->next->next->next), construct(10, label1, -1, NULL, NULL)));
+        return append_wo_tail(append_wo_tail(code1, code2), construct(0, label3, -1, NULL, NULL));
     }
     else{
-
+        printf("Seems that some unexpected things have happened!\n");
+        return NULL;
     }
 }
 
@@ -279,12 +294,34 @@ struct Code* translate_args(struct Node* node, struct ArgList** arg_list){
         tmp_arg->next = *arg_list;
         *arg_list = tmp_arg;
         struct Code* code2 = translate_args(node->head->next->next, arg_list);
-        return append(code1, code2);
+        return append_wo_tail(code1, code2);
     }
     else{
         printf("Seems that some unexpected things have happened!\n");
         return NULL;
     }
+}
+
+struct Code* translate_fundec(struct Node* node){
+    // TODO: below are auto-generated code, need to be modified
+    char* son_list = get_son_list(node);
+    if(strcmp(son_list, "IDLPVarListRP") == 0){
+        struct Code* code = construct(1, node->head->value, -1, NULL, NULL);
+        struct Code* code1 = translate_varlist(node->head->next->next);
+        return append(code, code1);
+    }
+    else if(strcmp(son_list, "IDLPVarListRP") == 0){
+        struct Code* code = construct(1, node->head->value, -1, NULL, NULL);
+        return code;
+    }
+    else{
+        printf("Seems that some unexpected things have happened!\n");
+        return NULL;
+    }
+}
+
+struct Code* translate_other(struct Node* node){
+    // TODO: requires implementation
 }
 
 void translate(struct Node* node, char* filename){
