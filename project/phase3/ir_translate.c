@@ -65,6 +65,15 @@ struct Code* append(struct Code* code1_head, struct Code* code1_tail, struct Cod
     return code1_head;
 }
 
+struct Code* append(struct Code* code1, struct Code* code2){
+    struct Code* code1_tail = code1;
+    while(code1_tail->next != NULL){
+        code1_tail = code1_tail->next;
+    }
+    code1_tail->next = code2;
+    code2->from = code1_tail;
+    return code1;
+}
 
 void dump(struct Code* head, char* filename){
     FILE* fp = fopen(filename, "w");
@@ -239,13 +248,27 @@ struct Code* translate_stmt(struct Node* node){
 struct Code* translate_args(struct Node* node, struct ArgList** arg_list){
     char* son_list = get_son_list(node);
     if(strcmp(son_list, "Exp") == 0){
-
+        char* tmp = new_tmp_name();
+        struct Code* code = translate_exp(node->head, tmp)
+        struct ArgList* tmp_arg;
+        tmp_arg->name = tmp;
+        tmp_arg->next = *arg_list;
+        *arg_list = tmp_arg;
+        return code;
     }
     else if(strcmp(son_list, "ExpCOMMAArgs") == 0){
-
+        char* tmp = new_tmp_name();
+        struct Code* code1 = translate_exp(node->head, tmp)
+        struct ArgList* tmp_arg;
+        tmp_arg->name = tmp;
+        tmp_arg->next = *arg_list;
+        *arg_list = tmp_arg;
+        struct Code* code2 = translate_args(node->head->next->next, arg_list)
+        return append(code1, code2);
     }
     else{
-
+        printf("Seems that some unexpected things have happened!\n");
+        return NULL;
     }
 }
 
