@@ -249,7 +249,7 @@ struct Code* translate_args(struct Node* node, struct ArgList** arg_list){
     char* son_list = get_son_list(node);
     if(strcmp(son_list, "Exp") == 0){
         char* tmp = new_tmp_name();
-        struct Code* code = translate_exp(node->head, tmp)
+        struct Code* code = translate_exp(node->head, tmp);
         struct ArgList* tmp_arg;
         tmp_arg->name = tmp;
         tmp_arg->next = *arg_list;
@@ -258,12 +258,12 @@ struct Code* translate_args(struct Node* node, struct ArgList** arg_list){
     }
     else if(strcmp(son_list, "ExpCOMMAArgs") == 0){
         char* tmp = new_tmp_name();
-        struct Code* code1 = translate_exp(node->head, tmp)
+        struct Code* code1 = translate_exp(node->head, tmp);
         struct ArgList* tmp_arg;
         tmp_arg->name = tmp;
         tmp_arg->next = *arg_list;
         *arg_list = tmp_arg;
-        struct Code* code2 = translate_args(node->head->next->next, arg_list)
+        struct Code* code2 = translate_args(node->head->next->next, arg_list);
         return append(code1, code2);
     }
     else{
