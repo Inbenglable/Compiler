@@ -570,7 +570,7 @@ void initial_read_write(){
     write -> type = type_int;
     write -> name = (char*)malloc(sizeof(char)*30);
     write -> line = -1;
-    strcpy(read -> name, "write");
+    strcpy(write -> name, "write");
 
     struct Var* write_arg = (struct Var*)malloc(sizeof(struct Var));
     write_arg -> dim = 0;
@@ -578,7 +578,7 @@ void initial_read_write(){
     write_arg -> type = type_int;
     write_arg -> name = (char*)malloc(sizeof(char)*30);
     write_arg -> line = -1;
-    strcpy(read -> name, "-write_arg");
+    strcpy(write_arg -> name, "-write_arg");
     write->next = write_arg;
 
     store_Fun(read->name, read);
