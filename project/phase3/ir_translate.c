@@ -372,7 +372,7 @@ struct Code* translate_exp(struct Node* node, char* place){
         }
     }
     else{
-        Print("Match expression Fail")
+        printf("Match expression Fail");
     }
 }
 
@@ -566,7 +566,7 @@ struct Code* translate_fundec(struct Node* node){
     else if(strcmp(son_list, "ID") == 0){
         return construct(14, node->head->value, -1, NULL, NULL);
     }
-    else if(strccmp(son_list, "VarDecLBINTRB")){
+    else if(strcmp(son_list, "VarDecLBINTRB") == 0){
         // TODO: may be modified, if consider array
         return translate_fundec(node->head);
     }
