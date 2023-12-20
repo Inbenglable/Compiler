@@ -305,8 +305,8 @@ void split(Treap* node, char* v, Treap** l, Treap** r){
 
 Treap* find(char* v, Treap* node){
     while(node != NULL){
-        printf("find %s %s\n", v, node->val);
-        fflush(stdout);
+        //printf("find %s %s\n", v, node->val);
+        //fflush(stdout);
         int cmp = strcmp(node->val, v);
         if(cmp == 0){
             return node;
