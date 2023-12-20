@@ -494,8 +494,8 @@ struct Code* translate_stmt(struct Node* node){
         return append_wo_tail(code1, code2);
     }
     else if(strcmp(son_list, "StmtStmtList") == 0){
-        struct Code* code1 = translate_stmt(node->head->next);
-        struct Code* code2 = translate_stmt(node->head->next->next);
+        struct Code* code1 = translate_stmt(node->head);
+        struct Code* code2 = translate_stmt(node->head->next);
         return append_wo_tail(code1, code2);
     }
     else if(strcmp(son_list, "ExpSEMI") == 0){
@@ -697,6 +697,7 @@ void translate(struct Node* node, char* filename){
     //printf("Translation requires implementation, the name of the root is %s, the translation result will be output to %s\n", node->name, filename);
     struct Code* raw_code = translate_high_level_def(node);
     struct Code* optimized_code = optimize(raw_code);
+    printf("Start dumping code to %s\n", filename);
     dump(optimized_code, filename);
 }
 

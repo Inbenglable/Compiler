@@ -897,7 +897,7 @@ YY_RULE_SETUP
 case 16:
 YY_RULE_SETUP
 #line 39 "lex.l"
-{ yylval.type=getIDNode(yytext, yylineno);return ID; }
+{ yylval.type=getIDNode("ID", yylineno);return ID; }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP

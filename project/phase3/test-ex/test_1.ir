@@ -1,0 +1,26 @@
+FUNCTION main :
+tmp_0 := var_a
+READ tmp_1
+tmp_0 := tmp_1
+tmp_2 := var_a
+tmp_3 := #1
+IF tmp_2 == tmp_3 GOTO label_0
+GOTO label_1
+LABEL label_0 :
+b := #1
+tmp_4 := var_b
+tmp_5 := #1
+IF tmp_4 == tmp_5 GOTO label_2
+GOTO label_3
+LABEL label_2 :
+c := #11
+tmp_6 := var_b
+WRITE tmp_6
+tmp_7 := var_c
+WRITE tmp_7
+LABEL label_3 :
+LABEL label_1 :
+tmp_8 := var_a
+WRITE tmp_8
+tmp_9 := #0
+RETURN tmp_9
