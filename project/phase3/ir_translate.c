@@ -264,7 +264,7 @@ struct Code* translate_args(struct Node* node, struct ArgList** arg_list){
         tmp_arg->next = *arg_list;
         *arg_list = tmp_arg;
         struct Code* code2 = translate_args(node->head->next->next, arg_list);
-        return append(code1, code2);
+        return append_wo_tail(code1, code2);
     }
     else{
         printf("Seems that some unexpected things have happened!\n");
