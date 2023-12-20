@@ -380,28 +380,72 @@ struct Code* translate_cond(struct Node* node, char* label_true, char* label_fal
     char* son_list = get_son_list(node);
     struct Code* ret_head = NULL;
     if(strcmp(son_list, "ExpLTExp") == 0){
-
+        char* tmp1 = new_tmp_name();
+        char* tmp2 = new_tmp_name();
+        struct Code* code1 = translate_exp(node->head, tmp1);
+        struct Code* code2 = translate_exp(node->head->next->next, tmp2);
+        struct Code* code3 = construct(11, tmp1, 0, tmp2, label_true);
+        struct Code* code4 = construct(10, label_false, -1, NULL, NULL);
+        return append_wo_tail(append_wo_tail(append_wo_tail(code1, code2), code3), code4);
     }
     else if(strcmp(son_list, "ExpLEExp") == 0){
-
+        char* tmp1 = new_tmp_name();
+        char* tmp2 = new_tmp_name();
+        struct Code* code1 = translate_exp(node->head, tmp1);
+        struct Code* code2 = translate_exp(node->head->next->next, tmp2);
+        struct Code* code3 = construct(11, tmp1, 1, tmp2, label_true);
+        struct Code* code4 = construct(10, label_false, -1, NULL, NULL);
+        return append_wo_tail(append_wo_tail(append_wo_tail(code1, code2), code3), code4);
     }
     else if(strcmp(son_list, "ExpGTExp") == 0){
-
+        char* tmp1 = new_tmp_name();
+        char* tmp2 = new_tmp_name();
+        struct Code* code1 = translate_exp(node->head, tmp1);
+        struct Code* code2 = translate_exp(node->head->next->next, tmp2);
+        struct Code* code3 = construct(11, tmp1, 2, tmp2, label_true);
+        struct Code* code4 = construct(10, label_false, -1, NULL, NULL);
+        return append_wo_tail(append_wo_tail(append_wo_tail(code1, code2), code3), code4);
     }
     else if(strcmp(son_list, "ExpGEExp") == 0){
-
+        char* tmp1 = new_tmp_name();
+        char* tmp2 = new_tmp_name();
+        struct Code* code1 = translate_exp(node->head, tmp1);
+        struct Code* code2 = translate_exp(node->head->next->next, tmp2);
+        struct Code* code3 = construct(11, tmp1, 3, tmp2, label_true);
+        struct Code* code4 = construct(10, label_false, -1, NULL, NULL);
+        return append_wo_tail(append_wo_tail(append_wo_tail(code1, code2), code3), code4);
     }
     else if(strcmp(son_list, "ExpNEExp") == 0){
-
+        char* tmp1 = new_tmp_name();
+        char* tmp2 = new_tmp_name();
+        struct Code* code1 = translate_exp(node->head, tmp1);
+        struct Code* code2 = translate_exp(node->head->next->next, tmp2);
+        struct Code* code3 = construct(11, tmp1, 4, tmp2, label_true);
+        struct Code* code4 = construct(10, label_false, -1, NULL, NULL);
+        return append_wo_tail(append_wo_tail(append_wo_tail(code1, code2), code3), code4);
     }
     else if(strcmp(son_list, "ExpEQExp") == 0){
-
+        char* tmp1 = new_tmp_name();
+        char* tmp2 = new_tmp_name();
+        struct Code* code1 = translate_exp(node->head, tmp1);
+        struct Code* code2 = translate_exp(node->head->next->next, tmp2);
+        struct Code* code3 = construct(11, tmp1, 5, tmp2, label_true);
+        struct Code* code4 = construct(10, label_false, -1, NULL, NULL);
+        return append_wo_tail(append_wo_tail(append_wo_tail(code1, code2), code3), code4);
     }
     else if(strcmp(son_list, "ExpANDExp") == 0){
-
+        char* label1 = new_label_name();
+        struct Code* code1 = translate_cond(node->head, label1, label_false);
+        struct Code* code2 = construct(0, label1, -1, NULL, NULL);
+        struct Code* code3 = translate_cond(node->head->next->next, label_true, label_false);
+        return append_wo_tail(append_wo_tail(code1, code2), code3);
     }
     else if(strcmp(son_list, "ExpORExp") == 0){
-        
+        char* label1 = new_label_name();
+        struct Code* code1 = translate_cond(node->head, label_true, label1);
+        struct Code* code2 = construct(0, label1, -1, NULL, NULL);
+        struct Code* code3 = translate_cond(node->head->next->next, label_true, label_false);
+        return append_wo_tail(append_wo_tail(code1, code2), code3);
     }
     else if(strcmp(son_list, "NOTExp") == 0){
         nodePointer ftk1 = node->head->next;
