@@ -372,7 +372,7 @@ struct Code* translate_exp(struct Node* node, char* place){
         }
     }
     else{
-        Print("Match expression Fail")
+        printf("Match expression Fail");
     }
 }
 
@@ -710,4 +710,9 @@ struct Code* get_tail(struct Code* code){
         tmp = tmp->next;
     }
     return tmp;
+}
+
+void connect_code_to_node(nodePointer node, struct Code* code){
+    node->code_head = code;
+    node->code_tail = get_tail(code);
 }
