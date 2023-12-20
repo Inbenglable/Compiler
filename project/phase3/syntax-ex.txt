@@ -1,0 +1,103 @@
+
+Program: ExtDefList{}
+        ;
+ExtDefList: ExtDef ExtDefList {}
+          | {}
+        ;
+ExtDef: Specifier ExtDecList SEMI 
+      | Specifier ExtDecList error {error_type = 1;yyerror("Missing semicolon ';'");}
+      | Specifier SEMI {$$ = getNode("ExtDef", 2, $1, $2);}
+      | Specifier error {error_type = 1;yyerror("Missing semicolon ';'");}
+      | Funspecifier CompSt
+      ;
+
+
+ExtDecList: VarDec 
+          | VarDec COMMA ExtDecList 
+          ;
+Funspecifier: Specifier FunDec
+;
+
+Specifier: TYPE 
+         | StructSpecifier 
+         ;
+StructSpecifier: STRUCT ID LC DefList RC 
+              | STRUCT ID 
+              ;
+
+VarDec: ID
+      | VarDec LB INT RB 
+     ;
+FunDec: ID LP VarList RP 
+      | ID LP RP 
+      ;
+VarList: ParamDec COMMA VarList 
+       | ParamDec
+       ;
+ParamDec: Specifier VarDec 
+        ;
+
+CompSt: LC DefList StmtList RC 
+    ;
+StmtList: Stmt StmtList 
+        |
+        ;
+Stmt: SEMI 
+    | Exp SEMI {$$ = getNode("Stmt", 2, $1, $2);}
+    | CompSt
+    | RETURN Exp SEMI
+    | IF LP Exp RP Stmt %prec LOWER_THAN_ELSE 
+    | IF LP Exp RP Stmt ELSE Stmt 
+    | WHILE LP Exp RP Stmt 
+    | WHILE LP RP Stmt 
+    ;
+DefList: Def DefList 
+        |
+        ;
+Def: Specifier DecList SEMI 
+;
+DecList: Dec 
+        | Dec COMMA DecList ;
+Dec: VarDec 
+    |
+    ;
+
+Exp: Exp ASSIGN Exp 
+    | Exp AND Exp 
+    | Exp OR Exp 
+    | Exp LT Exp 
+    | Exp LE Exp 
+    | Exp GT Exp
+    | Exp GE Exp 
+    | Exp NE Exp
+    | Exp EQ Exp
+    | Exp PLUS Exp 
+    | Exp MINUS Exp 
+    | Exp MUL Exp 
+    | Exp DIV Exp 
+    | LP Exp RP 
+    | MINUS Exp 
+    | NOT Exp
+    | ID LP Args RP
+    | ID LP RP 
+    | Exp LB Exp RB
+    | Exp DOT ID
+    | ID
+    | INT 
+    | FLOAT
+    | CHAR
+    ;
+Args: Exp COMMA Args
+    | Exp
+    ;
+
+
+void dfs_args(nodePointer args){
+    char* son_name = get_son_name(args);
+    
+    if(strcmp(son_name, "ExpCOMMAArgs") == 1){
+        // Todo: xxx   
+    }else if(strcmp(son_name, "Exp") == 1){
+        // Todo: xxx
+    }
+}
