@@ -145,13 +145,28 @@ void dump(struct Code* head, char* filename){
 struct Code* translate_exp(struct Node* node, char* place){
     char* son_list = get_son_list(node);
     if(strcmp(son_list, "INT") == 0){
-        struct Code* code = construct()
+        nodePointer con = node -> head;
+        struct Code* code = construct(3, place, -1, to_literal(char_to_int(con -> value)), NULL);
+        code->is_const = 1;
+        code->value = var_to_int(code->tk2);
+        con->tmp_name = code->tk2;
+        node->code_head = code;
+        node->code_tail = get_tail(code);
+        return code;
     }
     else if(strcmp(son_list, "ID") == 0){
-
+        nodePointer id = node -> head;
+        struct Code* code = construct(3, place, -1, to_var(id->value), NULL);
+        id->tmp_name = code->tk2;
+        return code;
     }
     else if(strcmp(son_list, "ExpPLUSExp") == 0){
-
+        nodePointer tk1 = node->head;
+        nodePointer tk2 = tk1->next->next;
+        struct Code* code = construct(4, place, -1, tk1->tmp_name, tk2->tmp_name);
+        if(start_with_well(code->tk2) && start_with_hash(code->tk3)){
+            
+        }
     }
     else if(strcmp(son_list, "ExpMINUSExp") == 0){
 
@@ -298,7 +313,7 @@ int var_to_int(const char* str) {
     return result;
 }
 
-int start_with_hash(const char* str) {
+int start_with_well(const char* str) {
     // 检查输入指针是否为NULL
     if (str == NULL) {
         return 0;
@@ -310,4 +325,13 @@ int start_with_hash(const char* str) {
     } else {
         return 0; // 字符串不以 '#' 开头
     }
+}
+
+struct Code* get_tail(struct Code* code){
+    if(code == NULL)return NULL;
+    struct Code* tmp = code;
+    while(tmp->next != NULL){
+        tmp = tmp->next;
+    }
+    return tmp;
 }
