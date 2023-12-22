@@ -1,0 +1,69 @@
+FUNCTION main :
+tmp_0 := #1
+var_a := tmp_0
+tmp_1 := #2
+var_b := tmp_1
+tmp_2 := #3
+var_c := tmp_2
+tmp_3 := #1
+var_tu1 := tmp_3
+tmp_4 := #1
+var_tu2 := tmp_4
+READ tmp_5
+var_m := tmp_5
+tmp_6 := var_m
+tmp_7 := #1
+IF tmp_6 < tmp_7 GOTO label_0
+GOTO label_1
+LABEL label_0 :
+tmp_8 := #0
+WRITE tmp_8
+GOTO label_2
+LABEL label_1 :
+tmp_9 := var_m
+tmp_10 := #1
+IF tmp_9 == tmp_10 GOTO label_3
+GOTO label_6
+LABEL label_6 :
+tmp_11 := var_m
+tmp_12 := #2
+IF tmp_11 == tmp_12 GOTO label_3
+GOTO label_4
+LABEL label_3 :
+tmp_13 := #1
+WRITE tmp_13
+GOTO label_5
+LABEL label_4 :
+tmp_14 := var_m
+tmp_15 := #2
+IF tmp_14 > tmp_15 GOTO label_7
+GOTO label_8
+LABEL label_7 :
+tmp_16 := #3
+var_i := tmp_16
+LABEL label_9 :
+tmp_17 := var_i
+tmp_18 := var_m
+IF tmp_17 <= tmp_18 GOTO label_10
+GOTO label_11
+LABEL label_10 :
+tmp_20 := var_tu1
+tmp_21 := var_tu2
+tmp_19 := var_tu1 + var_tu2
+var_tu3 := tmp_19
+tmp_22 := var_tu2
+var_tu1 := tmp_22
+tmp_23 := var_tu3
+var_tu2 := tmp_23
+tmp_25 := var_i
+tmp_24 := var_i + #1
+var_i := tmp_24
+GOTO label_9
+LABEL label_11 :
+tmp_27 := var_tu3
+WRITE tmp_27
+LABEL label_8 :
+LABEL label_5 :
+LABEL label_2 :
+tmp_28 := #0
+RETURN tmp_28

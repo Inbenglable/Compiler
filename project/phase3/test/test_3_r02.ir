@@ -1,0 +1,64 @@
+FUNCTION calculateBinomialCoefficient :
+PARAM var_row
+PARAM var_col
+var_coefficient := #1
+var_i := #0
+tmp_0 := var_row
+tmp_1 := var_col
+IF tmp_0 < tmp_1 GOTO label_0
+GOTO label_1
+LABEL label_0 :
+tmp_2 := #0
+RETURN tmp_2
+LABEL label_1 :
+tmp_3 := var_col
+tmp_5 := var_row
+tmp_6 := var_col
+tmp_4 := var_row - var_col
+IF tmp_3 > tmp_4 GOTO label_2
+GOTO label_3
+LABEL label_2 :
+tmp_8 := var_row
+tmp_9 := var_col
+tmp_7 := var_row - var_col
+var_col := tmp_7
+LABEL label_3 :
+LABEL label_4 :
+tmp_10 := var_i
+tmp_11 := var_col
+IF tmp_10 < tmp_11 GOTO label_5
+GOTO label_6
+LABEL label_5 :
+tmp_13 := var_coefficient
+tmp_15 := var_row
+tmp_16 := var_i
+tmp_14 := var_row - var_i
+tmp_12 := var_coefficient * tmp_14
+var_coefficient := tmp_12
+tmp_18 := var_coefficient
+tmp_20 := var_i
+tmp_19 := var_i + #1
+tmp_17 := var_coefficient / tmp_19
+var_coefficient := tmp_17
+tmp_23 := var_i
+tmp_22 := var_i + #1
+var_i := tmp_22
+GOTO label_4
+LABEL label_6 :
+tmp_25 := var_coefficient
+RETURN tmp_25
+FUNCTION main :
+READ tmp_26
+var_row1 := tmp_26
+READ tmp_27
+var_col1 := tmp_27
+tmp_29 := var_row1
+tmp_30 := var_col1
+ARG tmp_30
+ARG tmp_29
+tmp_28 := CALL calculateBinomialCoefficient
+var_coefficient1 := tmp_28
+tmp_31 := var_coefficient1
+WRITE tmp_31
+tmp_32 := #0
+RETURN tmp_32

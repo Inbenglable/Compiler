@@ -1,0 +1,54 @@
+FUNCTION main :
+var_N := #30
+var_num := #0
+var_i := #1
+var_k := #1
+LABEL label_0 :
+tmp_0 := var_k
+tmp_1 := var_N
+IF tmp_0 <= tmp_1 GOTO label_1
+GOTO label_2
+LABEL label_1 :
+LABEL label_3 :
+tmp_2 := var_i
+tmp_3 := var_k
+IF tmp_2 <= tmp_3 GOTO label_4
+GOTO label_5
+LABEL label_4 :
+tmp_4 := var_k
+tmp_8 := var_k
+tmp_9 := var_i
+tmp_6 := var_k / var_i
+tmp_7 := var_i
+tmp_5 := tmp_6 * var_i
+IF tmp_4 == tmp_5 GOTO label_6
+GOTO label_7
+LABEL label_6 :
+tmp_11 := var_num
+tmp_10 := var_num + #1
+var_num := tmp_10
+LABEL label_7 :
+tmp_14 := var_i
+tmp_13 := var_i + #1
+var_i := tmp_13
+GOTO label_3
+LABEL label_5 :
+tmp_16 := var_num
+tmp_17 := #2
+IF tmp_16 == tmp_17 GOTO label_8
+GOTO label_9
+LABEL label_8 :
+tmp_18 := var_k
+WRITE tmp_18
+LABEL label_9 :
+tmp_19 := #1
+var_i := tmp_19
+tmp_20 := #0
+var_num := tmp_20
+tmp_22 := var_k
+tmp_21 := var_k + #1
+var_k := tmp_21
+GOTO label_0
+LABEL label_2 :
+tmp_24 := #0
+RETURN tmp_24

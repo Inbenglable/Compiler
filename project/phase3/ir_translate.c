@@ -165,11 +165,14 @@ struct Code* translate_exp(struct Node* node, char* place){
         return code;
     }
     else if(strcmp(son_list, "ID") == 0){
+        fflush(stdout);
         nodePointer id = node -> head;
         struct Code* code = construct(2, place, -1, to_var(id->value), NULL);
         id->tmp_name = code->tk2;
         node->tmp_name = id->tmp_name;
         connect_code_to_node(node, code);
+        printf("translate ID: %s\n", node->tmp_name);
+        fflush(stdout);
         return code;
     }
     else if(strcmp(son_list, "ExpASSIGNExp") == 0){
@@ -380,10 +383,12 @@ struct Code* translate_exp(struct Node* node, char* place){
             struct Code* block2 = NULL;
             struct Code* tmp = NULL;
             while(arg_list != NULL){
+                printf("!!!%s\n", arg_list->name);
                 tmp = construct(15, arg_list->name, -1, NULL, NULL);
-                append_wo_tail(block2, tmp);
+                block2 = append_wo_tail(block2, tmp);
                 arg_list = arg_list->next;
             }
+            //dump(block2,"debug.out");
             ret_head = block1;
             append_wo_tail(ret_head, block2);
             struct Code* code = construct(16, place, -1, fun_name, NULL);
@@ -393,8 +398,10 @@ struct Code* translate_exp(struct Node* node, char* place){
         }
     }
     else{
-        printf("Match expression Fail");
+        printf("Match expression Fail\n");
     }
+    printf("Finish translate expression\n");
+    fflush(stdout);
 }
 
 struct Code* translate_cond(struct Node* node, char* label_true, char* label_false){
@@ -543,7 +550,7 @@ struct Code* translate_args(struct Node* node, struct ArgList** arg_list){
     if(strcmp(son_list, "Exp") == 0){
         char* tmp = new_tmp_name();
         struct Code* code = translate_exp(node->head, tmp);
-        struct ArgList* tmp_arg;
+        struct ArgList* tmp_arg = (struct ArgList*)malloc(sizeof(struct ArgList));;
         tmp_arg->name = tmp;
         tmp_arg->next = *arg_list;
         *arg_list = tmp_arg;
@@ -552,10 +559,11 @@ struct Code* translate_args(struct Node* node, struct ArgList** arg_list){
     else if(strcmp(son_list, "ExpCOMMAArgs") == 0){
         char* tmp = new_tmp_name();
         struct Code* code1 = translate_exp(node->head, tmp);
-        struct ArgList* tmp_arg;
+        struct ArgList* tmp_arg = (struct ArgList*)malloc(sizeof(struct ArgList));
         tmp_arg->name = tmp;
         tmp_arg->next = *arg_list;
         *arg_list = tmp_arg;
+        fflush(stdout);
         struct Code* code2 = translate_args(node->head->next->next, arg_list);
         return append_wo_tail(code1, code2);
     }
@@ -578,7 +586,7 @@ struct Code* translate_fundec(struct Node* node){
         return code;
     }
     else if(strcmp(son_list, "ParamDecCOMMAVarList") == 0){
-        struct Code* code1 = translate_fundec(node->head);
+        struct Code* code1 = translate_fundec(4node->head);
         struct Code* code2 = translate_fundec(node->head->next->next);
         return append_wo_tail(code1, code2);
     }
@@ -589,7 +597,7 @@ struct Code* translate_fundec(struct Node* node){
         return translate_fundec(node->head->next);
     }
     else if(strcmp(son_list, "ID") == 0){
-        return construct(14, node->head->value, -1, NULL, NULL);
+        return construct(14, to_var(node->head->value), -1, NULL, NULL);
     }
     else if(strcmp(son_list, "VarDecLBINTRB") == 0){
         // TODO: may be modified, if consider array

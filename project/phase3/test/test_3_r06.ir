@@ -1,0 +1,58 @@
+FUNCTION hanoi :
+PARAM var_n
+PARAM var_p1
+PARAM var_p2
+PARAM var_p3
+tmp_0 := var_n
+tmp_1 := #1
+IF tmp_0 == tmp_1 GOTO label_0
+GOTO label_1
+LABEL label_0 :
+tmp_5 := var_p1
+tmp_3 := var_p1 * #1000000
+tmp_4 := var_p3
+tmp_2 := tmp_3 + var_p3
+WRITE tmp_2
+GOTO label_2
+LABEL label_1 :
+tmp_8 := var_n
+tmp_7 := var_n - #1
+tmp_10 := var_p1
+tmp_11 := var_p3
+tmp_12 := var_p2
+ARG tmp_12
+ARG tmp_11
+ARG tmp_10
+ARG tmp_7
+(null) := CALL hanoi
+tmp_16 := var_p1
+tmp_14 := var_p1 * #1000000
+tmp_15 := var_p3
+tmp_13 := tmp_14 + var_p3
+WRITE tmp_13
+tmp_19 := var_n
+tmp_18 := var_n - #1
+tmp_21 := var_p2
+tmp_22 := var_p1
+tmp_23 := var_p3
+ARG tmp_23
+ARG tmp_22
+ARG tmp_21
+ARG tmp_18
+(null) := CALL hanoi
+LABEL label_2 :
+tmp_24 := #0
+RETURN tmp_24
+FUNCTION main :
+var_sum := #3
+tmp_25 := var_sum
+tmp_26 := #1
+tmp_27 := #2
+tmp_28 := #3
+ARG tmp_28
+ARG tmp_27
+ARG tmp_26
+ARG tmp_25
+(null) := CALL hanoi
+tmp_29 := #0
+RETURN tmp_29
