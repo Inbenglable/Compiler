@@ -166,7 +166,6 @@ struct Code* translate_exp(struct Node* node, char* place){
         return code;
     }
     else if(strcmp(son_list, "ID") == 0){
-        fflush(stdout);
         nodePointer id = node -> head;
         struct Code* code = construct(2, place, -1, to_var(id->value), NULL);
         id->tmp_name = code->tk2;
@@ -176,20 +175,25 @@ struct Code* translate_exp(struct Node* node, char* place){
         fflush(stdout);
         return code;
     }
+    else if(strcmp(son_list, "ExpDOTID") == 0){
+        char* struct_name = node -> var -> name;
+        struct Code* code = construct()
+    }
     else if(strcmp(son_list, "ExpASSIGNExp") == 0){
         nodePointer tk1 = node->head;
         nodePointer tk2 = tk1->next->next;
         char* tmp1 = new_tmp_name();
-        translate_exp(tk1, tmp1);
-        struct Code* block1 = translate_exp(tk2, tmp1);
+        struct Code* block1 = translate_exp(tk1, tmp1);
+        struct Code* block2 = translate_exp(tk2, tmp1);
         struct Code* code = construct(2, tk1->tmp_name, -1, tmp1, NULL);
         if(start_with_well(code->tk2)){
-            ret_head = NULL;
-            append_wo_tail(ret_head, code);
+            ret_head = block1;
+            ret_head = append_wo_tail(ret_head, code);
             connect_code_to_node(node, ret_head);
             return ret_head;
         }else{
             ret_head = block1;
+            append_wo_tail(ret_head, block1);
             append_wo_tail(ret_head, code);
             connect_code_to_node(node, ret_head);
             return ret_head;
