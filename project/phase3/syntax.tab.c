@@ -566,8 +566,8 @@ static const yytype_int16 yyrline[] =
      322,   329,   336,   343,   350,   357,   364,   377,   388,   399,
      408,   409,   410,   411,   412,   413,   414,   415,   416,   417,
      418,   419,   420,   421,   425,   426,   434,   442,   475,   476,
-     505,   506,   526,   527,   548,   568,   572,   576,   581,   586,
-     587,   588
+     505,   506,   526,   527,   549,   569,   573,   577,   582,   587,
+     588,   589
 };
 #endif
 
@@ -2229,24 +2229,25 @@ yyreduce:
                 generate_exp_var((yyval.type), NULL);
             }
             else{
-                struct Type* t = check_field(((yyvsp[-2].type))->type, ((yyvsp[0].type))->value);
+                struct Var* t = check_field(((yyvsp[-2].type))->type, ((yyvsp[0].type))->value);
                 if(t == NULL) {
                     error_type = 140;
                     yyerror("accessing an undefined structure member");
                     generate_exp_var((yyval.type), NULL);
                 }else{
                     generate_exp_var((yyval.type), NULL);
-                    ((yyval.type)) -> type = t;
-                    ((yyval.type)) -> var -> type = t;
-                    ((yyval.type)) -> var -> name = (yyvsp[-2].type)->name;
+                    ((yyval.type)) -> type = t->type;
+                    ((yyval.type)) -> var -> type = t->type;
+                    ((yyval.type)) -> var -> name = (yyvsp[-2].type)->var->name;
+                    ((yyval.type)) -> var -> offset = t->offset+((yyvsp[-2].type))->var->offset;
                 }
             }
         }
-#line 2246 "syntax.tab.c"
+#line 2247 "syntax.tab.c"
     break;
 
   case 94: /* Exp: ID  */
-#line 548 "syntax.y"
+#line 549 "syntax.y"
          {
         (yyval.type) = getNode("Exp", 1, (yyvsp[0].type));
         struct Var* var = check_ID_def((yyvsp[0].type));
@@ -2267,67 +2268,67 @@ yyreduce:
         }
         
     }
-#line 2271 "syntax.tab.c"
+#line 2272 "syntax.tab.c"
     break;
 
   case 95: /* Exp: INT  */
-#line 568 "syntax.y"
+#line 569 "syntax.y"
           {(yyval.type) = getNode("Exp", 1, (yyvsp[0].type));
         extend_var((yyval.type), (yyvsp[0].type));
         extend_type((yyval.type), (yyvsp[0].type));
     }
-#line 2280 "syntax.tab.c"
+#line 2281 "syntax.tab.c"
     break;
 
   case 96: /* Exp: FLOAT  */
-#line 572 "syntax.y"
+#line 573 "syntax.y"
             {(yyval.type) = getNode("Exp", 1, (yyvsp[0].type));
         extend_var((yyval.type), (yyvsp[0].type));
         extend_type((yyval.type), (yyvsp[0].type));
     }
-#line 2289 "syntax.tab.c"
+#line 2290 "syntax.tab.c"
     break;
 
   case 97: /* Exp: CHAR  */
-#line 576 "syntax.y"
+#line 577 "syntax.y"
            {(yyval.type) = getNode("Exp", 1, (yyvsp[0].type));
         extend_var((yyval.type), (yyvsp[0].type)); 
         extend_type((yyval.type), (yyvsp[0].type));
     }
-#line 2298 "syntax.tab.c"
+#line 2299 "syntax.tab.c"
     break;
 
   case 98: /* Args: Exp COMMA Args  */
-#line 581 "syntax.y"
+#line 582 "syntax.y"
                      {(yyval.type) = getNode("Args", 3, (yyvsp[-2].type), (yyvsp[-1].type), (yyvsp[0].type));
         connect_var((yyvsp[-2].type), (yyvsp[0].type));
         extend_var((yyval.type), (yyvsp[-2].type));
     }
-#line 2307 "syntax.tab.c"
+#line 2308 "syntax.tab.c"
     break;
 
   case 99: /* Args: COMMA Args  */
-#line 586 "syntax.y"
+#line 587 "syntax.y"
                  {error_type = 1;yyerror("Unexpected ','");}
-#line 2313 "syntax.tab.c"
+#line 2314 "syntax.tab.c"
     break;
 
   case 100: /* Args: Exp COMMA  */
-#line 587 "syntax.y"
+#line 588 "syntax.y"
                 {error_type = 1;yyerror("Expected another parenthesis after ','");}
-#line 2319 "syntax.tab.c"
+#line 2320 "syntax.tab.c"
     break;
 
   case 101: /* Args: Exp  */
-#line 588 "syntax.y"
+#line 589 "syntax.y"
           {(yyval.type) = getNode("Args", 1, (yyvsp[0].type));
         extend_var((yyval.type), (yyvsp[0].type));
     }
-#line 2327 "syntax.tab.c"
+#line 2328 "syntax.tab.c"
     break;
 
 
-#line 2331 "syntax.tab.c"
+#line 2332 "syntax.tab.c"
 
       default: break;
     }
@@ -2520,4 +2521,4 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 593 "syntax.y"
+#line 594 "syntax.y"

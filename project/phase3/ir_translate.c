@@ -90,8 +90,11 @@ struct Code* append_wo_tail(struct Code* code1, struct Code* code2){
 }
 
 void dump(struct Code* head, char* filename){
+    
     FILE* fp = fopen(filename, "w");
     while(head != NULL){
+        printf("dumping code: %d %s %d %s %s\n", head->type, head->tk1, head->relop, head->tk2, head->tk3);
+        fflush(stdout);
         switch(head->type){
             case 0:
                 fprintf(fp, "LABEL %s :\n", head->tk1);
@@ -185,43 +188,49 @@ struct Code* translate_exp(struct Node* node, char* place){
         char* struct_name = node -> var -> name;
         ret_head = NULL;
         char* tmp = new_tmp_name();
-        struct Code* code = construct(3, tmp, -1, attach("&", to_var(struct_name)), to_literal(node->var->offset));
-        ret_head = code;
-        code = construct(2, place, -1, tmp, NULL);
+        ret_head = construct(3, tmp, -1, attach("&", to_var(struct_name)), to_literal(node->var->offset));
+        struct Code* code = construct(2, place, -1, attach("*", tmp), NULL);
         ret_head = append_wo_tail(ret_head, code);
         connect_code_to_node(node, code);
-        printf("translate Struct %s.%s with offset %d\n", node->tmp_name, node->head->next->next->value, node->var->offset);
+        printf("translate Struct %s.%s with offset %d\n", node->var->name, node->head->next->next->value, node->var->offset);
         fflush(stdout);
-        return code;
+        return ret_head;
     }
     else if(strcmp(son_list, "ExpASSIGNExp") == 0){
         nodePointer tk1 = node->head;
         nodePointer tk2 = tk1->next->next;
+        char* tmp0 = new_tmp_name();
         char* tmp1 = new_tmp_name();
-        struct Code* block1 = translate_exp(tk1, tmp1);
+        struct Code* block1 = translate_exp(tk1, tmp0);
         struct Code* block2 = translate_exp(tk2, tmp1);
         struct Code* code = NULL;
+        struct Code* code1 = NULL;
+        char* var_name = NULL;
         if(tk1->var->offset == 0){
             ret_head = NULL;
-            code = construct(2, tk1->tmp_name, -1, tk2->tmp_name, NULL);
+            code = construct(2, to_var(tk1->var->name), -1, tk2->tmp_name, NULL);
+            var_name = to_var(tk1->var->name);
         }else{
-            char* tmp = new_tmp_name();
+            var_name = new_tmp_name();
             char* struct_name = tk1->var->name;
-            ret_head = construct(3, tmp, -1, attach("&", to_var(struct_name)), to_literal(tk1->var->offset));
-            code = construct(2, attach("*", tmp), -1, tk2->tmp_name, NULL);
+            ret_head = construct(3, var_name, -1, attach("&", to_var(struct_name)), to_literal(tk1->var->offset));
+            code = construct(2, attach("*", var_name), -1, tk2->tmp_name, NULL);
         }
         
         if(start_with_well(code->tk2)){
-            
             ret_head = append_wo_tail(ret_head, code);
             connect_code_to_node(node, ret_head);
-            return ret_head;
         }else{
-            ret_head = append_wo_tail(ret_head, block1);
+            ret_head = append_wo_tail(ret_head, block2);
             append_wo_tail(ret_head, code);
             connect_code_to_node(node, ret_head);
-            return ret_head;
         }
+        if(place != NULL){
+            code = construct(2, place, -1, var_name, NULL);
+            append_wo_tail(ret_head, code);
+        }
+        
+        return ret_head;
     }
     else if(strcmp(son_list, "ExpPLUSExp") == 0){
         nodePointer tk1 = node->head;
