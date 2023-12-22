@@ -28,6 +28,12 @@ char* to_var(char* name){
     return ret;
 }
 
+char* attach(char* str1, char* str2){
+    char* ret = (char*)malloc(sizeof(char) * 30);
+    sprintf(ret, "%s%s", str1, str2);
+    return ret;
+}
+
 char* new_label_name(){
     char* ret = (char*)malloc(sizeof(char) * 30);
     sprintf(ret, "label_%d", label_count++);
@@ -490,7 +496,11 @@ struct Code* translate_cond(struct Node* node, char* label_true, char* label_fal
         return ret_head; 
     }
     else{
-        return NULL;
+        char* tmp = new_tmp_name();
+        struct Code* code = translate_exp(node, tmp);
+        struct Code* code1 = construct(11, tmp, 5, to_literal(0), label_false);
+        struct Code* code2 = construct(10, label_true, -1, NULL, NULL);
+        return append_wo_tail(append_wo_tail(code, code1), code2);
     }
 }
 
