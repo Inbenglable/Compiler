@@ -1,9 +1,0 @@
-int foo(int v){
-    return v;
-}
-int main(){
-    int a,b,c;
-    114514 = a;
-    (a+b-c) = 114514;
-    foo(a-b+c) = 114514;
-}

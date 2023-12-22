@@ -1,10 +1,10 @@
-struct foo{
-    int foo;
-} foo;
-float foo(int foo){
-    return 0.0;
+struct Engine{
+    int power;
+    int weight;
+};
+int thrust_power_ratio(Engine engine){
+    return engine.power/engine.weight;
 }
 int main(){
-    foo.foo = 0;
-    return 0;
+    Engine 
 }
