@@ -1,5 +1,6 @@
 #include "ir_translate.h"
 #include "ir_optimization.h"
+#include "symbol_table.h"
 #include "structure.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -398,10 +399,12 @@ struct Code* translate_exp(struct Node* node, char* place){
         }
     }
     else{
-        printf("Match expression Fail\n");
+        // can be used for other purposes
+        return NULL;
+        //printf("Match expression Fail\n");
     }
-    printf("Finish translate expression\n");
-    fflush(stdout);
+    //printf("Finish translate expression\n");
+    //fflush(stdout);
 }
 
 struct Code* translate_cond(struct Node* node, char* label_true, char* label_false){
@@ -487,7 +490,7 @@ struct Code* translate_cond(struct Node* node, char* label_true, char* label_fal
         return ret_head; 
     }
     else{
-
+        return NULL;
     }
 }
 
@@ -648,50 +651,62 @@ struct Code* translate_high_level_def(struct Node* node){
     }
 }
 
-struct Code* translate_specifier(struct Node* node){
+int translate_specifier(struct Node* node){
     print_node(node);
     // Seems that we don't need to translate specifier, but we leave it temporarily.
     char* son_list = get_son_list(node);
     if(strcmp(son_list, "TYPE") == 0){
-        return NULL;
+        return 0;
     }
     // TODO: now we don't consider struct, but we may modify it in the future
     else if(strcmp(son_list, "StructSpecifier") == 0){
-        return NULL;
+        return translate_specifier(node->head);
     }
     else if(strcmp(son_list, "STRUCTIDLCDefListRC") == 0){
-        return NULL;
+        struct Type* type = query_Type(node->head->next->value);
+        return type->size;
+    }
+    else if(strcmp(son_list, "STRUCTID") == 0){
+        struct Type* type = query_Type(node->head->next->value);
+        return type->size;
     }
     else{
         printf("Seems that some unexpected things have happened!\n");
-        return NULL;
+        return 0;
     }
 }
 
-struct Code* translate_local_definition(struct Node* node){
+struct Code* translate_local_definition(int size, struct Node* node){
     print_node(node);
     char* son_list = get_son_list(node);
     if(strcmp(son_list, "DefDefList") == 0){
-        struct Code* code1 = translate_local_definition(node->head);
-        struct Code* code2 = translate_local_definition(node->head->next);
+        struct Code* code1 = translate_local_definition(0, node->head);
+        struct Code* code2 = translate_local_definition(0, node->head->next);
         return append_wo_tail(code1, code2);
     }
     else if(strcmp(son_list, "SpecifierDecListSEMI") == 0){
         // TODO: now we don't consider struct, but we may modify it in the future
-        return translate_local_definition(node->head->next);
+        return translate_local_definition(translate_specifier(node->head), node->head->next);
     }
     else if(strcmp(son_list, "Dec") == 0){
-        return translate_local_definition(node->head);
+        return translate_local_definition(size, node->head);
     }
     else if(strcmp(son_list, "DecCOMMADecList") == 0){
-        struct Code* code1 = translate_local_definition(node->head);
-        struct Code* code2 = translate_local_definition(node->head->next->next);
+        struct Code* code1 = translate_local_definition(size, node->head);
+        struct Code* code2 = translate_local_definition(size, node->head->next->next);
         return append_wo_tail(code1, code2);
     }
     else if(strcmp(son_list, "VarDec") == 0){
-        return NULL;
+        if(size == 0){
+            return NULL;
+        }
+        else{
+            char* var = to_var(node->head->head->value);
+            return construct(13, var, -1, to_literal(size), NULL);
+        }
     }
     else if(strcmp(son_list, "VarDecASSIGNExp") == 0){
+        // no need to consider struct
         char* var = node->head->head->value;
         return translate_exp(node->head->next->next, to_var(var));
     }
@@ -759,6 +774,8 @@ void connect_code_to_node(nodePointer node, struct Code* code){
 }
 
 void print_node(nodePointer node){
+    ENABLE_PRINT = 0;
+    if(ENABLE_PRINT == 0)return;
     printf("node name: %s\n", node->name);
     printf("node value: %s\n", node->value);
     printf("node tmp_name: %s\n", node->tmp_name);
