@@ -214,8 +214,11 @@ int set_offset(struct Var* varlist){
     struct Var* temp = varlist;
     int size = 0;
     while(temp != NULL){
-        temp 
+        temp -> offset = size;
+        size += temp -> type -> size;
+        temp = temp -> next;
     }
+    return size;
 }
 
 void newStructType(nodePointer spec, nodePointer id, nodePointer varlist){
@@ -226,9 +229,8 @@ void newStructType(nodePointer spec, nodePointer id, nodePointer varlist){
     temp -> hash = 0;
     temp -> contain = varlist -> var;
     temp -> hash = get_hash(temp);
-    spec -> type = temp;
-
     temp -> size = set_offset(temp->contain);
+    spec -> type = temp;
 }
 
 int check_fun_varlist(nodePointer fun, nodePointer varlist){
