@@ -541,7 +541,7 @@ Exp: Exp ASSIGN Exp {
                     generate_exp_var($$, NULL);
                     ($$) -> type = t->type;
                     ($$) -> var -> type = t->type;
-                    ($$) -> var -> name = $1->name;
+                    ($$) -> var -> name = $1->var->name;
                     ($$) -> var -> offset = t->offset+($1)->var->offset;
                 }
             }
