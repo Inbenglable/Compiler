@@ -9,7 +9,6 @@ tmp_1 := var_N
 IF tmp_0 <= tmp_1 GOTO label_1
 GOTO label_2
 LABEL label_1 :
-LABEL label_3 :
 tmp_2 := var_i
 tmp_3 := var_k
 IF tmp_2 <= tmp_3 GOTO label_4
@@ -31,7 +30,7 @@ LABEL label_7 :
 tmp_16 := var_i
 tmp_15 := var_i + #1
 var_i := tmp_15
-GOTO label_3
+GOTO label_1
 LABEL label_5 :
 tmp_18 := var_num
 tmp_19 := #2
