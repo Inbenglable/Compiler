@@ -1,0 +1,14 @@
+FUNCTION main :
+DEC var_a #12
+READ tmp_1
+var_Exp := tmp_1
+tmp_6 := &var_Exp + #8
+*tmp_6 := #1
+tmp_10 := &var_Exp + #8
+tmp_8 := *tmp_10
+var_Exp := tmp_8
+tmp_12 := &var_Exp + #0
+tmp_11 := *tmp_12
+WRITE tmp_11
+tmp_13 := #0
+RETURN tmp_13

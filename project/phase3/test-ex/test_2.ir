@@ -1,0 +1,29 @@
+FUNCTION thrust_power_ratio :
+PARAM var_engine
+tmp_3 := &var_Exp + #0
+tmp_1 := *tmp_3
+tmp_4 := &var_Exp + #4
+tmp_2 := *tmp_4
+tmp_0 := tmp_1 / tmp_2
+RETURN tmp_0
+FUNCTION main :
+var_-expression := #43000
+var_-expression := #7300
+var_-expression := #34000
+var_-expression := #4300
+var_-expression := #81000
+var_-expression := #13800
+tmp_24 := var_pw2000
+ARG tmp_24
+tmp_23 := CALL thrust_power_ratio
+WRITE tmp_23
+tmp_26 := var_cfm_5b
+ARG tmp_26
+tmp_25 := CALL thrust_power_ratio
+WRITE tmp_25
+tmp_28 := var_trent900
+ARG tmp_28
+tmp_27 := CALL thrust_power_ratio
+WRITE tmp_27
+tmp_29 := #0
+RETURN tmp_29

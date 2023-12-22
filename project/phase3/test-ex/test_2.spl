@@ -2,7 +2,7 @@ struct Engine{
     int power;
     int weight;
 };
-int thrust_power_ratio(Engine engine){
+int thrust_power_ratio(struct Engine engine){
     return engine.power/engine.weight;
 }
 int main(){
