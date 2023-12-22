@@ -72,7 +72,7 @@ struct Code* translate_args(struct Node* node, struct ArgList** arg_list);
 struct Code* translate_fundec(struct Node* node);
 struct Code* translate_high_level_def(struct Node* node);
 int translate_specifier(struct Node* node);
-struct Code* translate_local_definition(struct Node* node);
+struct Code* translate_local_definition(int size, struct Node* node);
 void translate(struct Node* node, char* filename);
 
 /////////////////
