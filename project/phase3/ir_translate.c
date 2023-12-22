@@ -421,7 +421,7 @@ struct Code* translate_exp(struct Node* node, char* place){
             struct Code* block2 = NULL;
             struct Code* tmp = NULL;
             while(arg_list != NULL){
-                printf("!!!%s\n", arg_list->name);
+                // printf("!!!%s\n", arg_list->name);
                 tmp = construct(15, arg_list->name, -1, NULL, NULL);
                 block2 = append_wo_tail(block2, tmp);
                 arg_list = arg_list->next;
@@ -612,7 +612,7 @@ struct Code* translate_args(struct Node* node, struct ArgList** arg_list){
         return append_wo_tail(code1, code2);
     }
     else{
-        printf("Seems that some unexpected things have happened!\n");
+        printf("args--Seems that some unexpected things have happened!\n");
         return NULL;
     }
 }
@@ -648,7 +648,7 @@ struct Code* translate_fundec(struct Node* node){
         return translate_fundec(node->head);
     }
     else{
-        printf("Seems that some unexpected things have happened!\n");
+        printf("fundec--Seems that some unexpected things have happened!\n");
         return NULL;
     }
 }
@@ -712,7 +712,7 @@ int translate_specifier(struct Node* node){
         return type->size;
     }
     else{
-        printf("Seems that some unexpected things have happened!\n");
+        printf("specifier--Seems that some unexpected things have happened!--%s\n",son_list);
         return 0;
     }
 }

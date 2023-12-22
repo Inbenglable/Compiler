@@ -6,7 +6,7 @@ int thrust_power_ratio(struct Engine engine){
     return engine.power/engine.weight;
 }
 int main(){
-    Engine pw2000, cfm56_5b, trent900;
+    struct Engine pw2000, cfm56_5b, trent900;
     pw2000.power = 43000;
     pw2000.weight = 7300;
     cfm56_5b.power = 34000;
@@ -14,7 +14,7 @@ int main(){
     trent900.power = 81000;
     trent900.weight = 13800;
     write(thrust_power_ratio(pw2000));
-    write(thrust_power_ratio(cfm_5b));
+    write(thrust_power_ratio(cfm56_5b));
     write(thrust_power_ratio(trent900));
     return 0;
 }

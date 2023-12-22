@@ -2238,7 +2238,7 @@ yyreduce:
                     generate_exp_var((yyval.type), NULL);
                     ((yyval.type)) -> type = t->type;
                     ((yyval.type)) -> var -> type = t->type;
-                    ((yyval.type)) -> var -> name = (yyvsp[-2].type)->name;
+                    ((yyval.type)) -> var -> name = (yyvsp[-2].type)->var->name;
                     ((yyval.type)) -> var -> offset = t->offset+((yyvsp[-2].type))->var->offset;
                 }
             }

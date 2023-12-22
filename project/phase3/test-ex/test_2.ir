@@ -1,29 +1,35 @@
 FUNCTION thrust_power_ratio :
 PARAM var_engine
-tmp_3 := &var_Exp + #0
+tmp_3 := &var_engine + #0
 tmp_1 := *tmp_3
-tmp_4 := &var_Exp + #4
+tmp_4 := &var_engine + #4
 tmp_2 := *tmp_4
 tmp_0 := tmp_1 / tmp_2
 RETURN tmp_0
 FUNCTION main :
-var_-expression := #43000
-var_-expression := #7300
-var_-expression := #34000
-var_-expression := #4300
-var_-expression := #81000
-var_-expression := #13800
-tmp_24 := var_pw2000
-ARG tmp_24
-tmp_23 := CALL thrust_power_ratio
-WRITE tmp_23
-tmp_26 := var_cfm_5b
-ARG tmp_26
-tmp_25 := CALL thrust_power_ratio
-WRITE tmp_25
-tmp_28 := var_trent900
-ARG tmp_28
-tmp_27 := CALL thrust_power_ratio
-WRITE tmp_27
-tmp_29 := #0
-RETURN tmp_29
+DEC var_pw2000 #8
+DEC var_cfm56_5b #8
+DEC var_trent900 #8
+var_pw2000 := #43000
+tmp_11 := &var_pw2000 + #4
+*tmp_11 := #7300
+var_cfm56_5b := #34000
+tmp_18 := &var_cfm56_5b + #4
+*tmp_18 := #4300
+var_trent900 := #81000
+tmp_25 := &var_trent900 + #4
+*tmp_25 := #13800
+tmp_27 := var_pw2000
+ARG tmp_27
+tmp_26 := CALL thrust_power_ratio
+WRITE tmp_26
+tmp_29 := var_cfm56_5b
+ARG tmp_29
+tmp_28 := CALL thrust_power_ratio
+WRITE tmp_28
+tmp_31 := var_trent900
+ARG tmp_31
+tmp_30 := CALL thrust_power_ratio
+WRITE tmp_30
+tmp_32 := #0
+RETURN tmp_32
