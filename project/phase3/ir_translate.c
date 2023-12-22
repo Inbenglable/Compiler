@@ -172,7 +172,6 @@ struct Code* translate_exp(struct Node* node, char* place){
         return code;
     }
     else if(strcmp(son_list, "ID") == 0){
-        fflush(stdout);
         nodePointer id = node -> head;
         struct Code* code = construct(2, place, -1, to_var(id->value), NULL);
         id->tmp_name = code->tk2;
@@ -182,20 +181,43 @@ struct Code* translate_exp(struct Node* node, char* place){
         fflush(stdout);
         return code;
     }
+    else if(strcmp(son_list, "ExpDOTID") == 0){
+        char* struct_name = node -> var -> name;
+        ret_head = NULL;
+        char* tmp = new_tmp_name();
+        struct Code* code = construct(3, tmp, -1, attach("&", to_var(struct_name)), to_literal(node->var->offset));
+        ret_head = code;
+        code = construct(2, place, -1, tmp, NULL);
+        ret_head = append_wo_tail(ret_head, code);
+        connect_code_to_node(node, code);
+        printf("translate Struct %s.%s with offset %d\n", node->tmp_name, node->head->next->next->value, node->var->offset);
+        fflush(stdout);
+        return code;
+    }
     else if(strcmp(son_list, "ExpASSIGNExp") == 0){
         nodePointer tk1 = node->head;
         nodePointer tk2 = tk1->next->next;
         char* tmp1 = new_tmp_name();
-        translate_exp(tk1, tmp1);
-        struct Code* block1 = translate_exp(tk2, tmp1);
-        struct Code* code = construct(2, tk1->tmp_name, -1, tmp1, NULL);
-        if(start_with_well(code->tk2)){
+        struct Code* block1 = translate_exp(tk1, tmp1);
+        struct Code* block2 = translate_exp(tk2, tmp1);
+        struct Code* code = NULL;
+        if(tk1->var->offset == 0){
             ret_head = NULL;
-            append_wo_tail(ret_head, code);
+            code = construct(2, tk1->tmp_name, -1, tk2->tmp_name, NULL);
+        }else{
+            char* tmp = new_tmp_name();
+            char* struct_name = tk1->var->name;
+            ret_head = construct(3, tmp, -1, attach("&", to_var(struct_name)), to_literal(tk1->var->offset));
+            code = construct(2, attach("*", tmp), -1, tk2->tmp_name, NULL);
+        }
+        
+        if(start_with_well(code->tk2)){
+            
+            ret_head = append_wo_tail(ret_head, code);
             connect_code_to_node(node, ret_head);
             return ret_head;
         }else{
-            ret_head = block1;
+            ret_head = append_wo_tail(ret_head, block1);
             append_wo_tail(ret_head, code);
             connect_code_to_node(node, ret_head);
             return ret_head;
@@ -508,7 +530,7 @@ struct Code* translate_stmt(struct Node* node){
     print_node(node);
     char* son_list = get_son_list(node);
     if(strcmp(son_list, "LCDefListStmtListRC") == 0){
-        struct Code* code1 = translate_local_definition(0, node->head->next);
+        struct Code* code1 = translate_local_definition(node->head->next);
         struct Code* code2 = translate_stmt(node->head->next->next);
         return append_wo_tail(code1, code2);
     }
@@ -784,7 +806,7 @@ void connect_code_to_node(nodePointer node, struct Code* code){
 }
 
 void print_node(nodePointer node){
-    int ENABLE_PRINT = 0;
+    ENABLE_PRINT = 0;
     if(ENABLE_PRINT == 0)return;
     printf("node name: %s\n", node->name);
     printf("node value: %s\n", node->value);
