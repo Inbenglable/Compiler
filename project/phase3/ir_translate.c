@@ -586,7 +586,7 @@ struct Code* translate_fundec(struct Node* node){
         return code;
     }
     else if(strcmp(son_list, "ParamDecCOMMAVarList") == 0){
-        struct Code* code1 = translate_fundec(4node->head);
+        struct Code* code1 = translate_fundec(node->head);
         struct Code* code2 = translate_fundec(node->head->next->next);
         return append_wo_tail(code1, code2);
     }

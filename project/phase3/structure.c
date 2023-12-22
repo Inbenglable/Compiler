@@ -64,6 +64,7 @@ nodePointer getTerminalNode(char *name, int line){
         return f;
     }
     struct Var* temp = (struct Var*)malloc(sizeof(struct Var));
+    temp -> offset = 0;
     temp -> line = yylineno;
     temp -> name = NULL;
     temp -> dim = 0;
@@ -73,6 +74,7 @@ nodePointer getTerminalNode(char *name, int line){
 
     if(strcmp(name, "INT") == 0){
        temp -> type = (struct Type*)malloc(sizeof(struct Type));
+       temp -> type -> size = 4;
        temp -> type -> isStruct = 'v';
        temp -> type -> hash = 2;
        temp -> type -> type_name = (char*)malloc(sizeof(char)*30);
@@ -81,6 +83,7 @@ nodePointer getTerminalNode(char *name, int line){
        f -> type = temp -> type;
     }else if(strcmp(name, "FLOAT") == 0){
        temp -> type = (struct Type*)malloc(sizeof(struct Type));
+       temp -> type -> size = 4;
        temp -> type -> isStruct = 'v';
        temp -> type -> hash = 5;
        temp -> type -> type_name = (char*)malloc(sizeof(char)*30);
@@ -89,6 +92,7 @@ nodePointer getTerminalNode(char *name, int line){
        f -> type = temp -> type;
     }else if(strcmp(name, "CHAR") == 0){
        temp -> type = (struct Type*)malloc(sizeof(struct Type));
+       temp -> type -> size = 4;
        temp -> type -> isStruct = 'v';
        temp -> type -> hash = 3;
        temp -> type -> type_name = (char*)malloc(sizeof(char)*30);
@@ -109,6 +113,7 @@ nodePointer getIDNode(char *name, int line){
     f -> value = (char*)malloc(sizeof(char)*30);
     strcpy(f->value,yytext);
     struct Var* temp = (struct Var*)malloc(sizeof(struct Var));
+    temp -> offset = 0;
     temp -> name = (char*)malloc(sizeof(char)*30);
     temp -> dim = 0;
     temp -> line = yylineno;
@@ -129,6 +134,7 @@ nodePointer getTypeNode(char *name, int line){
     f -> value = (char*)malloc(sizeof(char)*30);
     strcpy(f->value,yytext);
     struct Type* temp = (struct Type*)malloc(sizeof(struct Type));
+    temp -> size = 4;
     temp -> isStruct = 'v';
     temp -> hash = 0;
     temp -> type_name = (char*)malloc(sizeof(char)*30);
@@ -188,6 +194,7 @@ int getStruct(nodePointer spec, nodePointer id){
 
 void newFuntype(nodePointer funspec, nodePointer id, nodePointer varlist){
     struct Var* fun = (struct Var*)malloc(sizeof(struct Var));
+    fun -> offset = 0;
     fun -> dim = 0;
     fun -> next = NULL;
     fun -> type = NULL;
@@ -203,6 +210,14 @@ void assign_funtype(nodePointer spec, nodePointer fun){
     fun -> var -> type = spec -> type;
 }
 
+int set_offset(struct Var* varlist){
+    struct Var* temp = varlist;
+    int size = 0;
+    while(temp != NULL){
+        temp 
+    }
+}
+
 void newStructType(nodePointer spec, nodePointer id, nodePointer varlist){
     struct Type* temp = (struct Type*)malloc(sizeof(struct Type));
     temp -> isStruct = 's';
@@ -212,6 +227,8 @@ void newStructType(nodePointer spec, nodePointer id, nodePointer varlist){
     temp -> contain = varlist -> var;
     temp -> hash = get_hash(temp);
     spec -> type = temp;
+
+    temp -> size = set_offset(temp->contain);
 }
 
 int check_fun_varlist(nodePointer fun, nodePointer varlist){
@@ -245,6 +262,7 @@ int check_fun_varlist(nodePointer fun, nodePointer varlist){
 
 struct Type* get_int_type(){
     struct Type* type = (struct Type*)malloc(sizeof(struct Type));
+    type -> size = 4;
     type->contain = NULL;
     type->hash = 2;
     type->isStruct = 'V';
@@ -257,6 +275,7 @@ void generate_exp_var(nodePointer exp, struct Type* type){
     struct Var* var = NULL;
     if(exp->var == NULL){
         var = (struct Var*)malloc(sizeof(struct Var));
+        var -> offset = 0;
     }else{
         var = exp->var;
         var -> type = type;
@@ -356,6 +375,8 @@ void extend_var(nodePointer to, nodePointer from){
 
 void extend_dim(nodePointer var){
     Var* tmp = (Var*)malloc(sizeof(Var));
+    //Todo: define arrays' offset
+    tmp->offset = var->var->offset;
     tmp->line = var->var->line;
     tmp->name = var->var->name;
     tmp->dim = var->var->dim + 1;
@@ -366,6 +387,8 @@ void extend_dim(nodePointer var){
 
 void reduce_dim(nodePointer var){
     Var* tmp = (Var*)malloc(sizeof(Var));
+    //Todo: define arrays' offset
+    tmp->offset = var->var->offset;
     tmp->line = var->var->line;
     tmp->name = var->var->name;
     tmp->dim = var->var->dim - 1;
@@ -412,11 +435,11 @@ int check_rvalue(nodePointer node){
     return 0;
 }
 
-Type* check_field(Type* typeptr, char* name){
+Var* check_field(Type* typeptr, char* name){
     Var* var = typeptr->contain;
     while(var != NULL){
         if(strcmp(var->name, name) == 0){
-            return var->type;
+            return var;
         }
         var = var->next;
     }
@@ -550,6 +573,7 @@ void yyerror(char *msg)
 void initial_read_write(){
     //void newFuntype(nodePointer funspec, nodePointer id, nodePointer varlist){
     struct Type* type_int = (struct Type*)malloc(sizeof(struct Type));
+    type_int->size = 4;
     type_int -> isStruct = 'v';
     type_int -> hash = 2;
     type_int -> type_name = (char*)malloc(sizeof(char)*30);

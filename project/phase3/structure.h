@@ -17,6 +17,7 @@ struct Type{
     char isStruct;//s -> structure, v-> var, f->function
     unsigned long long hash;//type hash
     struct Var* contain;
+    int size;
 };
 
 struct Var{
@@ -26,6 +27,7 @@ struct Var{
     int line;
     struct Type* type;
     struct Var *next;
+    int offset;
 };
 
 
@@ -84,7 +86,7 @@ struct Var* check_ID_def(nodePointer node);
 struct Var* check_fun_def(nodePointer node);
 int check_assign_type(nodePointer lnode, nodePointer rnode);
 int check_rvalue(nodePointer node);
-Type* check_field(Type* typeptr, char* name);
+Var* check_field(Type* typeptr, char* name);
 int check_boolean(nodePointer node1, nodePointer node2);
 int check_arithmetic(nodePointer node1, nodePointer node2);
 int check_dim(nodePointer node);
