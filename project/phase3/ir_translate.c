@@ -530,7 +530,7 @@ struct Code* translate_stmt(struct Node* node){
     print_node(node);
     char* son_list = get_son_list(node);
     if(strcmp(son_list, "LCDefListStmtListRC") == 0){
-        struct Code* code1 = translate_local_definition(node->head->next);
+        struct Code* code1 = translate_local_definition(0, node->head->next);
         struct Code* code2 = translate_stmt(node->head->next->next);
         return append_wo_tail(code1, code2);
     }
@@ -806,7 +806,7 @@ void connect_code_to_node(nodePointer node, struct Code* code){
 }
 
 void print_node(nodePointer node){
-    ENABLE_PRINT = 0;
+    int ENABLE_PRINT = 0;
     if(ENABLE_PRINT == 0)return;
     printf("node name: %s\n", node->name);
     printf("node value: %s\n", node->value);

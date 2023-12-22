@@ -532,16 +532,17 @@ Exp: Exp ASSIGN Exp {
                 generate_exp_var($$, NULL);
             }
             else{
-                struct Type* t = check_field(($1)->type, ($3)->value);
+                struct Var* t = check_field(($1)->type, ($3)->value);
                 if(t == NULL) {
                     error_type = 140;
                     yyerror("accessing an undefined structure member");
                     generate_exp_var($$, NULL);
                 }else{
                     generate_exp_var($$, NULL);
-                    ($$) -> type = t;
-                    ($$) -> var -> type = t;
+                    ($$) -> type = t->type;
+                    ($$) -> var -> type = t->type;
                     ($$) -> var -> name = $1->name;
+                    ($$) -> var -> offset = t->offset+($1)->var->offset;
                 }
             }
         }
