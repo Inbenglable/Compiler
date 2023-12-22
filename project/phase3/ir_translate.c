@@ -93,7 +93,7 @@ void dump(struct Code* head, char* filename){
     
     FILE* fp = fopen(filename, "w");
     while(head != NULL){
-        printf("dumping code: %d %s %d %s %s\n", head->type, head->tk1, head->relop, head->tk2, head->tk3);
+        // printf("dumping code: %d %s %d %s %s\n", head->type, head->tk1, head->relop, head->tk2, head->tk3);
         fflush(stdout);
         switch(head->type){
             case 0:
@@ -180,7 +180,7 @@ struct Code* translate_exp(struct Node* node, char* place){
         id->tmp_name = code->tk2;
         node->tmp_name = id->tmp_name;
         connect_code_to_node(node, code);
-        printf("translate ID: %s\n", node->tmp_name);
+        // printf("translate ID: %s\n", node->tmp_name);
         fflush(stdout);
         return code;
     }
@@ -760,7 +760,7 @@ void translate(struct Node* node, char* filename){
     //printf("Translation requires implementation, the name of the root is %s, the translation result will be output to %s\n", node->name, filename);
     struct Code* raw_code = translate_high_level_def(node);
     struct Code* optimized_code = optimize(raw_code);
-    printf("Start dumping code to %s\n", filename);
+    // printf("Start dumping code to %s\n", filename);
     dump(optimized_code, filename);
 }
 
