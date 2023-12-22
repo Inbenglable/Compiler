@@ -696,7 +696,7 @@ int translate_specifier(struct Node* node){
     print_node(node);
     // Seems that we don't need to translate specifier, but we leave it temporarily.
     char* son_list = get_son_list(node);
-    if(strcmp(son_list, "TYPE") == 0){
+    if(strcmp(son_list, "INT") == 0){
         return 0;
     }
     // TODO: now we don't consider struct, but we may modify it in the future
@@ -743,7 +743,7 @@ struct Code* translate_local_definition(int size, struct Node* node){
         }
         else{
             char* var = to_var(node->head->head->value);
-            return construct(13, var, -1, to_literal(size), NULL);
+            return construct(13, var, -1, to_size(size), NULL);
         }
     }
     else if(strcmp(son_list, "VarDecASSIGNExp") == 0){

@@ -1,5 +1,5 @@
 FUNCTION main :
-DEC var_a #12
+DEC var_a 12
 READ tmp_1
 var_a := tmp_1
 tmp_6 := &var_a + #8

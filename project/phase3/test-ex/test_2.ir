@@ -7,9 +7,9 @@ tmp_2 := *tmp_4
 tmp_0 := tmp_1 / tmp_2
 RETURN tmp_0
 FUNCTION main :
-DEC var_pw2000 #8
-DEC var_cfm56_5b #8
-DEC var_trent900 #8
+DEC var_pw2000 8
+DEC var_cfm56_5b 8
+DEC var_trent900 8
 var_pw2000 := #43000
 tmp_11 := &var_pw2000 + #4
 *tmp_11 := #7300

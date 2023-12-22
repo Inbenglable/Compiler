@@ -852,17 +852,17 @@ YY_RULE_SETUP
 case 7:
 YY_RULE_SETUP
 #line 30 "lex.l"
-{yylval.type=getTypeNode("int", yylineno);return TYPE; }
+{yylval.type=getTypeNode("INT", yylineno);return TYPE; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
 #line 31 "lex.l"
-{ yylval.type=getTypeNode("float", yylineno);return TYPE; }
+{ yylval.type=getTypeNode("FLOAT", yylineno);return TYPE; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
 #line 32 "lex.l"
-{ yylval.type=getTypeNode("char", yylineno);return TYPE; }
+{ yylval.type=getTypeNode("CHAR", yylineno);return TYPE; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
