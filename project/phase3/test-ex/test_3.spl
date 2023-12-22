@@ -1,0 +1,10 @@
+int main(){
+    int n = read(), sum = 0;
+    while(n){
+        write(n);
+        sum = sum + n;
+        n = n - 1;
+    }
+    write(sum);
+    return 0;
+}
