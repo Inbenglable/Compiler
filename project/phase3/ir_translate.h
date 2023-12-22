@@ -58,6 +58,7 @@ extern int label_count, tmp_count;
 char* to_literal(int val);
 char* to_size(int val);
 char* to_var(char* name);
+char* attach(char* str1, char* str2);
 char* new_label_name();
 char* new_tmp_name();
 struct Code* construct(int type, char* tk1, int relop, char* tk2, char* tk3);
