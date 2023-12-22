@@ -27,9 +27,9 @@ unknown .
 '.'    { yylval.type=getTerminalNode("CHAR", yylineno);return CHAR; }
 
 
-int {yylval.type=getTypeNode("int", yylineno);return TYPE; }
-float { yylval.type=getTypeNode("float", yylineno);return TYPE; }
-char { yylval.type=getTypeNode("char", yylineno);return TYPE; }
+int {yylval.type=getTypeNode("INT", yylineno);return TYPE; }
+float { yylval.type=getTypeNode("FLOAT", yylineno);return TYPE; }
+char { yylval.type=getTypeNode("CHAR", yylineno);return TYPE; }
 struct { yylval.type=getTerminalNode("STRUCT", yylineno);return STRUCT; }
 if { yylval.type=getTerminalNode("IF", yylineno);return IF; }
 else { yylval.type=getTerminalNode("ELSE", yylineno);return ELSE; }
