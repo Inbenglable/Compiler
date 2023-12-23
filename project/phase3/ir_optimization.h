@@ -10,6 +10,8 @@ struct block{
     struct Code* front;
     struct Code* end;
     struct Reg_list* regs;
+    int write_cnt;
+    int arg_cnt;
 };
 
 struct Export{
