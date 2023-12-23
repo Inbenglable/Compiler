@@ -13,7 +13,7 @@ GOTO label_1
 LABEL label_0 :
 tmp_14 := #0
 WRITE tmp_14
-GOTO label_2
+GOTO label_8
 LABEL label_1 :
 tmp_15 := var_m
 tmp_16 := #1
@@ -27,7 +27,7 @@ GOTO label_4
 LABEL label_3 :
 tmp_19 := #1
 WRITE tmp_19
-GOTO label_5
+GOTO label_8
 LABEL label_4 :
 tmp_20 := var_m
 tmp_21 := #2
@@ -57,7 +57,5 @@ LABEL label_11 :
 tmp_38 := var_tu3
 WRITE tmp_38
 LABEL label_8 :
-LABEL label_5 :
-LABEL label_2 :
 tmp_39 := #0
 RETURN tmp_39

@@ -23,7 +23,6 @@ tmp_10 := var_col
 tmp_8 := var_row - var_col
 var_col := tmp_8
 LABEL label_3 :
-LABEL label_4 :
 tmp_11 := var_i
 tmp_12 := var_col
 IF tmp_11 < tmp_12 GOTO label_5
@@ -43,7 +42,7 @@ var_coefficient := tmp_20
 tmp_27 := var_i
 tmp_26 := var_i + #1
 var_i := tmp_26
-GOTO label_4
+GOTO label_3
 LABEL label_6 :
 tmp_29 := var_coefficient
 RETURN tmp_29

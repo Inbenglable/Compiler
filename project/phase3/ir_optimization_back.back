@@ -1,4 +1,4 @@
-project/phase3/ir_optimization.c#include "ir_optimization.h"
+#include "ir_optimization.h"
 #include "ir_translate.h"
 #include <stdarg.h>
 #include <stdio.h>
@@ -8,130 +8,157 @@ project/phase3/ir_optimization.c#include "ir_optimization.h"
 struct Code* head;
 struct Code* tail;
 
-// void delet(struct Code* code){
-//     struct Code* from = code -> from;
-//     struct Code* to = code -> next;
-    
-//     if(from != NULL){
-//         from -> next = to;
-//     }else{
-//         head = to;
-//     }
+void merge_label(){
+    struct Code* ptr = head;
+    struct Code* next_ptr;
+    while(ptr != NULL){
+        next_ptr = ptr->next;
+        if(ptr->type == 0 && next_ptr != NULL && next_ptr->type == 0){
+            char* old = next_ptr->tk1;
+            char* new = ptr->tk1;
+            delet(next_ptr);
+            replace_label(old, new);
+            next_ptr = ptr->next;
+        }
+        ptr = next_ptr;
+    }
+}
 
-//     if(to != NULL){
-//         to -> from = from;
-//     }else{
-//         tail = from;
+void remove_continuous_jump(){
+    struct Code* ptr = head;
+    struct Code* next_ptr;
+    while(ptr != NULL){
+        next_ptr = ptr->next;
+        if(ptr->type == 0 && next_ptr != NULL && next_ptr->type == 10){
+            char* old = ptr->tk1;
+            char* new = next_ptr->tk1;
+            delet(ptr);
+            replace_label(old, new);
+        }
+        ptr = next_ptr;
+    }
+}
+
+void replace_label(char* old, char* new){
+    struct Code* p = head;
+    while(p != NULL){
+        if(p->type == 10 && strcmp(p->tk1, old) == 0){
+            strcpy(p->tk1, new);
+        }
+        else if(p->type == 11 && strcmp(p->tk3, old) == 0){
+            strcpy(p->tk3, new);
+        }
+        p = p->next;
+    }
+}
+
+//remove unused lval is temporarily removed
+
+// void remove_unused_lval(){
+//     struct Code* ptr = head;
+//     struct Code* next_ptr;
+//     while(ptr != NULL){
+//         next_ptr = ptr->next;
+//         if(ptr->type >= 2 && ptr->type <= 8 && !check_use(ptr, ptr->tk1) && !check_use(ptr, attach("*", ptr->tk1)) && !check_use(ptr, attach("&", ptr->tk1))){
+//             delet(ptr);
+//         }
+//         ptr = next_ptr;
 //     }
-//     free(code);
 // }
-
-
-
-// void replace(char* tk1, char* tk2, struct Code* code){
-//     while(code != NULL){
-//         int command = code->type;
-//         if(command == 2){
-//             if(strcmp(code->tk2, tk1) == 0){
-//                 code->tk2 == tk2;
-//             }
-//         }else if(command >= 3 && command <= 6){
-
-//         }else if(command == 15 || command == 12)
+// 
+// int check_use_in_code(struct Code* code, char* name){
+//     if(code->type >= 2 && code->type <= 8){
+//         if(strcmp(code->tk1, name) == 0)return 0;
+//         if(strcmp(code->tk2, name) == 0)return 1;
+//         if(code->type >= 3 && code->type <= 6){
+//             if(strcmp(code->tk3, name) == 0)return 1;
+//         }
 //     }
-// }
-
-// int push_down(struct Code* code, char* tk1, char* tk2, char* tk3){
-//     if(code->next == NULL)return 0;
-//     struct Code* ne = code->next;
-
-//     int command = ne->type;
-//     if(command == 0 || command == 1 || command == 10 || command == 11 || command == 12){
+//     else if(code->type == 12){
+//         if(strcmp(code->tk1, name) == 0)return 1;
 //         return 0;
-//     }else if(command == 18 || command == 15){
-//         if(strcmp(ne->tk1, tk1) == 0){
-//             return 0;
-//         }
-//     }else{
-//         if(strcmp(ne->tk1, tk1) == 0){
-//             return 0;
-//         }else if(tk2 != NULL){
-//             if(strcmp(ne->tk1, tk2) == 0){
-//                 return 0;
-//             }
-//         }else if(tk3 != NULL){
-//             if(strcmp(ne->tk1, tk3) == 0){
-//                 return 0;
-//             }
-//         }else if(ne->tk2 != NULL && strcmp(ne->tk2, tk1) == 0){
-//             return 0;
-//         }else if(ne->tk3 != NULL && strcmp(ne->tk3, tk1) == 0){
-//             return 0;
-//         }
 //     }
-
-//     struct Code* from = code->from;
-//     struct Code* bot = ne -> next;
-//     code -> next = bot;
-//     code -> from = ne;
-//     ne -> from = from;
-//     ne -> next = code;
-//     from -> next = ne;
-//     if(bot == NULL){
-//         tail = code;
-//     }else{
-//         bot -> from = code;
+//     else if(code->type == 11){
+//         if(strcmp(code->tk1, name) == 0)return 1;
+//         if(strcmp(code->tk2, name) == 0)return 1;
 //     }
-//     return 1;
+//     else if(code->type == 13){
+//         if(strcmp(code->tk1, name) == 0)return 0;
+//     }
+//     else if(code->type == 15){
+//         if(strcmp(code->tk1, name) == 0)return 1;
+//     }
+//     else if(code->type == 16){
+//         if(strcmp(code->tk1, name) == 0)return 0;
+//     }
+//     else if(code->type == 17){
+//         if(strcmp(code->tk1, name) == 0)return 0;
+//     }
+//     else if(code->type == 18){
+//         if(strcmp(code->tk1, name) == 0)return 1;
+//     }
+//     return -1;
+// }
+// 
+// int check_use(struct Code* code, char* name){
+//     struct Code* ptr = code->next;
+//     while(ptr != NULL){
+//         int res = check_use_in_code(ptr, name);
+//         if(res == 1)return 1;
+//         else if(res == 0)return 0;
+//         ptr = ptr->next;
+//     }
+//     return 0;
 // }
 
-// void deeper(char* tk, struct Code* code){
-//     struct Code* tmp = tail;
-//     while(tmp != code){
-//         int command = tmp->type;
-//         if((command >= 2 && command <= 9) || command == 16 || command == 17 || command == 13 || command == 14){
-//             if(strcmp(tk, tmp->tk1) == 0){
-//                 while(push_down(tmp, tmp->tk1, tmp->tk2, tmp->tk3));
-//             }
-//         }
-//     }
-// }
+int get_len(){
+    struct Code* ptr = head;
+    int len = 0;
+    while(ptr != NULL){
+        len++;
+        ptr = ptr->next;
+    }
+    return len;
+}
+
+
 
 struct Code* optimize(struct Code* code){
     // TODO: requires implementation
     int has_change = 1;
     head = code;
     tail = code;
-    while(tail != NULL && tail->next != NULL)tail = tail->next;
-    while(has_change){
-        struct Code* p = tail;
-        while(p != NULL){
-            struct Code* tmp = p;
-            int command = tmp->type;
-            p = p->from;
-            if(command == 2){
-                deeper(tmp->tk2,tmp);
-                if(check_command2(tmp)){
-
-                }
-                replace_command2(tmp->tk1, tmp->tk2, tmp);
-                delet(tmp);
-            }else if(3 <= command && command <= 6){
-                if(check_use(tmp->tk1, tmp)){
-                    replace_command3(tmp->tk1, tmp->tk2, tmp->tk2, tmp);
-                    delet(tmp);
-                }
-            }else if(command == 0){
-                if(tmp->next != NULL && tmp->next->type == 0){
-
-                }
-            }else if(command == 10){
-                struct Code* label = find_label(tmp->tk1);
-                if(label->next != NULL && label->next->type == 10){
-
-                }
-            }
-        }
+    //while(tail != NULL && tail->next != NULL)tail = tail->next;
+    //while(has_change){
+    //    struct Code* p = tail;
+    //    while(p != NULL){
+    //        struct Code* tmp = p;
+    //        p = p->from;
+    //        int command = tmp->type;
+    //        if(command == 2){
+    //            replace(tmp->tk1, tmp->tk2, tmp->tk3, tmp);
+    //            delet(tmp);
+    //        }else if(3 <= command && command <= 6){
+    //            if(check_use(tmp->tk1, tmp)){
+    //                replace(tmp->tk1, tmp->tk2, tmp->tk2, tmp);
+    //                delet(tmp);
+    //            }
+    //        }else if(command == 0){
+    //            if(tmp->next == NULL || tmp->)
+    //        }else if(command == 10){
+//
+    //        }
+//
+//
+    //    }
+    //}
+    int last_len = get_len();
+    while(1){
+        merge_label();
+        remove_continuous_jump();
+        int len = get_len();
+        if(len == last_len)break;
+        last_len = len;
     }
     
     return code;
