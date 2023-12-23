@@ -8,23 +8,7 @@
 struct Code* head;
 struct Code* tail;
 
-void delet(struct Code* code){
-    struct Code* from = code -> from;
-    struct Code* to = code -> next;
-    
-    if(from != NULL){
-        from -> next = to;
-    }else{
-        head = to;
-    }
 
-    if(to != NULL){
-        to -> from = from;
-    }else{
-        tail = from;
-    }
-    free(code);
-}
 
 struct Code* optimize(struct Code* code){
     // TODO: requires implementation
@@ -36,23 +20,30 @@ struct Code* optimize(struct Code* code){
         struct Code* p = tail;
         while(p != NULL){
             struct Code* tmp = p;
-            p = p->from;
             int command = tmp->type;
+            p = p->from;
             if(command == 2){
-                replace(tmp->tk1, tmp->tk2, tmp->tk3, tmp);
+                deeper(tmp->tk2,tmp);
+                if(check_command2(tmp)){
+
+                }
+                replace_command2(tmp->tk1, tmp->tk2, tmp);
                 delet(tmp);
             }else if(3 <= command && command <= 6){
                 if(check_use(tmp->tk1, tmp)){
-                    replace(tmp->tk1, tmp->tk2, tmp->tk2, tmp);
+                    replace_command3(tmp->tk1, tmp->tk2, tmp->tk2, tmp);
                     delet(tmp);
                 }
             }else if(command == 0){
-                if(tmp->next == NULL || tmp->)
+                if(tmp->next != NULL && tmp->next->type == 0){
+
+                }
             }else if(command == 10){
+                struct Code* label = find_label(tmp->tk1);
+                if(label->next != NULL && label->next->type == 10){
 
+                }
             }
-
-
         }
     }
     

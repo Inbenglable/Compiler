@@ -1,0 +1,138 @@
+project/phase3/ir_optimization.c#include "ir_optimization.h"
+#include "ir_translate.h"
+#include <stdarg.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+struct Code* head;
+struct Code* tail;
+
+// void delet(struct Code* code){
+//     struct Code* from = code -> from;
+//     struct Code* to = code -> next;
+    
+//     if(from != NULL){
+//         from -> next = to;
+//     }else{
+//         head = to;
+//     }
+
+//     if(to != NULL){
+//         to -> from = from;
+//     }else{
+//         tail = from;
+//     }
+//     free(code);
+// }
+
+
+
+// void replace(char* tk1, char* tk2, struct Code* code){
+//     while(code != NULL){
+//         int command = code->type;
+//         if(command == 2){
+//             if(strcmp(code->tk2, tk1) == 0){
+//                 code->tk2 == tk2;
+//             }
+//         }else if(command >= 3 && command <= 6){
+
+//         }else if(command == 15 || command == 12)
+//     }
+// }
+
+// int push_down(struct Code* code, char* tk1, char* tk2, char* tk3){
+//     if(code->next == NULL)return 0;
+//     struct Code* ne = code->next;
+
+//     int command = ne->type;
+//     if(command == 0 || command == 1 || command == 10 || command == 11 || command == 12){
+//         return 0;
+//     }else if(command == 18 || command == 15){
+//         if(strcmp(ne->tk1, tk1) == 0){
+//             return 0;
+//         }
+//     }else{
+//         if(strcmp(ne->tk1, tk1) == 0){
+//             return 0;
+//         }else if(tk2 != NULL){
+//             if(strcmp(ne->tk1, tk2) == 0){
+//                 return 0;
+//             }
+//         }else if(tk3 != NULL){
+//             if(strcmp(ne->tk1, tk3) == 0){
+//                 return 0;
+//             }
+//         }else if(ne->tk2 != NULL && strcmp(ne->tk2, tk1) == 0){
+//             return 0;
+//         }else if(ne->tk3 != NULL && strcmp(ne->tk3, tk1) == 0){
+//             return 0;
+//         }
+//     }
+
+//     struct Code* from = code->from;
+//     struct Code* bot = ne -> next;
+//     code -> next = bot;
+//     code -> from = ne;
+//     ne -> from = from;
+//     ne -> next = code;
+//     from -> next = ne;
+//     if(bot == NULL){
+//         tail = code;
+//     }else{
+//         bot -> from = code;
+//     }
+//     return 1;
+// }
+
+// void deeper(char* tk, struct Code* code){
+//     struct Code* tmp = tail;
+//     while(tmp != code){
+//         int command = tmp->type;
+//         if((command >= 2 && command <= 9) || command == 16 || command == 17 || command == 13 || command == 14){
+//             if(strcmp(tk, tmp->tk1) == 0){
+//                 while(push_down(tmp, tmp->tk1, tmp->tk2, tmp->tk3));
+//             }
+//         }
+//     }
+// }
+
+struct Code* optimize(struct Code* code){
+    // TODO: requires implementation
+    int has_change = 1;
+    head = code;
+    tail = code;
+    while(tail != NULL && tail->next != NULL)tail = tail->next;
+    while(has_change){
+        struct Code* p = tail;
+        while(p != NULL){
+            struct Code* tmp = p;
+            int command = tmp->type;
+            p = p->from;
+            if(command == 2){
+                deeper(tmp->tk2,tmp);
+                if(check_command2(tmp)){
+
+                }
+                replace_command2(tmp->tk1, tmp->tk2, tmp);
+                delet(tmp);
+            }else if(3 <= command && command <= 6){
+                if(check_use(tmp->tk1, tmp)){
+                    replace_command3(tmp->tk1, tmp->tk2, tmp->tk2, tmp);
+                    delet(tmp);
+                }
+            }else if(command == 0){
+                if(tmp->next != NULL && tmp->next->type == 0){
+
+                }
+            }else if(command == 10){
+                struct Code* label = find_label(tmp->tk1);
+                if(label->next != NULL && label->next->type == 10){
+
+                }
+            }
+        }
+    }
+    
+    return code;
+}
