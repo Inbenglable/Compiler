@@ -1,11 +1,16 @@
+int fast_pow(int base, int pow){
+    int result = 1;
+    while(pow > 0){
+        if(pow - pow / 2 * 2 == 1){
+            result = result * base;
+        }
+        base = base * base;
+        pow = pow / 2;
+    }
+    return result;
+}
 int main(){
-    int a, b, c, d;
-    a = 1;
-    b = 2;
-    c = 3;
-    d = 4;
-    b = a+c;
-    d = a+b+c+d;
-    write(d);
+    int a=read(), b=read();
+    write(fast_pow(a, b));
     return 0;
 }

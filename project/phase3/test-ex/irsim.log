@@ -67,3 +67,13 @@ DEC var_a #12
 [INFO] 2023-12-23 16:07:22,042 (irsim.py 567): Program has exited gracefully
 [INFO] 2023-12-23 16:07:22,043 (irsim.py 567): Total instructions = 7
 [INFO] 2023-12-23 16:07:44,813 (irsim.py 567): KeyboardInterrupt raised, quit program
+[DEBUG] 2023-12-23 19:24:12,958 (irsim.py 620): Parsed arguments: {'irpath': 'test_4.ir', 'inputs': '2,5', 'logpath': 'irsim.log'}
+[INFO] 2023-12-23 19:24:12,962 (irsim.py 567): File loaded successfully
+[INFO] 2023-12-23 19:24:13,885 (irsim.py 567): Program has exited gracefully
+[INFO] 2023-12-23 19:24:13,885 (irsim.py 567): Total instructions = 42
+[INFO] 2023-12-23 19:24:16,395 (irsim.py 567): KeyboardInterrupt raised, quit program
+[DEBUG] 2023-12-23 19:24:20,402 (irsim.py 620): Parsed arguments: {'irpath': 'test_4.ir', 'inputs': '3,3', 'logpath': 'irsim.log'}
+[INFO] 2023-12-23 19:24:20,406 (irsim.py 567): File loaded successfully
+[INFO] 2023-12-23 19:24:21,113 (irsim.py 567): Program has exited gracefully
+[INFO] 2023-12-23 19:24:21,114 (irsim.py 567): Total instructions = 34
+[INFO] 2023-12-23 19:24:22,876 (irsim.py 567): KeyboardInterrupt raised, quit program
