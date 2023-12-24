@@ -327,7 +327,7 @@ void print_node_list(){
         if(node_list[i]->operator != 7)printf("nodelist %d : operater is %d, var is %s, in is %d, k is %d\n", i, node_list[i]->operator, node_list[i]->reg_list->reg->name, node_list[i]->in, node_list[i]->k);
         else printf("nodelist %d : operater is %d, this is an if, in is %d\n", i, node_list[i]->operator, node_list[i]->in);
         if(node_list[i]->export != NULL){
-            printf("with export type %dm k is %d\n", node_list[i]->export->type, node_list[i]->export->k);   
+            printf("with export type %dand it's k is %d\n", node_list[i]->export->type, node_list[i]->export->k);   
         }
         fflush(stdout);
     }
@@ -501,12 +501,19 @@ void complete_block(int id){
         if(tmp->export != NULL)printf("And it's export type is %d\n", tmp->export->type);
         fflush(stdout);
         code = solve(tmp, id);
+        if(code != NULL)printf("generate code : %d %s %s %s\n", code->type, code->tk1, code->tk2, code->tk3);
         code_head = append_wo_tail(code, code_head);
     }
     code = block[id].front;
-    while(code->next != NULL && code->next->type == 14)code = code->next;
-    code->next = NULL;
-    block[id].front = append_wo_tail(block[id].front, code_head);
+    if(code->type == 1 || code->type == 0){
+        while(code->next != NULL && code->next->type == 14)code = code->next;
+        code->next = NULL;
+        block[id].front = append_wo_tail(block[id].front, code_head);
+    }else{
+        code = NULL;
+        block[id].front = append_wo_tail(code, code_head);
+    }
+    
 
     printf("complete solve block %d\n", id);
     fflush(stdout);
@@ -535,7 +542,12 @@ struct Code* optimize(struct Code* code){
                 generate_block(block_cnt, tmp);
                 end_block = 0;
             }
-        }else if(command == 10||command == 11||command == 12){
+        }else if(end_block){
+            block_cnt++;
+            generate_block(block_cnt, tmp);
+            end_block = 0;
+        }
+        if(command == 10||command == 11||command == 12){
             finish_gen_block(block_cnt, tmp);
             end_block = 1;
         }
