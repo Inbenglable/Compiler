@@ -1,11 +1,7 @@
 FUNCTION mod :
 PARAM var_x
 PARAM var_n
-tmp_1 := var_x
-tmp_5 := var_x
-tmp_6 := var_n
 tmp_3 := var_x / var_n
-tmp_4 := var_n
 tmp_2 := tmp_3 * var_n
 tmp_0 := var_x - tmp_2
 RETURN tmp_0
@@ -15,55 +11,30 @@ var_reversed := #0
 var_original := var_num
 var_digit := #0
 LABEL label_0 :
-tmp_7 := var_num
-tmp_8 := #0
-IF tmp_7 != tmp_8 GOTO label_1
-GOTO label_2
-LABEL label_1 :
+IF var_num == #0 GOTO label_1
 tmp_11 := var_num
-tmp_12 := #10
-ARG tmp_12
+ARG #10
 ARG tmp_11
-tmp_10 := CALL mod
-var_digit := tmp_10
-tmp_17 := var_reversed
+var_digit := CALL mod
 tmp_15 := var_reversed * #10
-tmp_16 := var_digit
-tmp_14 := tmp_15 + var_digit
-var_reversed := tmp_14
-tmp_21 := var_num
-tmp_20 := var_num / #10
-var_num := tmp_20
+var_reversed := tmp_15 + var_digit
+var_num := var_num / #10
 GOTO label_0
+LABEL label_1 :
+IF var_reversed != var_original GOTO label_2
+RETURN #1
+GOTO label_3
 LABEL label_2 :
-tmp_23 := var_reversed
-tmp_24 := var_original
-IF tmp_23 == tmp_24 GOTO label_3
-GOTO label_4
+RETURN #0
 LABEL label_3 :
-tmp_25 := #1
-RETURN tmp_25
+FUNCTION main :
+READ var_number
+ARG var_number
+tmp_29 := CALL isPalindrome
+IF tmp_29 != #1 GOTO label_4
+WRITE #1
 GOTO label_5
 LABEL label_4 :
-tmp_26 := #0
-RETURN tmp_26
+WRITE #-1
 LABEL label_5 :
-FUNCTION main :
-READ tmp_28
-var_number := tmp_28
-tmp_31 := var_number
-ARG tmp_31
-tmp_29 := CALL isPalindrome
-tmp_30 := #1
-IF tmp_29 == tmp_30 GOTO label_6
-GOTO label_7
-LABEL label_6 :
-tmp_32 := #1
-WRITE tmp_32
-GOTO label_8
-LABEL label_7 :
-tmp_33 := #-1
-WRITE tmp_33
-LABEL label_8 :
-tmp_35 := #0
-RETURN tmp_35
+RETURN #0

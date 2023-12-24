@@ -66,7 +66,7 @@ struct Code* append(struct Code* code1_head, struct Code* code1_tail, struct Cod
 struct Code* append_wo_tail(struct Code* code1, struct Code* code2);
 void dump(struct Code* head, char* filename);
 struct Code* translate_exp(struct Node* node, char* place);
-struct Code* translate_cond(struct Node* node, char* label_true, char* label_false);
+struct Code* translate_cond(struct Node* node, char* label_true, char* label_false, int jump_only_if_true, int jump_only_if_false);
 struct Code* translate_stmt(struct Node* node);
 struct Code* translate_args(struct Node* node, struct ArgList** arg_list);
 struct Code* translate_fundec(struct Node* node);

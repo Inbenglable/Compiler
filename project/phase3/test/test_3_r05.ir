@@ -4,58 +4,29 @@ var_b := #2
 var_c := #3
 var_tu1 := #1
 var_tu2 := #1
-READ tmp_11
-var_m := tmp_11
-tmp_12 := var_m
-tmp_13 := #1
-IF tmp_12 < tmp_13 GOTO label_0
+READ var_m
+IF var_m >= #1 GOTO label_0
+WRITE #0
 GOTO label_1
 LABEL label_0 :
-tmp_14 := #0
-WRITE tmp_14
-GOTO label_8
-LABEL label_1 :
-tmp_15 := var_m
-tmp_16 := #1
-IF tmp_15 == tmp_16 GOTO label_3
-GOTO label_6
-LABEL label_6 :
+IF var_m != #1 GOTO (null)
 tmp_17 := var_m
-tmp_18 := #2
-IF tmp_17 == tmp_18 GOTO label_3
-GOTO label_4
-LABEL label_3 :
-tmp_19 := #1
-WRITE tmp_19
-GOTO label_8
+IF tmp_17 != #2 GOTO label_2
 LABEL label_4 :
-tmp_20 := var_m
-tmp_21 := #2
-IF tmp_20 > tmp_21 GOTO label_7
-GOTO label_8
-LABEL label_7 :
-var_i := #3
-LABEL label_9 :
-tmp_24 := var_i
-tmp_25 := var_m
-IF tmp_24 <= tmp_25 GOTO label_10
-GOTO label_11
-LABEL label_10 :
-tmp_28 := var_tu1
-tmp_29 := var_tu2
-tmp_27 := var_tu1 + var_tu2
-var_tu3 := tmp_27
-tmp_31 := var_tu2
+WRITE #1
+GOTO label_3
+LABEL label_2 :
+IF var_m <= #2 GOTO label_5
+LABEL label_6 :
+IF var_i > var_m GOTO label_7
+var_tu3 := var_tu1 + var_tu2
 var_tu1 := var_tu2
-tmp_33 := var_tu3
 var_tu2 := var_tu3
-tmp_36 := var_i
-tmp_35 := var_i + #1
-var_i := tmp_35
-GOTO label_9
-LABEL label_11 :
-tmp_38 := var_tu3
-WRITE tmp_38
-LABEL label_8 :
-tmp_39 := #0
-RETURN tmp_39
+var_i := var_i + #1
+GOTO label_6
+LABEL label_7 :
+WRITE var_tu3
+LABEL label_5 :
+LABEL label_3 :
+LABEL label_1 :
+RETURN #0

@@ -114,3 +114,158 @@
 [INFO] 2023-12-22 07:56:56,892 (irsim.py 567): Program has exited gracefully
 [INFO] 2023-12-22 07:56:56,893 (irsim.py 567): Total instructions = 154
 [INFO] 2023-12-22 07:57:26,172 (irsim.py 567): KeyboardInterrupt raised, quit program
+[DEBUG] 2023-12-23 16:03:08,391 (irsim.py 620): Parsed arguments: {'irpath': 'test_3_r01.ir', 'inputs': '', 'logpath': 'irsim.log'}
+[INFO] 2023-12-23 16:03:08,394 (irsim.py 567): File loaded successfully
+[INFO] 2023-12-23 16:03:11,643 (irsim.py 567): KeyboardInterrupt raised, quit program
+[DEBUG] 2023-12-23 16:03:14,803 (irsim.py 620): Parsed arguments: {'irpath': 'test_3_r01.ir', 'inputs': '1551', 'logpath': 'irsim.log'}
+[INFO] 2023-12-23 16:03:14,807 (irsim.py 567): File loaded successfully
+[INFO] 2023-12-23 16:03:15,814 (irsim.py 567): Program has exited gracefully
+[INFO] 2023-12-23 16:03:15,815 (irsim.py 567): Total instructions = 73
+[INFO] 2023-12-23 16:03:17,985 (irsim.py 567): KeyboardInterrupt raised, quit program
+[DEBUG] 2023-12-23 16:03:20,884 (irsim.py 620): Parsed arguments: {'irpath': 'test_3_r01.ir', 'inputs': '114514', 'logpath': 'irsim.log'}
+[INFO] 2023-12-23 16:03:20,888 (irsim.py 567): File loaded successfully
+[INFO] 2023-12-23 16:03:21,760 (irsim.py 567): Program has exited gracefully
+[INFO] 2023-12-23 16:03:21,761 (irsim.py 567): Total instructions = 103
+[INFO] 2023-12-23 16:03:23,474 (irsim.py 567): KeyboardInterrupt raised, quit program
+[DEBUG] 2023-12-23 16:03:39,855 (irsim.py 620): Parsed arguments: {'irpath': 'test_3_r02.ir', 'inputs': '5,3', 'logpath': 'irsim.log'}
+[INFO] 2023-12-23 16:03:39,860 (irsim.py 567): File loaded successfully
+[INFO] 2023-12-23 16:03:40,705 (irsim.py 567): Program has exited gracefully
+[INFO] 2023-12-23 16:03:40,706 (irsim.py 567): Total instructions = 36
+[INFO] 2023-12-23 16:03:42,466 (irsim.py 567): KeyboardInterrupt raised, quit program
+[DEBUG] 2023-12-23 16:03:45,245 (irsim.py 620): Parsed arguments: {'irpath': 'test_3_r02.ir', 'inputs': '6,3', 'logpath': 'irsim.log'}
+[INFO] 2023-12-23 16:03:45,247 (irsim.py 567): File loaded successfully
+[INFO] 2023-12-23 16:03:46,708 (irsim.py 567): Program has exited gracefully
+[INFO] 2023-12-23 16:03:46,709 (irsim.py 567): Total instructions = 42
+[INFO] 2023-12-23 16:03:47,864 (irsim.py 567): KeyboardInterrupt raised, quit program
+[DEBUG] 2023-12-23 16:03:50,946 (irsim.py 620): Parsed arguments: {'irpath': 'test_3_r02.ir', 'inputs': '1,3', 'logpath': 'irsim.log'}
+[INFO] 2023-12-23 16:03:50,949 (irsim.py 567): File loaded successfully
+[INFO] 2023-12-23 16:03:51,859 (irsim.py 567): Program has exited gracefully
+[INFO] 2023-12-23 16:03:51,860 (irsim.py 567): Total instructions = 14
+[INFO] 2023-12-23 16:03:52,726 (irsim.py 567): KeyboardInterrupt raised, quit program
+[DEBUG] 2023-12-23 16:04:08,046 (irsim.py 620): Parsed arguments: {'irpath': 'test_3_r03.ir', 'inputs': '', 'logpath': 'irsim.log'}
+[INFO] 2023-12-23 16:04:08,050 (irsim.py 567): File loaded successfully
+[INFO] 2023-12-23 16:04:09,633 (irsim.py 567): Program has exited gracefully
+[INFO] 2023-12-23 16:04:09,634 (irsim.py 567): Total instructions = 3685
+[INFO] 2023-12-23 16:04:16,756 (irsim.py 567): KeyboardInterrupt raised, quit program
+[DEBUG] 2023-12-23 16:04:36,517 (irsim.py 620): Parsed arguments: {'irpath': 'test_3_r04.ir', 'inputs': '', 'logpath': 'irsim.log'}
+[INFO] 2023-12-23 16:04:36,521 (irsim.py 567): File loaded successfully
+[INFO] 2023-12-23 16:04:47,918 (irsim.py 567): Program has exited gracefully
+[INFO] 2023-12-23 16:04:47,919 (irsim.py 567): Total instructions = 39589
+[INFO] 2023-12-23 16:04:52,038 (irsim.py 567): KeyboardInterrupt raised, quit program
+[DEBUG] 2023-12-23 16:05:06,221 (irsim.py 620): Parsed arguments: {'irpath': 'test_3_r05.ir', 'inputs': '10', 'logpath': 'irsim.log'}
+[INFO] 2023-12-23 16:05:06,228 (irsim.py 567): File loaded successfully
+[INFO] 2023-12-23 16:05:07,263 (irsim.py 567): Program has exited gracefully
+[INFO] 2023-12-23 16:05:07,265 (irsim.py 567): Total instructions = 71
+[INFO] 2023-12-23 16:05:10,368 (irsim.py 567): KeyboardInterrupt raised, quit program
+[DEBUG] 2023-12-23 16:05:20,974 (irsim.py 620): Parsed arguments: {'irpath': 'test_3_r06.ir', 'inputs': '', 'logpath': 'irsim.log'}
+[INFO] 2023-12-23 16:05:20,988 (irsim.py 567): File loaded successfully
+[INFO] 2023-12-23 16:05:22,527 (irsim.py 567): Program has exited gracefully
+[INFO] 2023-12-23 16:05:22,528 (irsim.py 567): Total instructions = 181
+[INFO] 2023-12-23 16:05:25,009 (irsim.py 567): KeyboardInterrupt raised, quit program
+[DEBUG] 2023-12-23 16:08:16,787 (irsim.py 620): Parsed arguments: {'irpath': 'test_3_r03.ir', 'inputs': '', 'logpath': 'irsim.log'}
+[INFO] 2023-12-23 16:08:16,790 (irsim.py 567): File loaded successfully
+[INFO] 2023-12-23 16:08:18,325 (irsim.py 567): Program has exited gracefully
+[INFO] 2023-12-23 16:08:18,326 (irsim.py 567): Total instructions = 3685
+[INFO] 2023-12-23 16:08:30,834 (irsim.py 567): KeyboardInterrupt raised, quit program
+[DEBUG] 2023-12-23 16:08:33,014 (irsim.py 620): Parsed arguments: {'irpath': 'test_3_r04.ir', 'inputs': '', 'logpath': 'irsim.log'}
+[INFO] 2023-12-23 16:08:33,020 (irsim.py 567): File loaded successfully
+[INFO] 2023-12-23 16:08:44,233 (irsim.py 567): Program has exited gracefully
+[INFO] 2023-12-23 16:08:44,234 (irsim.py 567): Total instructions = 39589
+[INFO] 2023-12-23 16:09:41,246 (irsim.py 567): KeyboardInterrupt raised, quit program
+[DEBUG] 2023-12-23 17:01:21,584 (irsim.py 620): Parsed arguments: {'irpath': 'test_3_r03.ir', 'inputs': '', 'logpath': 'irsim.log'}
+[INFO] 2023-12-23 17:01:21,591 (irsim.py 567): File loaded successfully
+[INFO] 2023-12-23 17:01:26,329 (irsim.py 567): Program has exited gracefully
+[INFO] 2023-12-23 17:01:26,329 (irsim.py 567): Total instructions = 3685
+[INFO] 2023-12-23 17:01:28,199 (irsim.py 567): KeyboardInterrupt raised, quit program
+[DEBUG] 2023-12-23 17:01:31,006 (irsim.py 620): Parsed arguments: {'irpath': 'test_3_r04.ir', 'inputs': '', 'logpath': 'irsim.log'}
+[INFO] 2023-12-23 17:01:31,011 (irsim.py 567): File loaded successfully
+[INFO] 2023-12-23 17:01:36,450 (irsim.py 567): KeyboardInterrupt raised, quit program
+[DEBUG] 2023-12-23 17:01:46,128 (irsim.py 620): Parsed arguments: {'irpath': 'test_3_r04.ir', 'inputs': '', 'logpath': 'irsim.log'}
+[INFO] 2023-12-23 17:01:46,132 (irsim.py 567): File loaded successfully
+[INFO] 2023-12-23 17:01:58,258 (irsim.py 567): Program has exited gracefully
+[INFO] 2023-12-23 17:01:58,259 (irsim.py 567): Total instructions = 39589
+[INFO] 2023-12-23 17:02:15,359 (irsim.py 567): KeyboardInterrupt raised, quit program
+[DEBUG] 2023-12-23 17:02:26,085 (irsim.py 620): Parsed arguments: {'irpath': 'test_3_r01.ir', 'inputs': '1551', 'logpath': 'irsim.log'}
+[INFO] 2023-12-23 17:02:26,089 (irsim.py 567): File loaded successfully
+[INFO] 2023-12-23 17:02:26,809 (irsim.py 567): Program has exited gracefully
+[INFO] 2023-12-23 17:02:26,809 (irsim.py 567): Total instructions = 76
+[INFO] 2023-12-23 17:02:27,960 (irsim.py 567): KeyboardInterrupt raised, quit program
+[DEBUG] 2023-12-23 17:02:30,798 (irsim.py 620): Parsed arguments: {'irpath': 'test_3_r01.ir', 'inputs': '114514', 'logpath': 'irsim.log'}
+[INFO] 2023-12-23 17:02:30,801 (irsim.py 567): File loaded successfully
+[INFO] 2023-12-23 17:02:32,096 (irsim.py 567): Program has exited gracefully
+[INFO] 2023-12-23 17:02:32,097 (irsim.py 567): Total instructions = 106
+[INFO] 2023-12-23 17:02:33,120 (irsim.py 567): KeyboardInterrupt raised, quit program
+[DEBUG] 2023-12-23 17:02:46,333 (irsim.py 620): Parsed arguments: {'irpath': 'test_3_r02.ir', 'inputs': '5,2', 'logpath': 'irsim.log'}
+[INFO] 2023-12-23 17:02:46,336 (irsim.py 567): File loaded successfully
+[INFO] 2023-12-23 17:02:47,350 (irsim.py 567): Program has exited gracefully
+[INFO] 2023-12-23 17:02:47,351 (irsim.py 567): Total instructions = 39
+[INFO] 2023-12-23 17:02:48,481 (irsim.py 567): KeyboardInterrupt raised, quit program
+[DEBUG] 2023-12-23 17:02:52,937 (irsim.py 620): Parsed arguments: {'irpath': 'test_3_r02.ir', 'inputs': '6,3', 'logpath': 'irsim.log'}
+[INFO] 2023-12-23 17:02:52,942 (irsim.py 567): File loaded successfully
+[INFO] 2023-12-23 17:02:53,653 (irsim.py 567): Program has exited gracefully
+[INFO] 2023-12-23 17:02:53,654 (irsim.py 567): Total instructions = 47
+[INFO] 2023-12-23 17:02:54,450 (irsim.py 567): KeyboardInterrupt raised, quit program
+[DEBUG] 2023-12-23 17:02:58,493 (irsim.py 620): Parsed arguments: {'irpath': 'test_3_r02.ir', 'inputs': '1,3', 'logpath': 'irsim.log'}
+[INFO] 2023-12-23 17:02:58,498 (irsim.py 567): File loaded successfully
+[INFO] 2023-12-23 17:02:59,161 (irsim.py 567): KeyboardInterrupt raised, quit program
+[DEBUG] 2023-12-23 17:03:00,557 (irsim.py 620): Parsed arguments: {'irpath': 'test_3_r02.ir', 'inputs': '1,3', 'logpath': 'irsim.log'}
+[INFO] 2023-12-23 17:03:00,559 (irsim.py 567): File loaded successfully
+[INFO] 2023-12-23 17:03:01,536 (irsim.py 567): Program has exited gracefully
+[INFO] 2023-12-23 17:03:01,536 (irsim.py 567): Total instructions = 14
+[INFO] 2023-12-23 17:03:02,281 (irsim.py 567): KeyboardInterrupt raised, quit program
+[DEBUG] 2023-12-23 17:03:07,136 (irsim.py 620): Parsed arguments: {'irpath': 'test_3_r03.ir', 'inputs': '', 'logpath': 'irsim.log'}
+[INFO] 2023-12-23 17:03:07,153 (irsim.py 567): File loaded successfully
+[INFO] 2023-12-23 17:03:08,241 (irsim.py 567): Program has exited gracefully
+[INFO] 2023-12-23 17:03:08,242 (irsim.py 567): Total instructions = 3156
+[INFO] 2023-12-23 17:03:14,191 (irsim.py 567): KeyboardInterrupt raised, quit program
+[DEBUG] 2023-12-23 17:03:16,491 (irsim.py 620): Parsed arguments: {'irpath': 'test_3_r04.ir', 'inputs': '', 'logpath': 'irsim.log'}
+[INFO] 2023-12-23 17:03:16,495 (irsim.py 567): File loaded successfully
+[INFO] 2023-12-23 17:03:27,868 (irsim.py 567): Program has exited gracefully
+[INFO] 2023-12-23 17:03:27,868 (irsim.py 567): Total instructions = 39447
+[INFO] 2023-12-23 17:03:49,322 (irsim.py 567): KeyboardInterrupt raised, quit program
+[DEBUG] 2023-12-23 17:03:52,407 (irsim.py 620): Parsed arguments: {'irpath': 'test_3_r03.ir', 'inputs': '', 'logpath': 'irsim.log'}
+[INFO] 2023-12-23 17:03:52,423 (irsim.py 567): File loaded successfully
+[INFO] 2023-12-23 17:03:54,288 (irsim.py 567): Program has exited gracefully
+[INFO] 2023-12-23 17:03:54,288 (irsim.py 567): Total instructions = 3156
+[INFO] 2023-12-23 17:04:27,634 (irsim.py 567): KeyboardInterrupt raised, quit program
+[DEBUG] 2023-12-23 17:04:39,588 (irsim.py 620): Parsed arguments: {'irpath': 'test_3_r05.ir', 'inputs': '10', 'logpath': 'irsim.log'}
+[ERROR] 2023-12-23 17:04:39,591 (irsim.py 581): Undefined label at line 12: IF var_m != #1 GOTO (null)
+[ERROR] 2023-12-23 17:04:39,591 (irsim.py 581): Loading failed
+[DEBUG] 2023-12-23 17:04:58,850 (irsim.py 620): Parsed arguments: {'irpath': 'test_3_r05.ir', 'inputs': '10', 'logpath': 'irsim.log'}
+[ERROR] 2023-12-23 17:04:58,856 (irsim.py 581): Undefined label at line 12: IF var_m != #1 GOTO (null)
+[ERROR] 2023-12-23 17:04:58,856 (irsim.py 581): Loading failed
+[DEBUG] 2023-12-23 17:07:38,286 (irsim.py 620): Parsed arguments: {'irpath': 'test_3_r01.ir', 'inputs': '1551', 'logpath': 'irsim.log'}
+[INFO] 2023-12-23 17:07:38,290 (irsim.py 567): File loaded successfully
+[INFO] 2023-12-23 17:07:39,121 (irsim.py 567): Program has exited gracefully
+[INFO] 2023-12-23 17:07:39,122 (irsim.py 567): Total instructions = 76
+[INFO] 2023-12-23 17:07:41,592 (irsim.py 567): KeyboardInterrupt raised, quit program
+[DEBUG] 2023-12-23 17:07:44,307 (irsim.py 620): Parsed arguments: {'irpath': 'test_3_r01.ir', 'inputs': '114514', 'logpath': 'irsim.log'}
+[INFO] 2023-12-23 17:07:44,310 (irsim.py 567): File loaded successfully
+[INFO] 2023-12-23 17:07:45,068 (irsim.py 567): Program has exited gracefully
+[INFO] 2023-12-23 17:07:45,069 (irsim.py 567): Total instructions = 106
+[INFO] 2023-12-23 17:07:47,440 (irsim.py 567): KeyboardInterrupt raised, quit program
+[DEBUG] 2023-12-23 17:07:56,760 (irsim.py 620): Parsed arguments: {'irpath': 'test_3_r02.ir', 'inputs': '5,2', 'logpath': 'irsim.log'}
+[INFO] 2023-12-23 17:07:56,765 (irsim.py 567): File loaded successfully
+[INFO] 2023-12-23 17:07:57,801 (irsim.py 567): Program has exited gracefully
+[INFO] 2023-12-23 17:07:57,802 (irsim.py 567): Total instructions = 32
+[INFO] 2023-12-23 17:07:58,632 (irsim.py 567): KeyboardInterrupt raised, quit program
+[DEBUG] 2023-12-23 17:08:01,831 (irsim.py 620): Parsed arguments: {'irpath': 'test_3_r02.ir', 'inputs': '6,3', 'logpath': 'irsim.log'}
+[INFO] 2023-12-23 17:08:01,834 (irsim.py 567): File loaded successfully
+[INFO] 2023-12-23 17:08:02,391 (irsim.py 567): Program has exited gracefully
+[INFO] 2023-12-23 17:08:02,391 (irsim.py 567): Total instructions = 39
+[INFO] 2023-12-23 17:08:03,223 (irsim.py 567): KeyboardInterrupt raised, quit program
+[DEBUG] 2023-12-23 17:08:05,491 (irsim.py 620): Parsed arguments: {'irpath': 'test_3_r02.ir', 'inputs': '1,3', 'logpath': 'irsim.log'}
+[INFO] 2023-12-23 17:08:05,496 (irsim.py 567): File loaded successfully
+[INFO] 2023-12-23 17:08:06,315 (irsim.py 567): Program has exited gracefully
+[INFO] 2023-12-23 17:08:06,316 (irsim.py 567): Total instructions = 14
+[INFO] 2023-12-23 17:08:07,423 (irsim.py 567): KeyboardInterrupt raised, quit program
+[DEBUG] 2023-12-23 17:08:10,924 (irsim.py 620): Parsed arguments: {'irpath': 'test_3_r03.ir', 'inputs': '', 'logpath': 'irsim.log'}
+[INFO] 2023-12-23 17:08:10,928 (irsim.py 567): File loaded successfully
+[INFO] 2023-12-23 17:08:13,083 (irsim.py 567): Program has exited gracefully
+[INFO] 2023-12-23 17:08:13,083 (irsim.py 567): Total instructions = 3614
+[INFO] 2023-12-23 17:08:20,806 (irsim.py 567): KeyboardInterrupt raised, quit program
+[DEBUG] 2023-12-23 17:08:22,982 (irsim.py 620): Parsed arguments: {'irpath': 'test_3_r04.ir', 'inputs': '', 'logpath': 'irsim.log'}
+[INFO] 2023-12-23 17:08:22,986 (irsim.py 567): File loaded successfully
+[INFO] 2023-12-23 17:08:36,819 (irsim.py 567): Program has exited gracefully
+[INFO] 2023-12-23 17:08:36,820 (irsim.py 567): Total instructions = 41888
+[INFO] 2023-12-23 17:08:54,223 (irsim.py 567): KeyboardInterrupt raised, quit program

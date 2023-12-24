@@ -1,0 +1,7 @@
+FUNCTION main :
+var_a := #1
+var_c := #3
+var_b := #4
+var_d := #12
+WRITE #12
+RETURN #0

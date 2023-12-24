@@ -1,22 +1,4 @@
 FUNCTION main :
-DEC var_a 12
-READ tmp_1
-var_a := tmp_1
-tmp_6 := &var_a + #8
-READ tmp_4
-*tmp_6 := tmp_4
-tmp_11 := &var_a + #4
-tmp_10 := &var_a + #8
-tmp_8 := *tmp_10
-*tmp_11 := tmp_8
-tmp_17 := &var_a + #8
-tmp_15 := *tmp_17
-tmp_18 := &var_a + #0
-tmp_16 := *tmp_18
-tmp_13 := tmp_15 * tmp_16
-var_a := tmp_13
-tmp_20 := &var_a + #0
-tmp_19 := *tmp_20
-WRITE tmp_19
-tmp_21 := #0
-RETURN tmp_21
+var_a := *tmp_17 * *tmp_18
+WRITE *tmp_20
+RETURN #0
