@@ -8,6 +8,8 @@
 int block_cnt = 0;
 int node_cnt = 0;
 int code_cnt = 0;
+int struct_cnt = 0;
+struct Reg struct_list[114514];
 struct Block block[114514];
 struct Dnode* node_list[114514];
 
@@ -30,9 +32,35 @@ void inital_block(int id){
     //Todo: if you want to check the initial of var.
 }
 
-int check_var(char* name){
+char* getRemainingString(char *variable, char* prefix) {
+    // 使用strstr函数找到 "var_" 的位置
+    char *start = strstr(variable, prefix);
+    if (start != NULL) {
+        return start + strlen(prefix);
+    } else {
+        return variable;
+    }
+}
+
+int check_var(char* name, int id){
     if(strncmp(name, "var_", 4) == 0)return 1;
+    if(strncmp(name, "*", 1) == 0){
+        get_reg(getRemainingString(name, "*"), id)->is_var = 1;
+        return 1;
+    }else if(strncmp(name, "&", 1) == 0){
+        get_reg(getRemainingString(name, "&"), id)->is_var = 1;
+        return 1;
+    }
     else return 0;
+}
+
+int check_is_struct(char* name){
+    for(int i = 1;i <= struct_cnt;i++){
+        if(strcmp(name, struct_list[i].name) == 0){
+            return 1;
+        }
+    }
+    return 0;
 }
 
 struct Reg* generate_reg(char* name, struct Dnode* active_in, int is_var){
@@ -40,6 +68,8 @@ struct Reg* generate_reg(char* name, struct Dnode* active_in, int is_var){
     ret->name = name;
     ret->active_in = active_in;
     ret->is_var = is_var;
+    ret->is_struct = 0;
+    ret->is_struct = check_is_struct(name);
     return ret;
 }
 
@@ -47,6 +77,10 @@ struct Reg* get_reg(char* name, int id){
     if(name == NULL)return NULL;
     struct Reg_list* tmp = block[id].regs;
     while(tmp != NULL){
+        if(tmp->reg == NULL){
+            tmp = tmp->next;
+            continue;
+        }
         if(strcmp(tmp->reg->name, name) == 0){
             tmp->reg->last_k = code_cnt;
             return tmp->reg;
@@ -55,9 +89,10 @@ struct Reg* get_reg(char* name, int id){
     }
     
     tmp = (struct Reg_list*)malloc(sizeof(struct Reg_list));
+    tmp->reg = NULL;
     tmp->next = block[id].regs;
     block[id].regs = tmp;
-    tmp->reg = generate_reg(name, NULL, check_var(name));
+    tmp->reg = generate_reg(name, NULL, check_var(name, id));
     tmp->reg->last_k = code_cnt;
     return tmp->reg;
 }
@@ -121,13 +156,20 @@ struct Dnode* generate_if_Dnode(struct Dnode* tk2, struct Dnode* tk3, char* name
     return ret;
 }
 
+int not_a_addr(char* name){
+    if(strncmp(name, "*", 1) == 0 || strncmp(name, "&", 1) == 0){
+        return 0;
+    }
+    return 1;
+}
+
 void assign_reg(struct Reg* reg1, struct Reg* reg2){
     if(reg2->active_in == NULL){
         reg2->active_in = generate_init_Dnode(reg2);
     }
     // printf("%s %s %d\n", reg1->name, reg2->name, reg2->active_in->isconst);
     // fflush(stdout);
-    if(reg2->active_in->in == 0){
+    if(reg2->active_in->in == 0 && not_a_addr(reg1->name) == 1){
         reg1->active_in = reg2->active_in;
         add_reg(reg2->active_in, reg1);
     }else{
@@ -336,6 +378,9 @@ void print_node_list(){
 }
 
 char *get_token_name(struct Dnode* node){
+    if(node->reg_list != NULL && node->reg_list->reg != NULL && node->reg_list->reg->is_struct == 1){
+        return node->reg_list->reg->name;
+    }
     if(node->isconst){
         return to_literal(node->value);
     }else return node->reg_list->reg->name;
@@ -440,14 +485,14 @@ void complete_block(int id){
 
     printf("complete assign export of block %d\n", id);
     fflush(stdout);
-
+    print_node_list();
     int has_delet = 1;
     while(has_delet){
         has_delet = 0;
         for(int i = node_cnt;i >= 1;i--){
             if(node_list[i] == NULL)continue;
             if(node_list[i]->in == 0 && node_list[i]->export == NULL){
-                //printf("%d\n", i);
+                printf("Delet %d\n", i);
                 node_list[i] = delet_dnode(node_list[i]);
                 has_delet = 1;
             }
@@ -505,7 +550,7 @@ void complete_block(int id){
         code_head = append_wo_tail(code, code_head);
     }
     code = block[id].front;
-    if(code->type == 1 || code->type == 0){
+    if(code->type == 1 || code->type == 0 || code->type == 13){
         while(code->next != NULL && code->next->type == 14)code = code->next;
         code->next = NULL;
         block[id].front = append_wo_tail(block[id].front, code_head);
@@ -531,7 +576,10 @@ struct Code* optimize(struct Code* code){
     int end_block = 1;
     while(tmp != NULL){
         int command = tmp->type;
-        if(command == 0 || command == 1){
+        if(command == 13){
+            struct_list[++struct_cnt].name = tmp->tk1;
+        }
+        if(command == 0 || command == 1 || command == 13){
             if(!end_block){
                 finish_gen_block(block_cnt, last);
                 block_cnt++;

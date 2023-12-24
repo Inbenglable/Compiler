@@ -188,13 +188,21 @@ struct Code* translate_exp(struct Node* node, char* place){
         char* struct_name = node -> var -> name;
         ret_head = NULL;
         char* tmp = new_tmp_name();
-        ret_head = construct(3, tmp, -1, attach("&", to_var(struct_name)), to_literal(node->var->offset));
-        struct Code* code = construct(2, place, -1, attach("*", tmp), NULL);
-        ret_head = append_wo_tail(ret_head, code);
-        connect_code_to_node(node, code);
-        printf("translate Struct %s.%s with offset %d\n", node->var->name, node->head->next->next->value, node->var->offset);
-        fflush(stdout);
-        return ret_head;
+        if(node->var->offset != 0){
+            ret_head = construct(3, tmp, -1, attach("&", to_var(struct_name)), to_literal(node->var->offset));
+            struct Code* code = construct(2, place, -1, attach("*", tmp), NULL);
+            ret_head = append_wo_tail(ret_head, code);
+            connect_code_to_node(node, code);
+            printf("translate Struct %s.%s with offset %d\n", node->var->name, node->head->next->next->value, node->var->offset);
+            fflush(stdout);
+            return ret_head;
+        }else{
+            ret_head = construct(2, place, -1, to_var(struct_name), NULL);
+            printf("translate Struct %s.%s with offset %d\n", node->var->name, node->head->next->next->value, node->var->offset);
+            fflush(stdout);
+            return ret_head;
+        }
+        
     }
     else if(strcmp(son_list, "ExpASSIGNExp") == 0){
         nodePointer tk1 = node->head;

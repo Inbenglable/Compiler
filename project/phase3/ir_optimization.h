@@ -77,6 +77,7 @@ struct Reg{
     struct Dnode* active_in;
     int is_var;
     int last_k;
+    int is_struct;
 };
 extern struct Block block[114514];
 extern struct Dnode* node_list[114514];
@@ -85,7 +86,7 @@ struct Code* optimize(struct Code* code);
 void finish_gen_block(int id, struct Code* tail);
 void generate_block(int id, struct Code* head);
 void inital_block(int id);
-int check_var(char* name);
+int check_var(char* name, int id);
 struct Reg* generate_reg(char* name, struct Dnode* active_in, int is_var);
 struct Reg* get_reg(char* name, int id);
 void assign_reg(struct Reg* reg1, struct Reg* reg2);
