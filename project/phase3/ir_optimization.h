@@ -67,6 +67,7 @@ struct Dnode{
         5. fun
         6. read
         7. if
+        8. assign
     */
    char* splc_name;
 };
@@ -104,4 +105,5 @@ void print_node_list();
 char *get_token_name(struct Dnode* node);
 int change_to_const(struct Dnode* node);
 void complete_block(int id);
+void print_block_list();
 #endif // !__IR_OPTIMIZATION__

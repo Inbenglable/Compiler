@@ -8,6 +8,7 @@ RETURN #0
 LABEL label_0 :
 tmp_4 := var_row - var_col
 IF var_col <= tmp_4 GOTO label_1
+var_col := var_row - var_col
 LABEL label_1 :
 LABEL label_2 :
 IF var_i >= var_col GOTO label_3

@@ -10,13 +10,13 @@ WRITE #0
 GOTO label_1
 LABEL label_0 :
 IF var_m == #1 GOTO label_4
-tmp_17 := var_m
-IF tmp_17 != #2 GOTO label_2
+IF var_m != #2 GOTO label_2
 LABEL label_4 :
 WRITE #1
 GOTO label_3
 LABEL label_2 :
 IF var_m <= #2 GOTO label_5
+var_i := #3
 LABEL label_6 :
 IF var_i > var_m GOTO label_7
 var_tu3 := var_tu1 + var_tu2

@@ -1,18 +1,28 @@
 FUNCTION thrust_power_ratio :
 PARAM var_engine
-tmp_0 := *tmp_3 / *tmp_4
+tmp_4 := &var_engine + #4
+tmp_0 := var_engine / *tmp_4
 RETURN tmp_0
 FUNCTION main :
+DEC var_pw2000 8
+DEC var_cfm56_5b 8
+DEC var_trent900 8
+tmp_11 := &var_pw2000 + #4
+*tmp_11 := #7300
+tmp_18 := &var_cfm56_5b + #4
+*tmp_18 := #4300
+tmp_25 := &var_trent900 + #4
+*tmp_25 := #13800
 var_pw2000 := #43000
-ARG #43000
+ARG var_pw2000
 tmp_26 := CALL thrust_power_ratio
 WRITE tmp_26
 var_cfm56_5b := #34000
-ARG #34000
+ARG var_cfm56_5b
 tmp_28 := CALL thrust_power_ratio
 WRITE tmp_28
 var_trent900 := #81000
-ARG #81000
+ARG var_trent900
 tmp_30 := CALL thrust_power_ratio
 WRITE tmp_30
 RETURN #0

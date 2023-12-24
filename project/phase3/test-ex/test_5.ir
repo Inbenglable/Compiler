@@ -1,0 +1,17 @@
+FUNCTION main :
+READ var_a
+READ tmp_3
+var_c := #3
+var_b := var_a + #3
+tmp_16 := var_a + var_b
+tmp_14 := tmp_16 + #3
+var_d := tmp_14 + #4
+tmp_24 := var_a + var_b
+tmp_22 := tmp_24 + #3
+var_e := tmp_22 + var_d
+tmp_32 := var_a + var_b
+tmp_30 := tmp_32 + #3
+var_g := tmp_30 + var_d
+tmp_36 := var_d
+WRITE tmp_36
+RETURN #0

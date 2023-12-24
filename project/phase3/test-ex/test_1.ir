@@ -1,4 +1,13 @@
 FUNCTION main :
-var_a := *tmp_17 * *tmp_18
-WRITE *tmp_20
+DEC var_a 12
+READ tmp_1
+tmp_6 := &var_a + #8
+READ tmp_4
+*tmp_6 := tmp_4
+tmp_11 := &var_a + #4
+tmp_10 := tmp_6
+*tmp_11 := *tmp_10
+tmp_17 := tmp_10
+var_a := *tmp_17 * tmp_1
+WRITE var_a
 RETURN #0

@@ -12,9 +12,8 @@ var_original := var_num
 var_digit := #0
 LABEL label_0 :
 IF var_num == #0 GOTO label_1
-tmp_11 := var_num
 ARG #10
-ARG tmp_11
+ARG var_num
 var_digit := CALL mod
 tmp_15 := var_reversed * #10
 var_reversed := tmp_15 + var_digit

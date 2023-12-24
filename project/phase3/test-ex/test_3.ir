@@ -3,8 +3,7 @@ READ var_n
 var_sum := #0
 LABEL label_0 :
 IF var_n == #0 GOTO label_1
-tmp_1 := var_n
-WRITE tmp_1
+WRITE var_n
 var_sum := var_sum + var_n
 var_n := var_n - #1
 GOTO label_0

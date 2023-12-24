@@ -12,12 +12,11 @@ var_j := #1
 LABEL label_0 :
 tmp_8 := var_number / #2
 IF var_j > tmp_8 GOTO label_1
-tmp_13 := var_number
-tmp_14 := var_j
-ARG tmp_14
-ARG tmp_13
+ARG var_j
+ARG var_number
 tmp_11 := CALL mod
 IF tmp_11 != #0 GOTO label_2
+var_sum := var_sum + var_j
 LABEL label_2 :
 var_j := var_j + #1
 GOTO label_0
@@ -33,10 +32,10 @@ var_count := #0
 var_i := #1
 LABEL label_5 :
 IF var_i > #100 GOTO label_6
-tmp_31 := var_i
-ARG tmp_31
+ARG var_i
 tmp_29 := CALL isPerfectNumber
 IF tmp_29 != #1 GOTO label_7
+WRITE var_i
 LABEL label_7 :
 var_i := var_i + #1
 GOTO label_5

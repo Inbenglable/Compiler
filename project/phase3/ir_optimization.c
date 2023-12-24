@@ -199,8 +199,8 @@ int check_bigger_insert(struct Export* a, struct Export* b, int id){
 void insert_export(struct Dnode* node, struct Export* export, int id){
     struct Export* tmp = node->export;
     struct Export* last = NULL;
-    printf("%d %d %d\n",export->type, export->relop, export->k);
-    fflush(stdout);
+    // printf("%d %d %d\n",export->type, export->relop, export->k);
+    // fflush(stdout);
     while(1){
         
         if(check_bigger_insert(export, tmp, id)){
@@ -284,8 +284,8 @@ void reduce_useless(struct Dnode* node){
         }
         
         if(regs->reg->active_in == node){
-            printf("!%s\n", regs->reg->name);
-            fflush(stdout);
+            // printf("!%s\n", regs->reg->name);
+            // fflush(stdout);
             add_reg(node, regs->reg);
         }
         regs = regs->next;
@@ -302,11 +302,6 @@ void reduce_useless(struct Dnode* node){
     }
 
     regs = node->reg_list;
-    while(regs != NULL){
-        printf("%s\n", regs->reg->name);
-        fflush(stdout);
-        regs = regs->next;
-    }
 }
 
 struct Code* solve(struct Dnode* node, int id){
@@ -390,6 +385,11 @@ char *get_token_name(struct Dnode* node){
 int change_to_const(struct Dnode* node){
     if(node->isconst == 1)return 0;
     if(node->operator == 5 || node->operator == 6 || node->operator == 7 || node->operator == 0)return 0;
+    if(node->operator == 8 && node->tk2->isconst == 1){
+        node->isconst = 1;
+        node->value = node->tk2->value;
+        return 1;
+    }
     if(node->tk2->isconst == 1 && node->tk3->isconst == 1){
         node->isconst=1;
         if(node->operator == 1){
@@ -410,8 +410,8 @@ int change_to_const(struct Dnode* node){
 }
 
 void complete_block(int id){
-    printf("Start complete block%d\n", id);
-    fflush(stdout);
+    // printf("Start complete block%d\n", id);
+    // fflush(stdout);
     node_cnt = 0;
     code_cnt = 0;
     struct Code* tmp = block[id].front;
@@ -419,8 +419,8 @@ void complete_block(int id){
     while(1){
         ++code_cnt;
         int command = tmp->type;
-        printf("building code: %d %s %d %s %s\n", tmp->type, tmp->tk1, tmp->relop, tmp->tk2, tmp->tk3);
-        fflush(stdout);
+        // printf("building code: %d %s %d %s %s\n", tmp->type, tmp->tk1, tmp->relop, tmp->tk2, tmp->tk3);
+        // fflush(stdout);
         struct Reg* reg1 = NULL;
         struct Reg* reg2 = NULL;
         struct Reg* reg3 = NULL;
@@ -470,47 +470,47 @@ void complete_block(int id){
             if(reg1->active_in == NULL)reg1->active_in = generate_init_Dnode(reg1);
             insert_export(reg1->active_in, generate_export(2, -1, code_cnt), id);
         }else{
-            printf("error with command = %d\n", command);
-            fflush(stdout);
+            // printf("error with command = %d\n", command);
+            // fflush(stdout);
         }
 
         if(tmp == block[id].end)break;
         tmp = tmp->next;
     }
 
-    printf("complete build dag of block %d\n", id);
-    fflush(stdout);
+    // printf("complete build dag of block %d\n", id);
+    // fflush(stdout);
 
     assign_export(id);
 
-    printf("complete assign export of block %d\n", id);
-    fflush(stdout);
-    print_node_list();
+    // printf("complete assign export of block %d\n", id);
+    // fflush(stdout);
+    //print_node_list();
     int has_delet = 1;
     while(has_delet){
         has_delet = 0;
         for(int i = node_cnt;i >= 1;i--){
             if(node_list[i] == NULL)continue;
-            if(node_list[i]->in == 0 && node_list[i]->export == NULL){
-                printf("Delet %d\n", i);
+            if(node_list[i]->in == 0 && node_list[i]->export == NULL && node_list[i]->operator != 6){
+                //printf("Delet %d\n", i);
                 node_list[i] = delet_dnode(node_list[i]);
                 has_delet = 1;
             }
         }
     }
 
-    printf("complete delet usless node of block %d\n", id);
-    fflush(stdout);
+    // printf("complete delet usless node of block %d\n", id);
+    // fflush(stdout);
 
     for(int i = 1;i <= node_cnt;i++){
         if(node_list[i] == NULL)continue;
-        printf("%d\n", i);
-        fflush(stdout);
+        // printf("%d\n", i);
+        // fflush(stdout);
         reduce_useless(node_list[i]);
     }
 
-    printf("complete delet usless var of block %d\n", id);
-    fflush(stdout);
+    // printf("complete delet usless var of block %d\n", id);
+    // fflush(stdout);
 
     int has_change = 1;
     while(has_change){
@@ -518,14 +518,14 @@ void complete_block(int id){
         for(int i = node_cnt;i >= 1;i--){
             if(node_list[i] == NULL)continue;
             if(change_to_const(node_list[i])){
-                printf("%d\n", i);
+                // printf("%d, %d\n", i, node_list[i]->value);
                 has_change = 1;
             }
         }
     }
 
-    printf("complete compute constant %d\n", id);
-    fflush(stdout);
+    // printf("complete compute constant %d\n", id);
+    // fflush(stdout);
     
 
     struct Code* code_head = NULL;
@@ -533,20 +533,20 @@ void complete_block(int id){
     code->next = NULL;
     if(code->type == 10)code_head = code;
 
-    printf("begin generate code* of block %d\n", id);
-    fflush(stdout);
+    // printf("begin generate code* of block %d\n", id);
+    // fflush(stdout);
 
     
     while(1){
-        print_node_list();
+        //print_node_list();
         struct Dnode* tmp = get_biggest(id);
         if(tmp == NULL)break;
-        if(tmp->operator != 7)printf("begin generate code* of Dnode: %d, %s\n", tmp->operator, tmp->reg_list->reg->name);
-        else printf("begin generate IF command\n");
-        if(tmp->export != NULL)printf("And it's export type is %d\n", tmp->export->type);
-        fflush(stdout);
+        // if(tmp->operator != 7)printf("begin generate code* of Dnode: %d, %s\n", tmp->operator, tmp->reg_list->reg->name);
+        // else printf("begin generate IF command\n");
+        // if(tmp->export != NULL)printf("And it's export type is %d\n", tmp->export->type);
+        // fflush(stdout);
         code = solve(tmp, id);
-        if(code != NULL)printf("generate code : %d %s %s %s\n", code->type, code->tk1, code->tk2, code->tk3);
+        // if(code != NULL)printf("generate code : %d %s %s %s\n", code->type, code->tk1, code->tk2, code->tk3);
         code_head = append_wo_tail(code, code_head);
     }
     code = block[id].front;
@@ -560,13 +560,13 @@ void complete_block(int id){
     }
     
 
-    printf("complete solve block %d\n", id);
-    fflush(stdout);
+    // printf("complete solve block %d\n", id);
+    // fflush(stdout);
 }
 
 struct Code* optimize(struct Code* code){
-    printf("Start to optimize\n");
-    fflush(stdout);
+    // printf("Start to optimize\n");
+    // fflush(stdout);
     struct Code* head = code;
     struct Code* tail = code;
     while(tail != NULL && tail->next != NULL)tail = tail->next;
@@ -603,22 +603,22 @@ struct Code* optimize(struct Code* code){
         tmp = tmp->next;
     }
     if(end_block == 0)finish_gen_block(block_cnt, tail);
-    printf("Finish blocking code\n");
-    fflush(stdout);
+    // printf("Finish blocking code\n");
+    // fflush(stdout);
     for(int i = 1;i <= block_cnt;i++){
         inital_block(i);
     }
 
-    printf("Finish init code\n");
-    fflush(stdout);
+    // printf("Finish init code\n");
+    // fflush(stdout);
 
     struct Code* ret = NULL;
     for(int i = 1;i <= block_cnt;i++){
         complete_block(i);
         ret = append_wo_tail(ret, block[i].front);
     }
-    printf("Finish combine code\n");
-    fflush(stdout);
-    if(ret == NULL)printf("???\n");
+    // printf("Finish combine code\n");
+    // fflush(stdout);
+    // if(ret == NULL)printf("???\n");
     return ret;
 }

@@ -193,13 +193,13 @@ struct Code* translate_exp(struct Node* node, char* place){
             struct Code* code = construct(2, place, -1, attach("*", tmp), NULL);
             ret_head = append_wo_tail(ret_head, code);
             connect_code_to_node(node, code);
-            printf("translate Struct %s.%s with offset %d\n", node->var->name, node->head->next->next->value, node->var->offset);
-            fflush(stdout);
+            // printf("translate Struct %s.%s with offset %d\n", node->var->name, node->head->next->next->value, node->var->offset);
+            // fflush(stdout);
             return ret_head;
         }else{
             ret_head = construct(2, place, -1, to_var(struct_name), NULL);
-            printf("translate Struct %s.%s with offset %d\n", node->var->name, node->head->next->next->value, node->var->offset);
-            fflush(stdout);
+            // printf("translate Struct %s.%s with offset %d\n", node->var->name, node->head->next->next->value, node->var->offset);
+            // fflush(stdout);
             return ret_head;
         }
         
