@@ -9,7 +9,7 @@ IF var_m >= #1 GOTO label_0
 WRITE #0
 GOTO label_1
 LABEL label_0 :
-IF var_m != #1 GOTO (null)
+IF var_m == #1 GOTO label_4
 tmp_17 := var_m
 IF tmp_17 != #2 GOTO label_2
 LABEL label_4 :

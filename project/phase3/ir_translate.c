@@ -518,11 +518,9 @@ struct Code* translate_cond(struct Node* node, char* label_true, char* label_fal
             return append_wo_tail(code1, code2);
         }
         else{
-            char* label1 = new_label_name();
-            struct Code* code1 = translate_cond(node->head, label1, label_false, 0, 0);
-            struct Code* code2 = construct(0, label1, -1, NULL, NULL);
-            struct Code* code3 = translate_cond(node->head->next->next, label_true, label_false, 0, 0);
-            return append_wo_tail(append_wo_tail(code1, code2), code3);
+            struct Code* code1 = translate_cond(node->head, NULL, label_false, 0, 1);
+            struct Code* code2 = translate_cond(node->head->next->next, label_true, label_false, 0, 0);
+            return append_wo_tail(code1, code2);
         }
     }
     else if(strcmp(son_list, "ExpORExp") == 0){
@@ -533,17 +531,15 @@ struct Code* translate_cond(struct Node* node, char* label_true, char* label_fal
         }
         else if(jump_only_if_false){
             char* label1 = new_label_name();
-            struct Code* code1 = translate_cond(node->head, label1, NULL, 0, 1);
+            struct Code* code1 = translate_cond(node->head, label1, NULL, 1, 0);
             struct Code* code2 = translate_cond(node->head->next->next, NULL, label_false, 0, 1);
             struct Code* code3 = construct(0, label1, -1, NULL, NULL);
             return append_wo_tail(append_wo_tail(code1, code2), code3);
         }
         else{
-            char* label1 = new_label_name();
-            struct Code* code1 = translate_cond(node->head, label_true, label1, 0, 0);
-            struct Code* code2 = construct(0, label1, -1, NULL, NULL);
-            struct Code* code3 = translate_cond(node->head->next->next, label_true, label_false, 0, 0);
-            return append_wo_tail(append_wo_tail(code1, code2), code3);
+            struct Code* code1 = translate_cond(node->head, label_true, NULL, 1, 0);
+            struct Code* code2 = translate_cond(node->head->next->next, label_true, label_false, 0, 0);
+            return append_wo_tail(code1, code2);
         }
     }
     else if(strcmp(son_list, "NOTExp") == 0){
@@ -553,11 +549,25 @@ struct Code* translate_cond(struct Node* node, char* label_true, char* label_fal
         return translate_cond(node->head->next, label_true, label_false, jump_only_if_true, jump_only_if_false);
     }
     else{
-        char* tmp = new_tmp_name();
-        struct Code* code = translate_exp(node, tmp);
-        struct Code* code1 = construct(11, tmp, 5, to_literal(0), label_false);
-        struct Code* code2 = construct(10, label_true, -1, NULL, NULL);
-        return append_wo_tail(append_wo_tail(code, code1), code2);
+        if(jump_only_if_true){
+            char* tmp = new_tmp_name();
+            struct Code* code = translate_exp(node, tmp);
+            struct Code* code1 = construct(11, tmp, 4, to_literal(0), label_true);
+            return append_wo_tail(code, code1);
+        }
+        else if(jump_only_if_false){
+            char* tmp = new_tmp_name();
+            struct Code* code = translate_exp(node, tmp);
+            struct Code* code1 = construct(11, tmp, 5, to_literal(0), label_false);
+            return append_wo_tail(code, code1);
+        }
+        else{
+            char* tmp = new_tmp_name();
+            struct Code* code = translate_exp(node, tmp);
+            struct Code* code1 = construct(11, tmp, 4, to_literal(0), label_true);
+            struct Code* code2 = construct(10, label_false, -1, NULL, NULL);
+            return append_wo_tail(append_wo_tail(code, code1), code2);
+        }
     }
 }
 

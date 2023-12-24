@@ -5,16 +5,14 @@ PARAM var_p2
 PARAM var_p3
 tmp_0 := var_n
 tmp_1 := #1
-IF tmp_0 == tmp_1 GOTO label_0
-GOTO label_1
-LABEL label_0 :
+IF tmp_0 != tmp_1 GOTO label_0
 tmp_5 := var_p1
 tmp_3 := var_p1 * #1000000
 tmp_4 := var_p3
 tmp_2 := tmp_3 + var_p3
 WRITE tmp_2
-GOTO label_2
-LABEL label_1 :
+GOTO label_1
+LABEL label_0 :
 tmp_8 := var_n
 tmp_7 := var_n - #1
 tmp_10 := var_p1
@@ -40,7 +38,7 @@ ARG tmp_22
 ARG tmp_21
 ARG tmp_18
 (null) := CALL hanoi
-LABEL label_2 :
+LABEL label_1 :
 tmp_24 := #0
 RETURN tmp_24
 FUNCTION main :
