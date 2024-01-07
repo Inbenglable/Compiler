@@ -1,0 +1,43 @@
+FUNCTION mod :
+PARAM var_x
+PARAM var_n
+tmp_3 := var_x / var_n
+tmp_2 := tmp_3 * var_n
+tmp_0 := var_x - tmp_2
+RETURN tmp_0
+FUNCTION isPerfectNumber :
+PARAM var_number
+var_sum := #0
+var_j := #1
+LABEL label_0 :
+tmp_8 := var_number / #2
+IF var_j > tmp_8 GOTO label_1
+ARG var_j
+ARG var_number
+tmp_11 := CALL mod
+IF tmp_11 != #0 GOTO label_2
+var_sum := var_sum + var_j
+LABEL label_2 :
+var_j := var_j + #1
+GOTO label_0
+LABEL label_1 :
+IF var_sum != var_number GOTO label_3
+RETURN #1
+GOTO label_4
+LABEL label_3 :
+RETURN #0
+LABEL label_4 :
+FUNCTION main :
+var_count := #0
+var_i := #1
+LABEL label_5 :
+IF var_i > #100 GOTO label_6
+ARG var_i
+tmp_29 := CALL isPerfectNumber
+IF tmp_29 != #1 GOTO label_7
+WRITE var_i
+LABEL label_7 :
+var_i := var_i + #1
+GOTO label_5
+LABEL label_6 :
+RETURN #0
