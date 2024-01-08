@@ -304,12 +304,22 @@ void reduce_useless(struct Dnode* node){
     regs = node->reg_list;
 }
 
+int check_exist_one(struct Export* export){
+    if(export == NULL)return 0;
+    struct Export* tmp = export;
+    while(tmp != NULL){
+        if(tmp->type == 1)return 1;
+        tmp = tmp->next;
+    }
+    return 0;
+}
+
 struct Code* solve(struct Dnode* node, int id){
     if(node->export != NULL){
         int export_command = node->export->type;
         if(export_command == 1){
             node->export = node->export->next;
-            if(node->export == NULL){
+            if(check_exist_one(node->export) == 0){
                 if(node->isconst == 1){
                     return construct(2, node->reg_list->reg->name, -1, to_literal(node->value), NULL);
                 }else{
@@ -485,13 +495,13 @@ void complete_block(int id){
 
     // printf("complete assign export of block %d\n", id);
     // fflush(stdout);
-    //print_node_list();
+    // print_node_list();
     int has_delet = 1;
     while(has_delet){
         has_delet = 0;
         for(int i = node_cnt;i >= 1;i--){
             if(node_list[i] == NULL)continue;
-            if(node_list[i]->in == 0 && node_list[i]->export == NULL && node_list[i]->operator != 6){
+            if(node_list[i]->in == 0 && node_list[i]->export == NULL && node_list[i]->operator != 6 && node_list[i]->operator != 5){
                 //printf("Delet %d\n", i);
                 node_list[i] = delet_dnode(node_list[i]);
                 has_delet = 1;
@@ -538,17 +548,20 @@ void complete_block(int id){
 
     
     while(1){
-        //print_node_list();
+        // print_node_list();
         struct Dnode* tmp = get_biggest(id);
         if(tmp == NULL)break;
         // if(tmp->operator != 7)printf("begin generate code* of Dnode: %d, %s\n", tmp->operator, tmp->reg_list->reg->name);
         // else printf("begin generate IF command\n");
         // if(tmp->export != NULL)printf("And it's export type is %d\n", tmp->export->type);
         // fflush(stdout);
+        // printf("??!!!\n");
+        // fflush(stdout);
         code = solve(tmp, id);
         // if(code != NULL)printf("generate code : %d %s %s %s\n", code->type, code->tk1, code->tk2, code->tk3);
         code_head = append_wo_tail(code, code_head);
     }
+    // printf("??!\n");
     code = block[id].front;
     if(code->type == 1 || code->type == 0 || code->type == 13){
         while(code->next != NULL && code->next->type == 14)code = code->next;
@@ -566,7 +579,7 @@ void complete_block(int id){
 
 struct Code* optimize(struct Code* code){
     // printf("Start to optimize\n");
-    // fflush(stdout);
+    fflush(stdout);
     struct Code* head = code;
     struct Code* tail = code;
     while(tail != NULL && tail->next != NULL)tail = tail->next;
@@ -604,13 +617,13 @@ struct Code* optimize(struct Code* code){
     }
     if(end_block == 0)finish_gen_block(block_cnt, tail);
     // printf("Finish blocking code\n");
-    // fflush(stdout);
+    fflush(stdout);
     for(int i = 1;i <= block_cnt;i++){
         inital_block(i);
     }
 
     // printf("Finish init code\n");
-    // fflush(stdout);
+    fflush(stdout);
 
     struct Code* ret = NULL;
     for(int i = 1;i <= block_cnt;i++){
