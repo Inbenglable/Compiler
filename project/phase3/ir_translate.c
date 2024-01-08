@@ -161,6 +161,9 @@ void dump(struct Code* head, char* filename){
 
 struct Code* translate_exp(struct Node* node, char* place){
     print_node(node);
+    if(place == NULL){
+        place = "__tmp__";
+    }
     char* son_list = get_son_list(node);
     node->tmp_name = place;
     struct Code* ret_head = NULL;

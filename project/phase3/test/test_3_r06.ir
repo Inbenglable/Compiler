@@ -22,7 +22,7 @@ ARG tmp_12
 ARG tmp_11
 ARG tmp_10
 ARG tmp_7
-(null) := CALL hanoi
+__tmp__ := CALL hanoi
 tmp_16 := var_p1
 tmp_14 := var_p1 * #1000000
 tmp_15 := var_p3
@@ -37,7 +37,7 @@ ARG tmp_23
 ARG tmp_22
 ARG tmp_21
 ARG tmp_18
-(null) := CALL hanoi
+__tmp__ := CALL hanoi
 LABEL label_1 :
 tmp_24 := #0
 RETURN tmp_24
@@ -51,6 +51,6 @@ ARG tmp_28
 ARG tmp_27
 ARG tmp_26
 ARG tmp_25
-(null) := CALL hanoi
+__tmp__ := CALL hanoi
 tmp_29 := #0
 RETURN tmp_29
