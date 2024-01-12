@@ -407,6 +407,7 @@ void translate_mips(Code* ir_code, char* filename){
     Code *tmp = ir_code;
     while(tmp != NULL){
         mips_code = link_Mips(mips_code, code_2_mips(tmp));
+        printf("now_code_head is: %s, %s, %s, %s", mips_code->op, mips_code->tk_d, mips_code->tk_s, mips_code->tk_t);
         tmp = tmp->next;
     }
     dump_mips(mips_code, preamble, filename);
