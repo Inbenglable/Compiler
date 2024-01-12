@@ -401,15 +401,30 @@ void dump_mips(Mips *head, char* preamble, char* filename){
     fclose(fp);
 }
 
+void print_end_code(Mips* mips_code){
+    if(mips_code == NULL)return;
+    while(mips_code->next != NULL){
+        mips_code = mips_code->next;
+    }
+    printf("now_code_head is: %s, %s, %s, %s\n", mips_code->op, mips_code->tk_d, mips_code->tk_s, mips_code->tk_t);
+    fflush(stdout);
+}
+
 void translate_mips(Code* ir_code, char* filename){
     char* preamble = init(ir_code);
     printf("Start translating to mips...\n");
     Mips *mips_code = NULL;
     Code *tmp = ir_code;
+    printf("tag111\n");
+    fflush(stdout);
     while(tmp != NULL){
         mips_code = link_Mips(mips_code, code_2_mips(tmp));
-        printf("now_code_head is: %s, %s, %s, %s", mips_code->op, mips_code->tk_d, mips_code->tk_s, mips_code->tk_t);
+        print_end_code(mips_code);
         tmp = tmp->next;
     }
+    printf("start to dump codes\n");
+    fflush(stdout);
     dump_mips(mips_code, preamble, filename);
+    printf("finish dump codes\n");
+    fflush(stdout);
 }
