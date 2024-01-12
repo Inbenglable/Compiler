@@ -811,7 +811,6 @@ void translate(struct Node* node, char* filename){
     //printf("Translation requires implementation, the name of the root is %s, the translation result will be output to %s\n", node->name, filename);
     struct Code* raw_code = translate_high_level_def(node);
     struct Code* optimized_code = optimize(raw_code);
-    // printf("Start dumping code to %s\n", filename);
     dump(optimized_code, filename);
 }
 
