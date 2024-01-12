@@ -34,14 +34,14 @@ typedef struct ret_struct{
     struct Mips* code;
 } ret_struct;
 
-extern int reg_cnt;
+extern int reg_used_cnt;
 ret_struct get_reg(char *var_name);
 
 char* init(Code *head);
 
 char* getRemainingString(char *variable, char* prefix);
-Mips link_Mips(Mips *code1, Mips *code2);
-Mips gen_mips(char* op, char* tk_d, char* tk_s, char* tk_t);
+Mips* link_Mips(Mips *code1, Mips *code2);
+Mips* gen_mips(char* op, char* tk_d, char* tk_s, char* tk_t);
 char* int_to_reg(int reg);
 
 void translate_mips(Code* ir_code, char* filename);
