@@ -76,14 +76,12 @@ char* init(Code *head){
     return ret;
 }
 
-Mips gen_mips(char* op, char* tk_d, char* tk_s, char* tk_t, int offset1, int offset2){
+Mips gen_mips(char* op, char* tk_d, char* tk_s, char* tk_t){
     Mips *mips = (Mips*)malloc(sizeof(Mips));
     mips->op = op;
     mips->tk_d = tk_d;
     mips->tk_s = tk_s;
     mips->tk_t = tk_t;
-    mips->offset1 = offset1;
-    mips->offset2 = offset2;
     mips->next = NULL;
     mips->prev = NULL;
     return mips;
