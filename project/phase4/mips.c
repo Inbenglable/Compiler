@@ -172,7 +172,145 @@ ret_struct get_reg(char *var_name){
 ///Radiance's part ends here
 ///Fc_Viiiiictor_K's part is over here
 
-
+Mips *code_2_mips(Code* code){
+    /*
+    type 0: LABEL tk1 :
+    type 1: FUNCTION tk1 :
+    type 2: tk1 := tk2
+    type 3: tk1 := tk2 + tk3
+    type 4: tk1 := tk2 - tk3
+    type 5: tk1 := tk2 * tk3
+    type 6: tk1 := tk2 / tk3
+    type 7: tk1 := &tk2
+    type 8: tk1 := *tk2
+    type 9: *tk1 := tk2
+    type 10: GOTO tk1
+    type 11: IF tk1 relop tk2 GOTO tk3
+    type 12: RETURN tk1
+    type 13: DEC tk1 size
+    type 14: PARAM tk1
+    type 15: ARG tk1
+    type 16: tk1 := CALL tk2
+    type 17: READ tk1
+    type 18: WRITE tk1
+    */
+    /*
+    relop 0: <
+    relop 1: <=
+    relop 2: >
+    relop 3: >=
+    relop 4: !=
+    relop 5: ==
+    */
+    Mips *mips_code = NULL;
+    if(code->type == 0){
+        mips_code = link_Mips(mips_code, gen_mips("LABEL", code->tk1, NULL, NULL, 0, 0));
+    }
+    else if(code->type == 1){
+        mips_code = link_Mips(mips_code, gen_mips("FUNCTION", code->tk1, NULL, NULL, 0, 0));
+    }
+    else if(code->type == 2){
+        if(code->is_const == 1){
+            mips_code = link_Mips(mips_code, gen_mips("li", code->tk1, to_literal(code->value), NULL, 0, 0));
+        }
+        else{
+            mips_code = link_Mips(mips_code, gen_mips("move", code->tk1, code->tk2, NULL, 0, 0));
+        }
+    }
+    else if(code->type == 3){
+        if(code->is_const == 1){
+            mips_code = link_Mips(mips_code, gen_mips("li", code->tk1, to_literal(code->value), NULL, 0, 0));
+        }
+        else{
+            mips_code = link_Mips(mips_code, gen_mips("add", code->tk1, code->tk2, code->tk3, 0, 0));
+        }
+    }
+    else if(code->type == 4){
+        if(code->is_const == 1){
+            mips_code = link_Mips(mips_code, gen_mips("li", code->tk1, to_literal(code->value), NULL, 0, 0));
+        }
+        else{
+            mips_code = link_Mips(mips_code, gen_mips("sub", code->tk1, code->tk2, code->tk3, 0, 0));
+        }
+    }
+    else if(code->type == 5){
+        if(code->is_const == 1){
+            mips_code = link_Mips(mips_code, gen_mips("li", code->tk1, to_literal(code->value), NULL, 0, 0));
+        }
+        else{
+            mips_code = link_Mips(mips_code, gen_mips("mul", code->tk1, code->tk2, code->tk3, 0, 0));
+        }
+    }
+    else if(code->type == 6){
+        if(code->is_const == 1){
+            mips_code = link_Mips(mips_code, gen_mips("li", code->tk1, to_literal(code->value), NULL, 0, 0));
+        }
+        else{
+            mips_code = link_Mips(mips_code, gen_mips("div", code->tk1, code->tk2, code->tk3, 0, 0));
+        }
+    }
+    else if(code->type == 7){
+        mips_code = link_Mips(mips_code, gen_mips("la", code->tk1, code->tk2, NULL, 0, 0));
+    }
+    else if(code->type == 8){
+        mips_code = link_Mips(mips_code, gen_mips("lw", code->tk1, code->tk2, NULL, 0, 0));
+    }
+    else if(code->type == 9){
+        mips_code = link_Mips(mips_code, gen_mips("sw", code->tk1, code->tk2, NULL, 0, 0));
+    }
+    else if(code->type == 10){
+        mips_code = link_Mips(mips_code, gen_mips("j", code->tk1, NULL, NULL, 0, 0));
+    }
+    else if(code->type == 11){
+        if(code->relop == 0){
+            mips_code = link_Mips(mips_code, gen_mips("blt", code->tk1, code->tk2, code->tk3, 0, 0));
+        }
+        else if(code->relop == 1){
+            mips_code = link_Mips(mips_code, gen_mips("ble", code->tk1, code->tk2, code->tk3, 0, 0));
+        }
+        else if(code->relop == 2){
+            mips_code = link_Mips(mips_code, gen_mips("bgt", code->tk1, code->tk2, code->tk3, 0, 0));
+        }
+        else if(code->relop == 3){
+            mips_code = link_Mips(mips_code, gen_mips("bge", code->tk1, code->tk2, code->tk3, 0, 0));
+        }
+        else if(code->relop == 4){
+            mips_code = link_Mips(mips_code, gen_mips("bne", code->tk1, code->tk2, code->tk3, 0, 0));
+        }
+        else if(code->relop == 5){
+            mips_code = link_Mips(mips_code, gen_mips("beq", code->tk1, code->tk2, code->tk3, 0, 0));
+        }
+    }
+    else if(code->type == 12){
+        mips_code = link_Mips(mips_code, gen_mips("move", "$v0", code->tk1, NULL, 0, 0));
+        mips_code = link_Mips(mips_code, gen_mips("jr", "$ra", NULL, NULL, 0, 0));
+    }
+    else if(code->type == 13){
+        mips_code = link_Mips(mips_code, gen_mips("subi", "$sp", "$sp", to_size(code->value), 0, 0));
+    }
+    else if(code->type == 14){
+        mips_code = link_Mips(mips_code, gen_mips("move", "$a0", code->tk1, NULL, 0, 0));
+        mips_code = link_Mips(mips_code, gen_mips("jal", "read", NULL, NULL, 0, 0));
+        mips_code = link_Mips(mips_code, gen_mips("move", code->tk1, "$v0", NULL, 0, 0));
+    }
+    else if(code->type == 15){
+        mips_code = link_Mips(mips_code, gen_mips("move", "$a0", code->tk1, NULL, 0, 0));
+        mips_code = link_Mips(mips_code, gen_mips("jal", "write", NULL, NULL, 0, 0));
+    }
+    else if(code->type == 16){
+        mips_code = link_Mips(mips_code, gen_mips("jal", code->tk2, NULL, NULL, 0, 0));
+        mips_code = link_Mips(mips_code, gen_mips("move", code->tk1, "$v0", NULL, 0, 0));
+    }
+    else if(code->type == 17){
+        mips_code = link_Mips(mips_code, gen_mips("jal", "read", NULL, NULL, 0, 0));
+        mips_code = link_Mips(mips_code, gen_mips("move", code->tk1, "$v0", NULL, 0, 0));
+    }
+    else if(code->type == 18){
+        mips_code = link_Mips(mips_code, gen_mips("move", "$a0", code->tk1, NULL, 0, 0));
+        mips_code = link_Mips(mips_code, gen_mips("jal", "write", NULL, NULL, 0, 0));
+    }
+    return mips_code;
+}
 
 void dump(Mips *head, char* preamble, char* filename){
     Mips *tmp = head;
@@ -200,6 +338,10 @@ void dump(Mips *head, char* preamble, char* filename){
 void translate(Code* ir_code, char* filename){
     char* preamble = init(ir_code);
     Mips *mips_code = NULL;
-    printf("implement this\n");
+    Code *tmp = ir_code;
+    while(tmp != NULL){
+        mips_code = link_Mips(mips_code, code_2_mips(tmp));
+        tmp = tmp->next;
+    }
     dump(mips_code, preamble, filename);
 }
