@@ -42,7 +42,6 @@ struct Code{
     */
     char* tk2;
     char* tk3;
-    int is_const;
     int value;
     int is_tmp;
     struct Code* next;
@@ -73,7 +72,7 @@ struct Code* translate_fundec(struct Node* node);
 struct Code* translate_high_level_def(struct Node* node);
 int translate_specifier(struct Node* node);
 struct Code* translate_local_definition(int size, struct Node* node);
-void translate(struct Node* node, char* filename);
+Code* translate(struct Node* node, char* filename);
 
 /////////////////
 int char_to_int(const char* str);

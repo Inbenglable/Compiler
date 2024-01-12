@@ -45,4 +45,6 @@ char* getRemainingString(char *variable, char* prefix);
 Mips link_Mips(Mips *code1, Mips *code2);
 Mips gen_mips(char* op, char* tk_d, char* tk_s, char* tk_t);
 char* int_to_reg(int reg);
+
+void translate_mips(Code* ir_code, char* filename);
 #endif // __MIPS__

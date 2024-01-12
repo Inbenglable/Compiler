@@ -53,7 +53,6 @@ struct Code* construct(int type, char* tk1, int relop, char* tk2, char* tk3){
     ret->relop = relop;
     ret->tk2 = tk2;
     ret->tk3 = tk3;
-    ret->is_const = 0;
     ret->value = 0;
     ret->is_tmp = 0;
     ret->next = NULL;
@@ -170,7 +169,6 @@ struct Code* translate_exp(struct Node* node, char* place){
     if(strcmp(son_list, "INT") == 0){
         nodePointer con = node -> head;
         struct Code* code = construct(2, place, -1, to_literal(char_to_int(con -> value)), NULL);
-        code->is_const = 1;
         code->value = var_to_int(code->tk2);
         con->tmp_name = code->tk2;
         connect_code_to_node(node, code);
@@ -807,7 +805,7 @@ struct Code* translate_local_definition(int size, struct Node* node){
     }
 }
 
-void translate(struct Node* node, char* filename){
+Code* translate(struct Node* node, char* filename){
     //printf("Translation requires implementation, the name of the root is %s, the translation result will be output to %s\n", node->name, filename);
     struct Code* raw_code = translate_high_level_def(node);
     struct Code* optimized_code = optimize(raw_code);

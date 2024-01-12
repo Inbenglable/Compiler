@@ -5,6 +5,7 @@
 #include "structure.h"
 #include "symbol_table.h"
 #include "ir_translate.h"
+#include "mips.h"
 
 int hasError = 0;
 int error_type = -1;
@@ -656,6 +657,14 @@ int main(int argc, char **argv) {
         }
     }
     strcat(out_file, ".ir");
-    translate(root, out_file);
+    Code* ir_code = translate(root, out_file);
+    for(int i = strlen(out_file)-1;i >= 0;i--){
+        if(out_file[i] == '.'){
+            out_file[i] = '\0';
+            break;
+        }
+    }
+    strcat(out_file, ".s");
+    translate_mips(ir_code, out_file);
     //clear_symbol_table();
 }
