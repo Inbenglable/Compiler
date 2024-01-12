@@ -2,7 +2,7 @@
 _prompt: .asciiz "Enter an integer:"
 _ret: .asciiz "\n"
 .globl main
-.text
+.text 
 read:
     li $v0, 4
     la $a0, _prompt
