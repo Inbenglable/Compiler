@@ -19,7 +19,8 @@ struct RegDesc {    // the register descriptor
     char var[8];
     bool dirty; // value updated but not stored
     /* add other fields as you need */
-} regs[NUM_REGS];
+};
+static struct RegDesc regs[NUM_REGS];
 
 
 struct VarDesc {    // the variable descriptor
@@ -28,7 +29,8 @@ struct VarDesc {    // the variable descriptor
     int offset; // the offset from stack
     /* add other fields as you need */
     struct VarDesc *next;
-} *vars;
+};
+static struct VarDesc *vars;
 
 
 void mips32_gen(tac *head, FILE *_fd);
