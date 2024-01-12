@@ -170,7 +170,7 @@ ret_struct get_reg(char *var_name){
 }
 
 ///Radiance's part ends here
-///Fc_Viiiiictor_K's part is over here
+///FC_Viiiiictor_K's part is over here
 
 Mips *code_2_mips(Code* code){
     /*
