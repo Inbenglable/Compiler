@@ -149,16 +149,26 @@ char* int_to_reg(int reg){
     }
 }
 
+char* get_var_addr_str(int offset){
+    char* ret = NULL;
+    if(offset == 0){
+        ret = "reg_root";
+    }else{
+        sprintf(ret, "reg_root + %d", offset);
+    }
+    return ret;
+}
+
 Mips update_reg(int reg, int var_id){
     if(var_id == -1)return NULL;
     var[var_id].reg = -1;
-    return gen_mips("sw", int_to_reg(reg), "reg_root", NULL, var_id*4-4, 0);
+    return gen_mips("sw", int_to_reg(reg), get_var_addr_str(var_id*4-4), NULL);
 }
 
 Mips load_var(int reg, int var_id){
     if(var_id == -1)return NULL;
     regs[reg].var_id = var_id;
-    return gen_mips("lw", int_to_reg(reg), "reg_root", NULL, var_id*4-4, 0);
+    return gen_mips("lw", int_to_reg(reg), get_var_addr_str(var_id*4-4), NULL);
 }
 
 int get_unused_reg(){
