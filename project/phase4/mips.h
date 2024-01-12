@@ -16,7 +16,7 @@ typedef struct Reg{
     int var_id;
     int visited;
     int preserved; //preserved==1 -> cannot be used by variables
-    //preserved registers: 0, 1, 2, 3, 26, 27, 28, 29, 30, 31
+    //preserved registers: 0, 1, 2, 3, 4, 5, 6, 7, 26, 27, 28, 29, 30, 31
 } Reg;
 extern Reg regs[32];
 
@@ -25,8 +25,6 @@ typedef struct Mips{
     char* tk_d;
     char* tk_s;
     char* tk_t;
-    int offset1;
-    int offset2;
     struct Mips* next;
     struct Mips* prev;
 } Mips;
@@ -39,7 +37,7 @@ typedef struct ret_struct{
 extern int reg_cnt;
 ret_struct get_reg(char *var_name);
 
-void init(Code *head);
+char* init(Code *head);
 
 char* getRemainingString(char *variable, char* prefix);
 Mips link_Mips(Mips *code1, Mips *code2);

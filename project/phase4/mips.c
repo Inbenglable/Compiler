@@ -33,7 +33,7 @@ int check_var(char* name){
     return 0;
 }
 
-void init(Code *head){
+char* init(Code *head){
     Code *tmp = head;
     var_cnt = 0;
     while(tmp != NULL){
@@ -58,12 +58,22 @@ void init(Code *head){
         regs[i].reg = i;
         regs[i].var_id = -1;
         regs[i].visited = 0;
-        if(i == 0 || i == 1 || i == 2 || i == 3 || i == 26 || i == 27 || i == 28 || i == 29 || i == 30 || i == 31){
+        if(i == 0 || i == 1 || i == 2 || i == 3 || i == 4 || i == 5 || i == 6 || i == 7 || i == 26 || i == 27 || i == 28 || i == 29 || i == 30 || i == 31){
             regs[i].preserved = 1;
         }else{
             regs[i].preserved = 0;
         }
     }
+    char* ret = NULL;
+    if(var_cnt <= 25-8+1){
+        for(int i = 1;i <= var_cnt;i++){
+            vars[i].reg = i+8-1;
+            regs[i+8-1].var_id = i;
+        }
+    }else{
+        sprintf(ret, "reg_root: .space %d", var_cnt*4);
+    }
+    return ret;
 }
 
 Mips gen_mips(char* op, char* tk_d, char* tk_s, char* tk_t, int offset1, int offset2){
@@ -142,13 +152,31 @@ char* int_to_reg(int reg){
 }
 
 Mips update_reg(int reg, int var_id){
+    if(var_id == -1)return NULL;
     var[var_id].reg = -1;
     return gen_mips("sw", int_to_reg(reg), "reg_root", NULL, var_id*4-4, 0);
 }
 
 Mips load_var(int reg, int var_id){
+    if(var_id == -1)return NULL;
     regs[reg].var_id = var_id;
     return gen_mips("lw", int_to_reg(reg), "reg_root", NULL, var_id*4-4, 0);
+}
+
+int get_unused_reg(){
+    int ret = -1;
+    int mi = 0x7fffffff;
+    for(int i = 8;i <= 25;i++){
+        if(regs[i].reg == -1){
+            ret = i;
+            break;
+        }
+        if(regs[i].visited < mi && regs[i].preserved == 0){
+            ret = i;
+            mi = regs[i].visited;
+        }
+    }
+    return ret;
 }
 
 ret_struct get_reg(char *var_name){
@@ -159,14 +187,18 @@ ret_struct get_reg(char *var_name){
             if(vars[i].reg != -1){
                 ret.reg = vars[i].reg;
                 ret.code = NULL;
+                regs[ret.reg].visited = reg_used_cnt;
                 return ret;
             }else{
-                ret.reg = get_reg();
+                ret.reg = get_unused_reg();
                 ret.code = link_Mips(ret.code, update_reg(ret.reg, regs[ret.reg].var_id));
                 ret.code = link_Mips(ret.code, load_var(ret.reg, i));
+                regs[ret.reg].visited = reg_used_cnt;
+                return ret;
             }
         }
     }
+    return ret;
 }
 
 ///Radiance's part ends here
