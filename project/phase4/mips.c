@@ -117,3 +117,35 @@ ret_struct get_reg(char *var_name){
 
 ///Radiance's part ends here
 ///Fc_Viiiiictor_K's part is over here
+
+
+
+void dump(Mips *head, char* preamble, char* filename){
+    Mips *tmp = head;
+    FILE *fp = fopen(filename, "w");
+    fprintf(fp, "%s\n", preamble);
+    while(tmp != NULL){
+        fflush(stdout);
+        if(tmp->tk_d == NULL){
+            fprintf(fp, "%s\n", tmp->op);
+        }
+        else if(tmp->tk_s == NULL){
+            fprintf(fp, "%s %s\n", tmp->op, tmp->tk_d);
+        }
+        else if(tmp->tk_t == NULL){
+            fprintf(fp, "%s %s, %s\n", tmp->op, tmp->tk_d, tmp->tk_s);
+        }
+        else{
+            fprintf(fp, "%s %s, %s, %s\n", tmp->op, tmp->tk_d, tmp->tk_s, tmp->tk_t);
+        }
+        tmp = tmp->next;
+    }
+    fclose(fp);
+}
+
+void translate(Code* ir_code, char* filename){
+    char* preamble = init(ir_code);
+    Mips *mips_code = NULL;
+    printf("implement this\n");
+    dump(mips_code, preamble, filename);
+}
