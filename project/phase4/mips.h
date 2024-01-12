@@ -1,5 +1,5 @@
-#ifndef MIPS_H
-#define MIPS_H
+#ifndef __MIPS__
+#define __MIPS__
 
 #include "ir_translate.h"
 
@@ -43,4 +43,4 @@ char* getRemainingString(char *variable, char* prefix);    char *start
 Mips link_Mips(Mips *code1, Mips *code2);
 Mips gen_mips(char* op, char* tk_d, char* tk_s, char* tk_t);
 
-#endif // MIPS_H
+#endif // __MIPS__
