@@ -1,5 +1,5 @@
-#ifndef MIPS_H
-#define MIPS_H
+#ifndef __MIPS__
+#define __MIPS__
 
 #include<assert.h>
 #include<ctype.h>
@@ -42,4 +42,4 @@ typedef struct ret_struct{
 ret_struct get_reg(char *var_name);
 
 
-#endif // MIPS_H
+#endif // __MIPS__
