@@ -25,6 +25,8 @@ typedef struct Mips{
     char* tk_d;
     char* tk_s;
     char* tk_t;
+    int offset1;
+    int offset2;
     struct Mips* next;
     struct Mips* prev;
 } Mips;
@@ -42,5 +44,5 @@ void init(Code *head);
 char* getRemainingString(char *variable, char* prefix);    char *start
 Mips link_Mips(Mips *code1, Mips *code2);
 Mips gen_mips(char* op, char* tk_d, char* tk_s, char* tk_t);
-
+char* int_to_reg(int reg);
 #endif // __MIPS__
