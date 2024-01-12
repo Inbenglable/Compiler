@@ -1,20 +1,15 @@
 #ifndef __MIPS__
 #define __MIPS__
 
-#include<assert.h>
-#include<ctype.h>
-#include<stdarg.h>
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
-
+#include "ir_translate.h"
 
 typedef struct Var{
     char* name;
     int incash;
     int reg;
 } Var;
-Var vars[1145];
+extern Var vars[1145];
+extern int var_cnt;
 
 typedef struct Reg{
     int reg;
@@ -23,7 +18,7 @@ typedef struct Reg{
     int preserved; //preserved==1 -> cannot be used by variables
     //preserved registers: 0, 1, 2, 3, 26, 27, 28, 29, 30, 31
 } Reg;
-Reg regs[32];
+extern Reg regs[32];
 
 typedef struct Mips{
     char* op;
@@ -39,7 +34,13 @@ typedef struct ret_struct{
     struct Mips* code;
 } ret_struct;
 
+extern int reg_cnt;
 ret_struct get_reg(char *var_name);
 
+void init(Code *head);
+
+char* getRemainingString(char *variable, char* prefix);    char *start
+Mips link_Mips(Mips *code1, Mips *code2);
+Mips gen_mips(char* op, char* tk_d, char* tk_s, char* tk_t);
 
 #endif // __MIPS__
