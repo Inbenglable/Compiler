@@ -3,12 +3,12 @@
 
 #include "ir_translate.h"
 
-typedef struct Var{
+typedef struct Mips_Var{
     char* name;
     int incash;
     int reg;
-} Var;
-extern Var vars[1145];
+} Mips_Var;
+extern Mips_Var vars[1145];
 extern int var_cnt;
 
 typedef struct Reg{
