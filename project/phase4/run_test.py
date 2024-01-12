@@ -10,7 +10,7 @@ if __name__ == '__main__':
         exit(0)
     files = os.listdir(TEST_PATH)
     for file in files:
-        if file.endswith('.ir'):
+        if file.endswith('.ir') or file.endswith('.s'):
             os.remove(os.path.join(TEST_PATH, file))
     for file in files:
         if file.endswith('.spl'):
