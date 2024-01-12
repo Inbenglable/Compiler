@@ -53,6 +53,7 @@ char* init(Code *head){
             vars[var_cnt].incash = 0;
             vars[var_cnt].reg = -1;
         }
+        tmp = tmp->next;
     }
     int i;
     for(i = 0; i < 32; i++){
