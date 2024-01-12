@@ -373,7 +373,9 @@ Mips *code_2_mips(Code* code){
 void dump_mips(Mips *head, char* preamble, char* filename){
     Mips *tmp = head;
     FILE *fp = fopen(filename, "w");
-    fprintf(fp, "%s\n", preamble);
+    if(preamble != NULL){
+        fprintf(fp, "%s\n", preamble);
+    }
     while(tmp != NULL){
         fflush(stdout);
         if(tmp->tk_d == NULL){

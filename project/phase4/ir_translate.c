@@ -810,6 +810,7 @@ Code* translate(struct Node* node, char* filename){
     struct Code* raw_code = translate_high_level_def(node);
     struct Code* optimized_code = optimize(raw_code);
     dump(optimized_code, filename);
+    return optimized_code;
 }
 
 
