@@ -402,6 +402,7 @@ void dump_mips(Mips *head, char* preamble, char* filename){
 
 void translate_mips(Code* ir_code, char* filename){
     char* preamble = init(ir_code);
+    printf("Start translating to mips...\n");
     Mips *mips_code = NULL;
     Code *tmp = ir_code;
     while(tmp != NULL){

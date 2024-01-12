@@ -2,6 +2,7 @@ import os
 
 
 TEST_PATH = './test/'
+TRIAL = True
 
 
 if __name__ == '__main__':
@@ -17,4 +18,6 @@ if __name__ == '__main__':
             print('Compiling ' + file)
             result = os.system('wsl ./bin/splc ' + os.path.join(TEST_PATH, file))
             print(result)
+            if TRIAL:
+                break
     os.system('wsl make clean')
