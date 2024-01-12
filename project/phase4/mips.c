@@ -33,7 +33,7 @@ int check_var(char* name){
     return 0;
 }
 
-void init(Code *head){
+char* init(Code *head){
     Code *tmp = head;
     var_cnt = 0;
     while(tmp != NULL){
@@ -64,6 +64,16 @@ void init(Code *head){
             regs[i].preserved = 0;
         }
     }
+    char* ret = NULL;
+    if(var_cnt <= 25-8+1){
+        for(int i = 1;i <= var_cnt;i++){
+            vars[i].reg = i+8-1;
+            regs[i+8-1].var_id = i;
+        }
+    }else{
+        sprintf(ret, "reg_root: .space %d", var_cnt*4);
+    }
+    return ret;
 }
 
 Mips gen_mips(char* op, char* tk_d, char* tk_s, char* tk_t, int offset1, int offset2){
@@ -142,11 +152,13 @@ char* int_to_reg(int reg){
 }
 
 Mips update_reg(int reg, int var_id){
+    if(var_id == -1)return NULL;
     var[var_id].reg = -1;
     return gen_mips("sw", int_to_reg(reg), "reg_root", NULL, var_id*4-4, 0);
 }
 
 Mips load_var(int reg, int var_id){
+    if(var_id == -1)return NULL;
     regs[reg].var_id = var_id;
     return gen_mips("lw", int_to_reg(reg), "reg_root", NULL, var_id*4-4, 0);
 }
