@@ -114,3 +114,6 @@ ret_struct get_reg(char *var_name){
         }
     }
 }
+
+///Radiance's part ends here
+///Fc_Viiiiictor_K's part is over here
