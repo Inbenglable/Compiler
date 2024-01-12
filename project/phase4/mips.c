@@ -5,14 +5,10 @@
 #include <stdarg.h>
 #include "mips.h"
 
-char* getRemainingString(char *variable, char* prefix) {
-    char *start = strstr(variable, prefix);
-    if (start != NULL) {
-        return start + strlen(prefix);
-    } else {
-        return variable;
-    }
-}
+Mips_Var vars[1145];
+int var_cnt;
+Reg regs[32];
+int reg_used_cnt;
 
 int check_create_var(char* name){
     int i;
@@ -29,7 +25,7 @@ int check_create_var(char* name){
 
 
 
-int check_var(char* name){
+int check_var_mips(char* name){
     if(strncmp(name, "var_", 4) == 0){
         return check_create_var(name);
     }else if(strncmp(name, "tmp_", 4) == 0){
@@ -42,17 +38,17 @@ char* init(Code *head){
     Code *tmp = head;
     var_cnt = 0;
     while(tmp != NULL){
-        if(tmp->tk1 != NULL && check_var(tmp->tk1) == 1){
+        if(tmp->tk1 != NULL && check_var_mips(tmp->tk1) == 1){
             vars[++var_cnt].name = tmp->tk1;
             vars[var_cnt].incash = 0;
             vars[var_cnt].reg = -1;
         }
-        if(tmp->tk2 != NULL && check_var(tmp->tk2) == 1){
+        if(tmp->tk2 != NULL && check_var_mips(tmp->tk2) == 1){
             vars[++var_cnt].name = tmp->tk2;
             vars[var_cnt].incash = 0;
             vars[var_cnt].reg = -1;
         }
-        if(tmp->tk3 != NULL && check_var(tmp->tk3) == 1){
+        if(tmp->tk3 != NULL && check_var_mips(tmp->tk3) == 1){
             vars[++var_cnt].name = tmp->tk3;
             vars[var_cnt].incash = 0;
             vars[var_cnt].reg = -1;
@@ -192,7 +188,7 @@ int get_unused_reg(){
     return ret;
 }
 
-ret_struct get_reg(char *var_name){
+ret_struct get_mips_reg(char *var_name){
     ret_struct ret;
 
     for(int i = 1;i <= var_cnt;i++){
@@ -255,43 +251,43 @@ Mips *code_2_mips(Code* code){
         mips_code = link_Mips(mips_code, gen_mips("FUNCTION", code->tk1, NULL, NULL));
     }
     else if(code->type == 2){
-        ret_struct reg_info1 = get_reg(code->tk1);
-        ret_struct reg_info2 = get_reg(code->tk2);
+        ret_struct reg_info1 = get_mips_reg(code->tk1);
+        ret_struct reg_info2 = get_mips_reg(code->tk2);
         mips_code = link_Mips(mips_code, reg_info1.code);
         mips_code = link_Mips(mips_code, reg_info2.code);
         mips_code = link_Mips(mips_code, gen_mips("move", int_to_reg(reg_info1.reg), int_to_reg(reg_info2.reg), NULL));
     }
     else if(code->type == 3){
-        ret_struct reg_info1 = get_reg(code->tk1);
-        ret_struct reg_info2 = get_reg(code->tk2);
-        ret_struct reg_info3 = get_reg(code->tk3);
+        ret_struct reg_info1 = get_mips_reg(code->tk1);
+        ret_struct reg_info2 = get_mips_reg(code->tk2);
+        ret_struct reg_info3 = get_mips_reg(code->tk3);
         mips_code = link_Mips(mips_code, reg_info1.code);
         mips_code = link_Mips(mips_code, reg_info2.code);
         mips_code = link_Mips(mips_code, reg_info3.code);
         mips_code = link_Mips(mips_code, gen_mips("add", int_to_reg(reg_info1.reg), int_to_reg(reg_info2.reg), int_to_reg(reg_info3.reg)));
     }
     else if(code->type == 4){
-        ret_struct reg_info1 = get_reg(code->tk1);
-        ret_struct reg_info2 = get_reg(code->tk2);
-        ret_struct reg_info3 = get_reg(code->tk3);
+        ret_struct reg_info1 = get_mips_reg(code->tk1);
+        ret_struct reg_info2 = get_mips_reg(code->tk2);
+        ret_struct reg_info3 = get_mips_reg(code->tk3);
         mips_code = link_Mips(mips_code, reg_info1.code);
         mips_code = link_Mips(mips_code, reg_info2.code);
         mips_code = link_Mips(mips_code, reg_info3.code);
         mips_code = link_Mips(mips_code, gen_mips("sub", int_to_reg(reg_info1.reg), int_to_reg(reg_info2.reg), int_to_reg(reg_info3.reg)));
     }
     else if(code->type == 5){
-        ret_struct reg_info1 = get_reg(code->tk1);
-        ret_struct reg_info2 = get_reg(code->tk2);
-        ret_struct reg_info3 = get_reg(code->tk3);
+        ret_struct reg_info1 = get_mips_reg(code->tk1);
+        ret_struct reg_info2 = get_mips_reg(code->tk2);
+        ret_struct reg_info3 = get_mips_reg(code->tk3);
         mips_code = link_Mips(mips_code, reg_info1.code);
         mips_code = link_Mips(mips_code, reg_info2.code);
         mips_code = link_Mips(mips_code, reg_info3.code);
         mips_code = link_Mips(mips_code, gen_mips("mul", int_to_reg(reg_info1.reg), int_to_reg(reg_info2.reg), int_to_reg(reg_info3.reg)));
     }
     else if(code->type == 6){
-        ret_struct reg_info1 = get_reg(code->tk1);
-        ret_struct reg_info2 = get_reg(code->tk2);
-        ret_struct reg_info3 = get_reg(code->tk3);
+        ret_struct reg_info1 = get_mips_reg(code->tk1);
+        ret_struct reg_info2 = get_mips_reg(code->tk2);
+        ret_struct reg_info3 = get_mips_reg(code->tk3);
         mips_code = link_Mips(mips_code, reg_info1.code);
         mips_code = link_Mips(mips_code, reg_info2.code);
         mips_code = link_Mips(mips_code, reg_info3.code);
@@ -301,8 +297,8 @@ Mips *code_2_mips(Code* code){
         mips_code = link_Mips(mips_code, gen_mips("j", code->tk1, NULL, NULL));
     }
     else if(code->type == 11){
-        ret_struct reg_info1 = get_reg(code->tk1);
-        ret_struct reg_info2 = get_reg(code->tk2);
+        ret_struct reg_info1 = get_mips_reg(code->tk1);
+        ret_struct reg_info2 = get_mips_reg(code->tk2);
         mips_code = link_Mips(mips_code, reg_info1.code);
         mips_code = link_Mips(mips_code, reg_info2.code);
         if(code->relop == 0){
@@ -325,18 +321,18 @@ Mips *code_2_mips(Code* code){
         }
     }
     else if(code->type == 12){
-        ret_struct reg_info1 = get_reg(code->tk1);
+        ret_struct reg_info1 = get_mips_reg(code->tk1);
         mips_code = link_Mips(mips_code, reg_info1.code);
         mips_code = link_Mips(mips_code, gen_mips("move", "$v0", int_to_reg(reg_info1.reg), NULL));
         mips_code = link_Mips(mips_code, gen_mips("jr", "$ra", NULL, NULL));
     }
     else if(code->type == 14){
-        ret_struct reg_info1 = get_reg(code->tk1);
+        ret_struct reg_info1 = get_mips_reg(code->tk1);
         mips_code = link_Mips(mips_code, reg_info1.code);
         mips_code = link_Mips(mips_code, gen_mips("move", int_to_reg(reg_info1.reg), "$a0", NULL));
     }
     else if(code->type == 15){
-        ret_struct reg_info1 = get_reg(code->tk1);
+        ret_struct reg_info1 = get_mips_reg(code->tk1);
         mips_code = link_Mips(mips_code, reg_info1.code);
         mips_code = link_Mips(mips_code, gen_mips("move", "$a0", int_to_reg(reg_info1.reg), NULL));
         mips_code = link_Mips(mips_code, gen_mips("addi", "$sp", "$sp", "-4"));
@@ -346,12 +342,12 @@ Mips *code_2_mips(Code* code){
         mips_code = link_Mips(mips_code, gen_mips("addi", "$sp", "$sp", "4"));
     }
     else if(code->type == 16){
-        ret_struct reg_info1 = get_reg(code->tk1);
+        ret_struct reg_info1 = get_mips_reg(code->tk1);
         mips_code = link_Mips(mips_code, reg_info1.code);
         mips_code = link_Mips(mips_code, gen_mips("move", "$v0", int_to_reg(reg_info1.reg), NULL));
     }
     else if(code->type == 17){
-        ret_struct reg_info1 = get_reg(code->tk1);
+        ret_struct reg_info1 = get_mips_reg(code->tk1);
         mips_code = link_Mips(mips_code, reg_info1.code);
         mips_code = link_Mips(mips_code, gen_mips("move", "$a0", int_to_reg(reg_info1.reg), NULL));
         mips_code = link_Mips(mips_code, gen_mips("addi", "$sp", "$sp", "-4"));
@@ -362,7 +358,7 @@ Mips *code_2_mips(Code* code){
         mips_code = link_Mips(mips_code, gen_mips("move", int_to_reg(reg_info1.reg), "$v0", NULL));
     }
     else if(code->type == 18){
-        ret_struct reg_info1 = get_reg(code->tk1);
+        ret_struct reg_info1 = get_mips_reg(code->tk1);
         mips_code = link_Mips(mips_code, reg_info1.code);
         mips_code = link_Mips(mips_code, gen_mips("move", "$a0", int_to_reg(reg_info1.reg), NULL));
         mips_code = link_Mips(mips_code, gen_mips("addi", "$sp", "$sp", "-4"));
@@ -371,11 +367,10 @@ Mips *code_2_mips(Code* code){
         mips_code = link_Mips(mips_code, gen_mips("lw", "$ra", "0($sp)", NULL));
         mips_code = link_Mips(mips_code, gen_mips("addi", "$sp", "$sp", "4"));
     }
-    }
     return mips_code;
 }
 
-void dump(Mips *head, char* preamble, char* filename){
+void dump_mips(Mips *head, char* preamble, char* filename){
     Mips *tmp = head;
     FILE *fp = fopen(filename, "w");
     fprintf(fp, "%s\n", preamble);
@@ -411,5 +406,5 @@ void translate_mips(Code* ir_code, char* filename){
         mips_code = link_Mips(mips_code, code_2_mips(tmp));
         tmp = tmp->next;
     }
-    dump(mips_code, preamble, filename);
+    dump_mips(mips_code, preamble, filename);
 }

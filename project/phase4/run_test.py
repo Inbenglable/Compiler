@@ -6,7 +6,6 @@ TEST_PATH = './test/'
 
 if __name__ == '__main__':
     result = os.system('wsl make')
-    print(result.read())
     if result != 0:
         exit(0)
     files = os.listdir(TEST_PATH)
