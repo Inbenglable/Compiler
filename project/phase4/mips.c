@@ -352,6 +352,21 @@ Mips *code_2_mips(Code* code){
         mips_code = link_Mips(mips_code, gen_mips("move", "$a0", int_to_reg(reg_info1.reg), NULL));
         mips_code = link_Mips(mips_code, gen_mips("addi", "$sp", "$sp", "-4"));
         mips_code = link_Mips(mips_code, gen_mips("sw", "$ra", "0($sp)", NULL));
+        mips_code = link_Mips(mips_code, gen_mips("jal", "read", NULL, NULL));
+        mips_code = link_Mips(mips_code, gen_mips("lw", "$ra", "0($sp)", NULL));
+        mips_code = link_Mips(mips_code, gen_mips("addi", "$sp", "$sp", "4"));
+        mips_code = link_Mips(mips_code, gen_mips("move", int_to_reg(reg_info1.reg), "$v0", NULL));
+    }
+    else if(code->type == 18){
+        ret_struct reg_info1 = get_reg(code->tk1);
+        mips_code = link_Mips(mips_code, reg_info1.code);
+        mips_code = link_Mips(mips_code, gen_mips("move", "$a0", int_to_reg(reg_info1.reg), NULL));
+        mips_code = link_Mips(mips_code, gen_mips("addi", "$sp", "$sp", "-4"));
+        mips_code = link_Mips(mips_code, gen_mips("sw", "$ra", "0($sp)", NULL));
+        mips_code = link_Mips(mips_code, gen_mips("jal", "write", NULL, NULL));
+        mips_code = link_Mips(mips_code, gen_mips("lw", "$ra", "0($sp)", NULL));
+        mips_code = link_Mips(mips_code, gen_mips("addi", "$sp", "$sp", "4"));
+    }
     return mips_code;
 }
 
