@@ -1,3 +1,4 @@
+#include <string.h>
 #include "mips.h"
 
 char* getRemainingString(char *variable, char* prefix) {
