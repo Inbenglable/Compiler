@@ -1,0 +1,16 @@
+int fast_pow(int base, int power){
+    int result = 1;
+    while(power > 0){
+        if(power - power/2*2 == 1){
+            result = result * base;
+        }
+        base = base * base;
+        power = power / 2;
+    }
+    return result;
+}
+
+int main(){
+    write(fast_pow(3,6));
+    return 0;
+}

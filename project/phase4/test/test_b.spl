@@ -1,0 +1,30 @@
+int fun4(int j, int k){
+    write(j+k);
+}
+
+int fun3(int h, int i){
+    fun4(33629, 85694);
+    fun4(33629, 85694);
+    write(h+i);
+}
+
+int fun2(int f, int g){
+    fun3(13211, 56731);
+    fun3(13211, 56731);
+    write(f+g);
+}
+
+int fun1(int d, int e){
+    fun2(62000, 2310);
+    fun2(62000, 2310);
+    write(d+e);
+}
+
+int main(){
+    int a = 114;
+    int b = 514;
+    fun1(1919, 810);
+    fun1(1919, 810);
+    write(a+b);
+    return 0;
+}
