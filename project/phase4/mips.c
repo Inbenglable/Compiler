@@ -162,11 +162,13 @@ char* int_to_reg(int reg){
     }else if(reg == 7){
         return "$a3";
     }else if(reg >= 8 && reg <= 15){
-        char* ret = (char*)malloc(sizeof(char)*5);
+        char* ret = (char*)malloc(sizeof(char)*30);
         sprintf(ret, "$t%d", reg-8);
+        printf("%s\n", ret);
+        fflush(stdout);
         return ret;
     }else if(reg >= 16 && reg <= 23){
-        char* ret = (char*)malloc(sizeof(char)*5);
+        char* ret = (char*)malloc(sizeof(char)*30);
         sprintf(ret, "$s%d", reg-16);
         return ret;
     }else if(reg == 24){
@@ -191,7 +193,7 @@ char* int_to_reg(int reg){
 }
 
 char* get_var_addr_str(int offset){
-    char* ret = NULL;
+    char* ret = (char*)malloc(sizeof(char)*30);
     if(offset == 0){
         ret = "reg_root";
     }else{
@@ -203,12 +205,16 @@ char* get_var_addr_str(int offset){
 Mips* update_reg(int reg, int var_id){
     if(var_id == -1)return NULL;
     vars[var_id].reg = -1;
+    regs[reg].var_id = -1;
     return gen_mips("sw", int_to_reg(reg), get_var_addr_str(var_id*4-4), NULL);
 }
 
 Mips* load_var(int reg, int var_id){
-    if(var_id == -1)return NULL;
+    
+    if(var_id == -1)return NULL;printf("reg %d, var_id %d\n", reg, var_id);
+    fflush(stdout);
     regs[reg].var_id = var_id;
+    vars[var_id].reg = reg;
     return gen_mips("lw", int_to_reg(reg), get_var_addr_str(var_id*4-4), NULL);
 }
 
@@ -216,7 +222,7 @@ int get_unused_reg(){
     int ret = -1;
     int mi = 0x7fffffff;
     for(int i = 8;i <= 25;i++){
-        if(regs[i].reg == -1){
+        if(regs[i].var_id == -1){
             ret = i;
             break;
         }
@@ -240,9 +246,13 @@ ret_struct get_mips_reg(char *var_name){
                 return ret;
             }else{
                 ret.reg = get_unused_reg();
+                ret.code = NULL;
                 ret.code = link_Mips(ret.code, update_reg(ret.reg, regs[ret.reg].var_id));
                 ret.code = link_Mips(ret.code, load_var(ret.reg, i));
+                printf("assign var %s to reg %d\n", var_name, ret.reg);
+                fflush(stdout);
                 regs[ret.reg].visited = reg_used_cnt;
+                
                 return ret;
             }
         }
@@ -637,6 +647,8 @@ void translate_mips(Code* ir_code, char* filename){
         print_end_code(mips_code);
         tmp = tmp->next;
     }
+    mips_code = link_Mips(mips_code, gen_mips("li", "$v0", "10", NULL));
+    mips_code = link_Mips(mips_code, gen_mips("syscall", NULL, NULL, NULL));
     // printf("start to dump codes\n");
     // fflush(stdout);
     dump_mips(mips_code, preamble, filename);
