@@ -22,21 +22,19 @@
         li $v0, 5
         syscall
         move $t5, $v0
+        li $a1, 1
+        bge $t5, $a1, label_0
         sw $t0, reg_root
         sw $t1, reg_root + 4
         sw $t2, reg_root + 8
         sw $t3, reg_root + 12
         sw $t4, reg_root + 16
         sw $t5, reg_root + 20
-        lw $t0, reg_root + 20
-        li $a1, 1
-        bge $t0, $a1, label_0
         li $a0, 0
         li $v0, 1
         syscall
         j label_1
     label_0:
-        sw $t0, reg_root + 20
         lw $t0, reg_root + 20
         li $a1, 1
         beq $t0, $a1, label_4
@@ -44,8 +42,8 @@
         lw $t0, reg_root + 20
         li $a1, 2
         bne $t0, $a1, label_2
-    label_4:
         sw $t0, reg_root + 20
+    label_4:
         li $a0, 1
         li $v0, 1
         syscall
@@ -54,28 +52,28 @@
         lw $t0, reg_root + 20
         li $a1, 2
         ble $t0, $a1, label_5
-        lw $t1, reg_root + 24
-        li $t1, 3
-    label_6:
         sw $t0, reg_root + 20
-        sw $t1, reg_root + 24
         lw $t0, reg_root + 24
+        li $t0, 3
+    label_6:
         lw $t1, reg_root + 20
         bgt $t0, $t1, label_7
-        lw $t2, reg_root + 28
-        lw $t3, reg_root + 12
-        lw $t4, reg_root + 16
-        add $t2, $t3, $t4
-        move $t3, $t4
-        move $t4, $t2
-        addi $t0, $t0, 1
-        j label_6
-    label_7:
         sw $t0, reg_root + 24
         sw $t1, reg_root + 20
-        sw $t2, reg_root + 28
-        sw $t3, reg_root + 12
-        sw $t4, reg_root + 16
+        lw $t0, reg_root + 28
+        lw $t1, reg_root + 12
+        lw $t2, reg_root + 16
+        add $t0, $t1, $t2
+        move $t1, $t2
+        move $t2, $t0
+        lw $t3, reg_root + 24
+        addi $t3, $t3, 1
+        j label_6
+    label_7:
+        sw $t0, reg_root + 28
+        sw $t1, reg_root + 12
+        sw $t2, reg_root + 16
+        sw $t3, reg_root + 24
         lw $t0, reg_root + 28
         move $a0, $t0
         li $v0, 1

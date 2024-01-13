@@ -9,10 +9,10 @@
         sw $ra, 0($sp)
         lw $t0, reg_root
         lw $t0, 4($sp)
-        sw $t0, reg_root
-        lw $t0, reg_root
         li $a1, 1
         bne $t0, $a1, label_0
+        sw $t0, reg_root
+        lw $t0, reg_root
         move $v0, $t0
         lw $ra, 0($sp)
         addi $sp, $sp, 8
@@ -31,9 +31,9 @@
         addi $sp, $sp, -4
         sw $a0, 0($sp)
         jal fact
-        lw $t0, 0($sp)
-        addi $sp, $sp, 4
         lw $t1, 0($sp)
+        addi $sp, $sp, 4
+        lw $t0, 0($sp)
         addi $sp, $sp, 4
         lw $t2, reg_root + 8
         move $t2, $v0
@@ -56,18 +56,14 @@
         li $v0, 5
         syscall
         move $t0, $v0
-        sw $t0, reg_root + 16
-        lw $t0, reg_root + 16
         li $a1, 1
         ble $t0, $a1, label_2
-        addi $sp, $sp, -4
-        sw $t0, 0($sp)
+        sw $t0, reg_root + 16
+        lw $t0, reg_root + 16
         move $a0, $t0
         addi $sp, $sp, -4
         sw $a0, 0($sp)
         jal fact
-        lw $t0, 0($sp)
-        addi $sp, $sp, 4
         lw $t1, reg_root + 20
         move $t1, $v0
         j label_3

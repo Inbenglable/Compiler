@@ -78,15 +78,15 @@
         addi $sp, $sp, -4
         sw $a0, 0($sp)
         jal pprriit
-        lw $t0, 0($sp)
-        addi $sp, $sp, 4
-        lw $t1, 0($sp)
-        addi $sp, $sp, 4
-        lw $t2, 0($sp)
+        lw $t4, 0($sp)
         addi $sp, $sp, 4
         lw $t3, 0($sp)
         addi $sp, $sp, 4
-        lw $t4, 0($sp)
+        lw $t2, 0($sp)
+        addi $sp, $sp, 4
+        lw $t1, 0($sp)
+        addi $sp, $sp, 4
+        lw $t0, 0($sp)
         addi $sp, $sp, 4
         move $v1, $v0
         li $v0, 10

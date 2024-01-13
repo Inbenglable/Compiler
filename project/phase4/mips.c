@@ -460,7 +460,6 @@ Mips *code_2_mips(Code* code){
         mips_code = link_Mips(mips_code, gen_mips("j", code->tk1, NULL, NULL));
     }
     else if(code->type == 11){
-        
         change_label_tag(code->tk3);
         if(code->tk1[0] == '#'){
             if(code->tk2[0] == '#'){

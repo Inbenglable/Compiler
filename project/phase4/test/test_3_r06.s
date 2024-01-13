@@ -15,29 +15,27 @@
         lw $t2, 12($sp)
         lw $t3, reg_root + 12
         lw $t3, 16($sp)
+        li $a1, 1
+        bne $t0, $a1, label_0
         sw $t0, reg_root
         sw $t1, reg_root + 4
         sw $t2, reg_root + 8
         sw $t3, reg_root + 12
-        lw $t0, reg_root
-        li $a1, 1
-        bne $t0, $a1, label_0
-        lw $t1, reg_root + 16
-        lw $t2, reg_root + 4
-        mul $t1, $t2, 1000000
-        lw $t3, reg_root + 20
-        lw $t4, reg_root + 12
-        add $t3, $t1, $t4
-        move $a0, $t3
+        lw $t0, reg_root + 16
+        lw $t1, reg_root + 4
+        mul $t0, $t1, 1000000
+        lw $t2, reg_root + 20
+        lw $t3, reg_root + 12
+        add $t2, $t0, $t3
+        move $a0, $t2
         li $v0, 1
         syscall
         j label_1
     label_0:
-        sw $t0, reg_root
-        sw $t1, reg_root + 16
-        sw $t2, reg_root + 4
-        sw $t3, reg_root + 20
-        sw $t4, reg_root + 12
+        sw $t0, reg_root + 16
+        sw $t1, reg_root + 4
+        sw $t2, reg_root + 20
+        sw $t3, reg_root + 12
         lw $t0, reg_root + 24
         lw $t1, reg_root
         addi $t0, $t1, -1
@@ -61,9 +59,9 @@
         addi $sp, $sp, -4
         sw $a0, 0($sp)
         jal hanoi
-        lw $t0, 0($sp)
-        addi $sp, $sp, 4
         lw $t1, 0($sp)
+        addi $sp, $sp, 4
+        lw $t0, 0($sp)
         addi $sp, $sp, 4
         move $v1, $v0
         lw $t5, reg_root + 28
@@ -108,23 +106,23 @@
         addi $sp, $sp, -4
         sw $a0, 0($sp)
         jal hanoi
-        lw $t0, 0($sp)
-        addi $sp, $sp, 4
-        lw $t1, 0($sp)
-        addi $sp, $sp, 4
-        lw $t2, 0($sp)
-        addi $sp, $sp, 4
-        lw $t3, 0($sp)
-        addi $sp, $sp, 4
-        lw $t4, 0($sp)
-        addi $sp, $sp, 4
-        lw $t5, 0($sp)
-        addi $sp, $sp, 4
-        lw $t6, 0($sp)
+        lw $s0, 0($sp)
         addi $sp, $sp, 4
         lw $t7, 0($sp)
         addi $sp, $sp, 4
-        lw $s0, 0($sp)
+        lw $t6, 0($sp)
+        addi $sp, $sp, 4
+        lw $t5, 0($sp)
+        addi $sp, $sp, 4
+        lw $t4, 0($sp)
+        addi $sp, $sp, 4
+        lw $t3, 0($sp)
+        addi $sp, $sp, 4
+        lw $t2, 0($sp)
+        addi $sp, $sp, 4
+        lw $t1, 0($sp)
+        addi $sp, $sp, 4
+        lw $t0, 0($sp)
         addi $sp, $sp, 4
         move $v1, $v0
     label_1:
