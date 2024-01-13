@@ -28,5 +28,5 @@
         addi $t3, $t3, 1
         j label_0
     label_1:
-        li $v0, 0
-        jr $ra
+        li $v0, 10
+        syscall

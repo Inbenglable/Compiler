@@ -1,18 +1,21 @@
 .text
 
     mod:
-        lw $t0, 0($sp)
-        addi $sp, $sp, 4
-        lw $t1, 0($sp)
-        addi $sp, $sp, 4
+        addi $sp, $sp, -4
+        sw $ra, 0($sp)
+        lw $t0, 4($sp)
+        lw $t1, 8($sp)
         div $t2, $t0, $t1
         mul $t3, $t2, $t1
         sub $t4, $t0, $t3
         move $v0, $t4
+        lw $ra, 0($sp)
+        addi $sp, $sp, 12
         jr $ra
     isPerfectNumber:
-        lw $t5, 0($sp)
-        addi $sp, $sp, 4
+        addi $sp, $sp, -4
+        sw $ra, 0($sp)
+        lw $t5, 4($sp)
         li $t6, 0
         li $t7, 1
     label_0:
@@ -35,10 +38,14 @@
     label_1:
         bne $t6, $t5, label_3
         li $v0, 1
+        lw $ra, 0($sp)
+        addi $sp, $sp, 8
         jr $ra
         j label_4
     label_3:
         li $v0, 0
+        lw $ra, 0($sp)
+        addi $sp, $sp, 8
         jr $ra
     label_4:
     main:
@@ -61,5 +68,5 @@
         addi $s3, $s3, 1
         j label_5
     label_6:
-        li $v0, 0
-        jr $ra
+        li $v0, 10
+        syscall

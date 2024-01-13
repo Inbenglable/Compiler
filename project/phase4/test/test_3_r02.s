@@ -1,14 +1,14 @@
-.data
-    .globl main
-
 .text
-    j main
+	j main
     fact:
-        lw $t0, 0($sp)
-        addi $sp, $sp, 4
+        addi $sp, $sp, -4
+        sw $ra, 0($sp)
+        lw $t0, 4($sp)
         li $a1, 1
         bne $t0, $a1, label_0
         move $v0, $t0
+        lw $ra, 0($sp)
+        addi $sp, $sp, 8
         jr $ra
         j label_1
     label_0:
@@ -20,6 +20,8 @@
         move $t2, $v0
         mul $t3, $t0, $t2
         move $v0, $t3
+        lw $ra, 0($sp)
+        addi $sp, $sp, 8
         jr $ra
     label_1:
     main:
@@ -40,5 +42,5 @@
         move $a0, $t5
         li $v0, 1
         syscall
-        li $v0, 0
-        jr $ra
+        li $v0, 10
+        syscall

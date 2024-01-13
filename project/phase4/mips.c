@@ -253,6 +253,14 @@ ret_struct get_mips_reg(char *var_name){
 ///Radiance's part ends here
 ///FC_Viiiiictor_K's part is over here
 
+int arg_cnt = 0;
+
+char* add_offset_to_reg(int reg, int offset){
+    char* ret = (char*)malloc(sizeof(char)*30);
+    sprintf(ret, "%d(%s)", offset, int_to_reg(reg));
+    return ret;
+}
+
 Mips *code_2_mips(Code* code){
     /*
     type 0: LABEL tk1 :
@@ -294,6 +302,14 @@ Mips *code_2_mips(Code* code){
     }
     else if(code->type == 1){
         mips_code = link_Mips(mips_code, gen_mips("FUNCTION", code->tk1, NULL, NULL));
+        if(strcmp(code->tk1, "main") == 0){
+            arg_cnt = -1; // main function definitely has no arguments
+        }
+        else{
+            arg_cnt = 0;
+            mips_code = link_Mips(mips_code, gen_mips("addi", "$sp", "$sp", "-4"));
+            mips_code = link_Mips(mips_code, gen_mips("sw", "$ra", "0($sp)", NULL));
+        }
     }
     else if(code->type == 2){
         if(code->tk2[0] == '#'){
@@ -521,21 +537,31 @@ Mips *code_2_mips(Code* code){
         }
     }
     else if(code->type == 12){
-        if(code->tk1[0] == '#'){
-            mips_code = link_Mips(mips_code, gen_mips("li", "$v0", code->tk1+1, NULL));
+        if(arg_cnt == -1){
+            mips_code = link_Mips(mips_code, gen_mips("li", "$v0", "10", NULL));
+            mips_code = link_Mips(mips_code, gen_mips("syscall", NULL, NULL, NULL));
         }
         else{
-            ret_struct tmp1 = get_mips_reg(code->tk1);
-            mips_code = link_Mips(mips_code, tmp1.code);
-            mips_code = link_Mips(mips_code, gen_mips("move", "$v0", int_to_reg(tmp1.reg), NULL));
+            if(code->tk1[0] == '#'){
+                mips_code = link_Mips(mips_code, gen_mips("li", "$v0", code->tk1+1, NULL));
+            }
+            else{
+                ret_struct tmp1 = get_mips_reg(code->tk1);
+                mips_code = link_Mips(mips_code, tmp1.code);
+                mips_code = link_Mips(mips_code, gen_mips("move", "$v0", int_to_reg(tmp1.reg), NULL));
+            }
+            char* tmp = (char*)malloc(sizeof(char)*30);
+            sprintf(tmp, "%d", (arg_cnt+1)*4);
+            mips_code = link_Mips(mips_code, gen_mips("lw", "$ra", "0($sp)", NULL));
+            mips_code = link_Mips(mips_code, gen_mips("addi", "$sp", "$sp", tmp));
+            mips_code = link_Mips(mips_code, gen_mips("jr", "$ra", NULL, NULL));
         }
-        mips_code = link_Mips(mips_code, gen_mips("jr", "$ra", NULL, NULL));
     }
     else if(code->type == 14){
+        arg_cnt++;
         ret_struct tmp1 = get_mips_reg(code->tk1);
         mips_code = link_Mips(mips_code, tmp1.code);
-        mips_code = link_Mips(mips_code, gen_mips("lw", int_to_reg(tmp1.reg), "0($sp)", NULL));
-        mips_code = link_Mips(mips_code, gen_mips("addi", "$sp", "$sp", "4"));
+        mips_code = link_Mips(mips_code, gen_mips("lw", int_to_reg(tmp1.reg), add_offset_to_reg(29, arg_cnt*4), NULL));
     }
     else if(code->type == 15){
         if(code->tk1[0] == '#'){

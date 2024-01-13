@@ -1,14 +1,12 @@
 .text
 
     hanoi:
-        lw $t0, 0($sp)
-        addi $sp, $sp, 4
-        lw $t1, 0($sp)
-        addi $sp, $sp, 4
-        lw $t2, 0($sp)
-        addi $sp, $sp, 4
-        lw $t3, 0($sp)
-        addi $sp, $sp, 4
+        addi $sp, $sp, -4
+        sw $ra, 0($sp)
+        lw $t0, 4($sp)
+        lw $t1, 8($sp)
+        lw $t2, 12($sp)
+        lw $t3, 16($sp)
         li $a1, 1
         bne $t0, $a1, label_0
         mul $t4, $t1, 1000000
@@ -56,6 +54,8 @@
         move $v1, $v0
     label_1:
         li $v0, 0
+        lw $ra, 0($sp)
+        addi $sp, $sp, 20
         jr $ra
     main:
         li $s3, 3
@@ -73,5 +73,5 @@
         sw $a0, 0($sp)
         jal hanoi
         move $v1, $v0
-        li $v0, 0
-        jr $ra
+        li $v0, 10
+        syscall

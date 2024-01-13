@@ -8,5 +8,5 @@
         move $a0, $t3
         li $v0, 1
         syscall
-        li $v0, 0
-        jr $ra
+        li $v0, 10
+        syscall
