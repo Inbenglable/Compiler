@@ -41,8 +41,11 @@ Mips* update_all_regs(){
     //if(var_cnt <= 25-8+1) return NULL;
     Mips* ret = NULL;
     for(int i = 8;i <= 25;i++){
-        if(regs[i].reg != -1){
+        if(regs[i].var_id != -1){
             ret = link_Mips(ret, update_reg(i, regs[i].var_id));
+        }else{
+            printf("reg %d is not used\n", i);
+            fflush(stdout);
         }
     }
     return ret;
@@ -168,8 +171,6 @@ char* int_to_reg(int reg){
     }else if(reg >= 8 && reg <= 15){
         char* ret = (char*)malloc(sizeof(char)*30);
         sprintf(ret, "$t%d", reg-8);
-        printf("%s\n", ret);
-        fflush(stdout);
         return ret;
     }else if(reg >= 16 && reg <= 23){
         char* ret = (char*)malloc(sizeof(char)*30);
@@ -253,8 +254,6 @@ ret_struct get_mips_reg(char *var_name){
                 ret.code = NULL;
                 ret.code = link_Mips(ret.code, update_reg(ret.reg, regs[ret.reg].var_id));
                 ret.code = link_Mips(ret.code, load_var(ret.reg, i));
-                printf("assign var %s to reg %d\n", var_name, ret.reg);
-                fflush(stdout);
                 regs[ret.reg].visited = reg_used_cnt;
                 
                 return ret;
@@ -461,7 +460,7 @@ Mips *code_2_mips(Code* code){
         mips_code = link_Mips(mips_code, gen_mips("j", code->tk1, NULL, NULL));
     }
     else if(code->type == 11){
-        mips_code = link_Mips(mips_code, update_all_regs());
+        
         change_label_tag(code->tk3);
         if(code->tk1[0] == '#'){
             if(code->tk2[0] == '#'){
@@ -509,6 +508,7 @@ Mips *code_2_mips(Code* code){
                     mips_code = link_Mips(mips_code, gen_mips("beq", "$a0", int_to_reg(tmp2.reg), code->tk3));
                 }
             }
+            
         }
         else if(code->tk2[0] == '#'){
             ret_struct tmp1 = get_mips_reg(code->tk1);
@@ -557,6 +557,7 @@ Mips *code_2_mips(Code* code){
                 mips_code = link_Mips(mips_code, gen_mips("beq", int_to_reg(tmp1.reg), int_to_reg(tmp2.reg), code->tk3));
             }
         }
+        mips_code = link_Mips(mips_code, update_all_regs());
     }
     else if(code->type == 12){
         if(arg_cnt == -1){
@@ -627,8 +628,8 @@ Mips *code_2_mips(Code* code){
         calling_func = 0;
         ret_struct tmp1 = get_mips_reg(code->tk1);
         mips_code = link_Mips(mips_code, tmp1.code);
-        printf("tmp1.reg is %d, it's name is %s\n", tmp1.reg, code->tk1);
-        fflush(stdout);
+        // printf("tmp1.reg is %d, it's name is %s\n", tmp1.reg, code->tk1);
+        // fflush(stdout);
         mips_code = link_Mips(mips_code, gen_mips("move", int_to_reg(tmp1.reg), "$v0", NULL));
     }
     else if(code->type == 17){
@@ -695,8 +696,8 @@ void print_end_code(Mips* mips_code){
     while(mips_code->next != NULL){
         mips_code = mips_code->next;
     }
-    printf("now_code_head is: %s, %s, %s, %s\n", mips_code->op, mips_code->tk_d, mips_code->tk_s, mips_code->tk_t);
-    fflush(stdout);
+    // printf("now_code_head is: %s, %s, %s, %s\n", mips_code->op, mips_code->tk_d, mips_code->tk_s, mips_code->tk_t);
+    // fflush(stdout);
 }
 
 void translate_mips(Code* ir_code, char* filename){
