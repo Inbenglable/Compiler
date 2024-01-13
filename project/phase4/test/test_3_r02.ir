@@ -1,0 +1,23 @@
+FUNCTION fact :
+PARAM var_n
+IF var_n != #1 GOTO label_0
+RETURN var_n
+GOTO label_1
+LABEL label_0 :
+tmp_6 := var_n - #1
+ARG tmp_6
+tmp_5 := CALL fact
+tmp_3 := var_n * tmp_5
+RETURN tmp_3
+LABEL label_1 :
+FUNCTION main :
+READ var_m
+IF var_m <= #1 GOTO label_2
+ARG var_m
+var_result := CALL fact
+GOTO label_3
+LABEL label_2 :
+var_result := #1
+LABEL label_3 :
+WRITE var_result
+RETURN #0

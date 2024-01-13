@@ -1,0 +1,101 @@
+FUNCTION foo :
+PARAM var_a
+PARAM var_b
+PARAM var_c
+PARAM var_d
+PARAM var_e
+PARAM var_f
+PARAM var_g
+PARAM var_h
+PARAM var_i
+PARAM var_j
+PARAM var_k
+PARAM var_l
+PARAM var_m
+PARAM var_n
+PARAM var_o
+PARAM var_p
+PARAM var_q
+PARAM var_r
+PARAM var_s
+PARAM var_t
+PARAM var_u
+PARAM var_v
+PARAM var_w
+PARAM var_x
+PARAM var_y
+PARAM var_z
+PARAM var_aa
+PARAM var_ab
+PARAM var_ac
+PARAM var_ad
+PARAM var_ae
+PARAM var_af
+tmp_29 := var_a * var_b
+tmp_30 := var_c * var_d
+tmp_27 := tmp_29 + tmp_30
+tmp_28 := var_e * var_f
+tmp_25 := tmp_27 + tmp_28
+tmp_26 := var_g * var_h
+tmp_23 := tmp_25 + tmp_26
+tmp_24 := var_i * var_j
+tmp_21 := tmp_23 + tmp_24
+tmp_22 := var_k * var_l
+tmp_19 := tmp_21 + tmp_22
+tmp_20 := var_m * var_n
+tmp_17 := tmp_19 + tmp_20
+tmp_18 := var_o * var_p
+tmp_15 := tmp_17 + tmp_18
+tmp_16 := var_q * var_r
+tmp_13 := tmp_15 + tmp_16
+tmp_14 := var_s * var_t
+tmp_11 := tmp_13 + tmp_14
+tmp_12 := var_u * var_v
+tmp_9 := tmp_11 + tmp_12
+tmp_10 := var_w * var_x
+tmp_7 := tmp_9 + tmp_10
+tmp_8 := var_y * var_z
+tmp_5 := tmp_7 + tmp_8
+tmp_6 := var_aa * var_ab
+tmp_3 := tmp_5 + tmp_6
+tmp_4 := var_ac * var_ad
+tmp_1 := tmp_3 + tmp_4
+tmp_2 := var_ae * var_af
+tmp_0 := tmp_1 + tmp_2
+RETURN tmp_0
+FUNCTION main :
+ARG #32
+ARG #31
+ARG #30
+ARG #29
+ARG #28
+ARG #27
+ARG #26
+ARG #25
+ARG #24
+ARG #23
+ARG #22
+ARG #21
+ARG #20
+ARG #19
+ARG #18
+ARG #17
+ARG #16
+ARG #15
+ARG #14
+ARG #13
+ARG #12
+ARG #11
+ARG #10
+ARG #9
+ARG #8
+ARG #7
+ARG #6
+ARG #5
+ARG #4
+ARG #3
+ARG #2
+ARG #1
+tmp_63 := CALL foo
+WRITE tmp_63
+RETURN #0

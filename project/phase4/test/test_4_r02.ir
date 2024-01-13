@@ -1,0 +1,14 @@
+FUNCTION main :
+READ var_n
+IF var_n <= #0 GOTO label_0
+WRITE #1
+GOTO label_1
+LABEL label_0 :
+IF var_n >= #0 GOTO label_2
+WRITE #-1
+GOTO label_3
+LABEL label_2 :
+WRITE #0
+LABEL label_3 :
+LABEL label_1 :
+RETURN #0

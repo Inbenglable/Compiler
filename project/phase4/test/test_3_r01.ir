@@ -1,39 +1,25 @@
-FUNCTION mod :
-PARAM var_x
-PARAM var_n
-tmp_3 := var_x / var_n
-tmp_2 := tmp_3 * var_n
-tmp_0 := var_x - tmp_2
-RETURN tmp_0
-FUNCTION isPalindrome :
-PARAM var_num
-var_reversed := #0
-var_original := var_num
-var_digit := #0
-LABEL label_0 :
-IF var_num == #0 GOTO label_1
-ARG #10
-ARG var_num
-var_digit := CALL mod
-tmp_15 := var_reversed * #10
-var_reversed := tmp_15 + var_digit
-var_num := var_num / #10
-GOTO label_0
-LABEL label_1 :
-IF var_reversed != var_original GOTO label_2
-RETURN #1
-GOTO label_3
-LABEL label_2 :
+FUNCTION pprriit :
+PARAM var_x1
+PARAM var_x2
+PARAM var_x3
+PARAM var_x4
+PARAM var_x5
+WRITE var_x1
+WRITE var_x2
+WRITE var_x3
+WRITE var_x4
+WRITE var_x5
 RETURN #0
-LABEL label_3 :
 FUNCTION main :
-READ var_number
-ARG var_number
-tmp_29 := CALL isPalindrome
-IF tmp_29 != #1 GOTO label_4
-WRITE #1
-GOTO label_5
-LABEL label_4 :
-WRITE #-1
-LABEL label_5 :
+var_a := #1
+var_b := #2
+var_c := #3
+var_d := #4
+var_e := #5
+ARG #5
+ARG #4
+ARG #3
+ARG #2
+ARG #1
+__tmp__ := CALL pprriit
 RETURN #0
