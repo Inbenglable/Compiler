@@ -313,10 +313,8 @@ Mips *code_2_mips(Code* code){
     fflush(stdout);
     Mips *mips_code = NULL;
     if(code->type == 0){
+        mips_code = link_Mips(mips_code, update_all_regs());
         mips_code = link_Mips(mips_code, gen_mips("LABEL", code->tk1, NULL, NULL));
-        if(check_label_tag(code->tk1) == 1){
-            mips_code = link_Mips(mips_code, update_all_regs());
-        }
     }
     else if(code->type == 1){
         mips_code = link_Mips(mips_code, gen_mips("FUNCTION", code->tk1, NULL, NULL));
@@ -457,9 +455,11 @@ Mips *code_2_mips(Code* code){
         }
     }
     else if(code->type == 10){
+        mips_code = link_Mips(mips_code, update_all_regs());
         mips_code = link_Mips(mips_code, gen_mips("j", code->tk1, NULL, NULL));
     }
     else if(code->type == 11){
+        mips_code = link_Mips(mips_code, update_all_regs());
         change_label_tag(code->tk3);
         if(code->tk1[0] == '#'){
             if(code->tk2[0] == '#'){
@@ -556,7 +556,6 @@ Mips *code_2_mips(Code* code){
                 mips_code = link_Mips(mips_code, gen_mips("beq", int_to_reg(tmp1.reg), int_to_reg(tmp2.reg), code->tk3));
             }
         }
-        mips_code = link_Mips(mips_code, update_all_regs());
     }
     else if(code->type == 12){
         if(arg_cnt == -1){
