@@ -267,6 +267,8 @@ ret_struct get_mips_reg(char *var_name){
 ///FC_Viiiiictor_K's part is over here
 
 int arg_cnt = 0;
+int reg_in_use[18];
+int calling_func = 0;
 
 char* add_offset_to_reg(int reg, int offset){
     char* ret = (char*)malloc(sizeof(char)*30);
@@ -583,6 +585,16 @@ Mips *code_2_mips(Code* code){
         mips_code = link_Mips(mips_code, gen_mips("lw", int_to_reg(tmp1.reg), add_offset_to_reg(29, arg_cnt*4), NULL));
     }
     else if(code->type == 15){
+        if(calling_func == 0){
+            calling_func = 1;
+            for(int i = 0;i < 18;i++){
+                reg_in_use[i] = (regs[i+8].var_id == -1?0:1);
+                if(reg_in_use[i] == 1){
+                    mips_code = link_Mips(mips_code, gen_mips("addi", "$sp", "$sp", "-4"));
+                    mips_code = link_Mips(mips_code, gen_mips("sw", int_to_reg(i+8), "0($sp)", NULL));
+                }
+            }
+        }
         if(code->tk1[0] == '#'){
             mips_code = link_Mips(mips_code, gen_mips("li", "$a0", code->tk1+1, NULL));
         }
@@ -595,7 +607,23 @@ Mips *code_2_mips(Code* code){
         mips_code = link_Mips(mips_code, gen_mips("sw", "$a0", "0($sp)", NULL));
     }
     else if(code->type == 16){
+        if(calling_func == 0){
+            for(int i = 0;i < 18;i++){
+                reg_in_use[i] = (regs[i+8].var_id == -1?0:1);
+                if(reg_in_use[i] == 1){
+                    mips_code = link_Mips(mips_code, gen_mips("addi", "$sp", "$sp", "-4"));
+                    mips_code = link_Mips(mips_code, gen_mips("sw", int_to_reg(i+8), "0($sp)", NULL));
+                }
+            }
+        }
         mips_code = link_Mips(mips_code, gen_mips("jal", code->tk2, NULL, NULL));
+        for(int i = 0;i < 18;i++){
+            if(reg_in_use[i] == 1){
+                mips_code = link_Mips(mips_code, gen_mips("lw", int_to_reg(i+8), "0($sp)", NULL));
+                mips_code = link_Mips(mips_code, gen_mips("addi", "$sp", "$sp", "4"));
+            }
+        }
+        calling_func = 0;
         ret_struct tmp1 = get_mips_reg(code->tk1);
         mips_code = link_Mips(mips_code, tmp1.code);
         printf("tmp1.reg is %d, it's name is %s\n", tmp1.reg, code->tk1);

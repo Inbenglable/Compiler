@@ -16,10 +16,34 @@
         j label_1
     label_0:
         addi $t1, $t0, -1
+        addi $sp, $sp, -4
+        sw $t0, 0($sp)
+        addi $sp, $sp, -4
+        sw $t1, 0($sp)
+        addi $sp, $sp, -4
+        sw $t2, 0($sp)
+        addi $sp, $sp, -4
+        sw $t3, 0($sp)
+        addi $sp, $sp, -4
+        sw $t4, 0($sp)
+        addi $sp, $sp, -4
+        sw $t5, 0($sp)
         move $a0, $t1
         addi $sp, $sp, -4
         sw $a0, 0($sp)
         jal fact
+        lw $t0, 0($sp)
+        addi $sp, $sp, 4
+        lw $t1, 0($sp)
+        addi $sp, $sp, 4
+        lw $t2, 0($sp)
+        addi $sp, $sp, 4
+        lw $t3, 0($sp)
+        addi $sp, $sp, 4
+        lw $t4, 0($sp)
+        addi $sp, $sp, 4
+        lw $t5, 0($sp)
+        addi $sp, $sp, 4
         move $t2, $v0
         mul $t3, $t0, $t2
         move $v0, $t3
@@ -33,10 +57,34 @@
         move $t4, $v0
         li $a1, 1
         ble $t4, $a1, label_2
+        addi $sp, $sp, -4
+        sw $t0, 0($sp)
+        addi $sp, $sp, -4
+        sw $t1, 0($sp)
+        addi $sp, $sp, -4
+        sw $t2, 0($sp)
+        addi $sp, $sp, -4
+        sw $t3, 0($sp)
+        addi $sp, $sp, -4
+        sw $t4, 0($sp)
+        addi $sp, $sp, -4
+        sw $t5, 0($sp)
         move $a0, $t4
         addi $sp, $sp, -4
         sw $a0, 0($sp)
         jal fact
+        lw $t0, 0($sp)
+        addi $sp, $sp, 4
+        lw $t1, 0($sp)
+        addi $sp, $sp, 4
+        lw $t2, 0($sp)
+        addi $sp, $sp, 4
+        lw $t3, 0($sp)
+        addi $sp, $sp, 4
+        lw $t4, 0($sp)
+        addi $sp, $sp, 4
+        lw $t5, 0($sp)
+        addi $sp, $sp, 4
         move $t5, $v0
         j label_3
     label_2:

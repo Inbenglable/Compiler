@@ -13,7 +13,7 @@ extern int var_cnt;
 
 typedef struct Reg{
     int reg;
-    int var_id;
+    int var_id; //var_id==-1 -> no variable in this register
     int visited;
     int preserved; //preserved==1 -> cannot be used by variables
     //preserved registers: 0, 1, 2, 3, 4, 5, 6, 7, 26, 27, 28, 29, 30, 31

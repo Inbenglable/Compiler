@@ -24,6 +24,32 @@
     label_0:
         div $s0, $t5, 2
         bgt $t7, $s0, label_1
+        addi $sp, $sp, -4
+        sw $t0, 0($sp)
+        addi $sp, $sp, -4
+        sw $t1, 0($sp)
+        addi $sp, $sp, -4
+        sw $t2, 0($sp)
+        addi $sp, $sp, -4
+        sw $t3, 0($sp)
+        addi $sp, $sp, -4
+        sw $t4, 0($sp)
+        addi $sp, $sp, -4
+        sw $t5, 0($sp)
+        addi $sp, $sp, -4
+        sw $t6, 0($sp)
+        addi $sp, $sp, -4
+        sw $t7, 0($sp)
+        addi $sp, $sp, -4
+        sw $s0, 0($sp)
+        addi $sp, $sp, -4
+        sw $s1, 0($sp)
+        addi $sp, $sp, -4
+        sw $s2, 0($sp)
+        addi $sp, $sp, -4
+        sw $s3, 0($sp)
+        addi $sp, $sp, -4
+        sw $s4, 0($sp)
         move $a0, $t7
         addi $sp, $sp, -4
         sw $a0, 0($sp)
@@ -31,6 +57,32 @@
         addi $sp, $sp, -4
         sw $a0, 0($sp)
         jal mod
+        lw $t0, 0($sp)
+        addi $sp, $sp, 4
+        lw $t1, 0($sp)
+        addi $sp, $sp, 4
+        lw $t2, 0($sp)
+        addi $sp, $sp, 4
+        lw $t3, 0($sp)
+        addi $sp, $sp, 4
+        lw $t4, 0($sp)
+        addi $sp, $sp, 4
+        lw $t5, 0($sp)
+        addi $sp, $sp, 4
+        lw $t6, 0($sp)
+        addi $sp, $sp, 4
+        lw $t7, 0($sp)
+        addi $sp, $sp, 4
+        lw $s0, 0($sp)
+        addi $sp, $sp, 4
+        lw $s1, 0($sp)
+        addi $sp, $sp, 4
+        lw $s2, 0($sp)
+        addi $sp, $sp, 4
+        lw $s3, 0($sp)
+        addi $sp, $sp, 4
+        lw $s4, 0($sp)
+        addi $sp, $sp, 4
         move $s1, $v0
         li $a1, 0
         bne $s1, $a1, label_2
@@ -57,10 +109,62 @@
     label_5:
         li $a1, 100
         bgt $s3, $a1, label_6
+        addi $sp, $sp, -4
+        sw $t0, 0($sp)
+        addi $sp, $sp, -4
+        sw $t1, 0($sp)
+        addi $sp, $sp, -4
+        sw $t2, 0($sp)
+        addi $sp, $sp, -4
+        sw $t3, 0($sp)
+        addi $sp, $sp, -4
+        sw $t4, 0($sp)
+        addi $sp, $sp, -4
+        sw $t5, 0($sp)
+        addi $sp, $sp, -4
+        sw $t6, 0($sp)
+        addi $sp, $sp, -4
+        sw $t7, 0($sp)
+        addi $sp, $sp, -4
+        sw $s0, 0($sp)
+        addi $sp, $sp, -4
+        sw $s1, 0($sp)
+        addi $sp, $sp, -4
+        sw $s2, 0($sp)
+        addi $sp, $sp, -4
+        sw $s3, 0($sp)
+        addi $sp, $sp, -4
+        sw $s4, 0($sp)
         move $a0, $s3
         addi $sp, $sp, -4
         sw $a0, 0($sp)
         jal isPerfectNumber
+        lw $t0, 0($sp)
+        addi $sp, $sp, 4
+        lw $t1, 0($sp)
+        addi $sp, $sp, 4
+        lw $t2, 0($sp)
+        addi $sp, $sp, 4
+        lw $t3, 0($sp)
+        addi $sp, $sp, 4
+        lw $t4, 0($sp)
+        addi $sp, $sp, 4
+        lw $t5, 0($sp)
+        addi $sp, $sp, 4
+        lw $t6, 0($sp)
+        addi $sp, $sp, 4
+        lw $t7, 0($sp)
+        addi $sp, $sp, 4
+        lw $s0, 0($sp)
+        addi $sp, $sp, 4
+        lw $s1, 0($sp)
+        addi $sp, $sp, 4
+        lw $s2, 0($sp)
+        addi $sp, $sp, 4
+        lw $s3, 0($sp)
+        addi $sp, $sp, 4
+        lw $s4, 0($sp)
+        addi $sp, $sp, 4
         move $s4, $v0
         li $a1, 1
         bne $s4, $a1, label_7
