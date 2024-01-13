@@ -2,6 +2,7 @@
     reg_root: .space 16
     .globl main
     __prompt__: .asciiz "Enter an integer: "
+    __lf__: .asciiz "\n"
 .text
 
     main:
@@ -15,6 +16,9 @@
         addi $t3, $t2, 13
         move $a0, $t3
         li $v0, 1
+        syscall
+        la $a0, __lf__
+        li $v0, 4
         syscall
         li $v0, 10
         syscall

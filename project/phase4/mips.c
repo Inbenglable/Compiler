@@ -107,7 +107,7 @@ char* init(Code *head){
         }
     }
     
-    char* ret = (char*)malloc(sizeof(char)*100);
+    char* ret = (char*)malloc(sizeof(char)*200);
     sprintf(ret, ".data\n");
     if(1 == 0){
     //if(var_cnt <= 25-8+1){
@@ -120,6 +120,7 @@ char* init(Code *head){
     }
     sprintf(ret, "%s    .globl main\n", ret);
     sprintf(ret, "%s    __prompt__: .asciiz \"Enter an integer: \"\n", ret);
+    sprintf(ret, "%s    __lf__: .asciiz \"\\n\"\n", ret);
     sprintf(ret, "%s.text\n", ret);
     return ret;
 }
@@ -650,6 +651,9 @@ Mips *code_2_mips(Code* code){
             mips_code = link_Mips(mips_code, gen_mips("move", "$a0", int_to_reg(tmp1.reg), NULL));
         }
         mips_code = link_Mips(mips_code, gen_mips("li", "$v0", "1", NULL));
+        mips_code = link_Mips(mips_code, gen_mips("syscall", NULL, NULL, NULL));
+        mips_code = link_Mips(mips_code, gen_mips("la", "$a0", "__lf__", NULL));
+        mips_code = link_Mips(mips_code, gen_mips("li", "$v0", "4", NULL));
         mips_code = link_Mips(mips_code, gen_mips("syscall", NULL, NULL, NULL));
     }
     else{
