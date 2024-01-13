@@ -32,11 +32,11 @@ label2:
     sw $ra, 4($sp)
     sub $a0, $a0, 1
     jal fact
-    lw $a0, ($sp)
-    lw $ra, 4($sp)
-    addi $sp, $sp, 8
+    lw $a0, ($sp)           # restore a0
+    lw $ra, 4($sp)          # get return address
+    addi $sp, $sp, 8        # restore stack pointer
     mul $v0, $v0, $a0
-    jr $ra
+    jr $ra                  # return
 
 main:
     addi $sp, $sp, -4
