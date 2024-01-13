@@ -41,7 +41,7 @@ Mips* update_all_regs(){
     //if(var_cnt <= 25-8+1) return NULL;
     Mips* ret = NULL;
     for(int i = 8;i <= 25;i++){
-        if(regs[i].reg != -1){
+        if(regs[i].var_id != -1){
             ret = link_Mips(ret, update_reg(i, regs[i].var_id));
         }
     }
@@ -618,7 +618,7 @@ Mips *code_2_mips(Code* code){
             }
         }
         mips_code = link_Mips(mips_code, gen_mips("jal", code->tk2, NULL, NULL));
-        for(int i = 0;i < 18;i++){
+        for(int i = 17;i >= 0;i--){
             if(reg_in_use[i] == 1){
                 mips_code = link_Mips(mips_code, gen_mips("lw", int_to_reg(i+8), "0($sp)", NULL));
                 mips_code = link_Mips(mips_code, gen_mips("addi", "$sp", "$sp", "4"));
