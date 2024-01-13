@@ -493,7 +493,8 @@ Mips *code_2_mips(Code* code){
     else if(code->type == 14){
         ret_struct tmp1 = get_mips_reg(code->tk1);
         mips_code = link_Mips(mips_code, tmp1.code);
-        mips_code = link_Mips(mips_code, gen_mips("sw", int_to_reg(tmp1.reg), get_var_addr_str(regs[tmp1.reg].var_id*4-4), NULL));
+        mips_code = link_Mips(mips_code, gen_mips("lw", int_to_reg(tmp1.reg), "0($sp)", NULL));
+        mips_code = link_Mips(mips_code, gen_mips("addi", "$sp", "$sp", "4"));
     }
     else if(code->type == 15){
         if(code->tk1[0] == '#'){
