@@ -218,23 +218,26 @@ Mips *code_2_mips(Code* code){
     /*
     type 0: LABEL tk1 :
     type 1: FUNCTION tk1 :
-    type 2: tk1 := tk2
-    type 3: tk1 := tk2 + tk3
-    type 4: tk1 := tk2 - tk3
-    type 5: tk1 := tk2 * tk3
-    type 6: tk1 := tk2 / tk3
+    type 2: tk1 := tk2                  // tk2 could be a constant or a variable
+    type 3: tk1 := tk2 + tk3            // tk2 or tk3 could be a constant, but not both, or they can be both variables
+    type 4: tk1 := tk2 - tk3            // tk2 or tk3 could be a constant, but not both, or they can be both variables
+    type 5: tk1 := tk2 * tk3            // tk2 or tk3 could be a constant, but not both, or they can be both variables
+    type 6: tk1 := tk2 / tk3            // tk2 or tk3 could be a constant, but not both, or they can be both variables
     type 7: tk1 := &tk2                 // this will not appear in our ir code
     type 8: tk1 := *tk2                 // this will not appear in our ir code
     type 9: *tk1 := tk2                 // this will not appear in our ir code
-    type 10: GOTO tk1
-    type 11: IF tk1 relop tk2 GOTO tk3
-    type 12: RETURN tk1
+    type 10: GOTO tk1                   // tk1 must be a label name
+    type 11: IF tk1 relop tk2 GOTO tk3  // tk3 must be a label name, tk1 or tk2 could be a constant or a variable, they may be both constants or both variables
+    type 12: RETURN tk1                 // tk1 could be a constant or a variable
     type 13: DEC tk1 size               // this will not appear in our ir code
-    type 14: PARAM tk1
-    type 15: ARG tk1
-    type 16: tk1 := CALL tk2
-    type 17: READ tk1
-    type 18: WRITE tk1
+    type 14: PARAM tk1                  // tk1 must be a variable name
+    type 15: ARG tk1                    // tk1 could be a constant or a variable
+    type 16: tk1 := CALL tk2            // tk1 must be a variable, tk2 must be a function name (label in mips)
+    type 17: READ tk1                   // tk1 must be a variable
+    type 18: WRITE tk1                  // tk1 could be a constant or a variable
+    // format of constant: #number (that is, a number with a # in front of it)
+    // pay attention that in mips, the format of constants is different from that in ir code
+    // format of constant in mips: number (that is, a number without a # in front of it)
     */
     /*
     relop 0: <
@@ -252,121 +255,291 @@ Mips *code_2_mips(Code* code){
         mips_code = link_Mips(mips_code, gen_mips("FUNCTION", code->tk1, NULL, NULL));
     }
     else if(code->type == 2){
-        ret_struct reg_info1 = get_mips_reg(code->tk1);
-        ret_struct reg_info2 = get_mips_reg(code->tk2);
-        mips_code = link_Mips(mips_code, reg_info1.code);
-        mips_code = link_Mips(mips_code, reg_info2.code);
-        mips_code = link_Mips(mips_code, gen_mips("move", int_to_reg(reg_info1.reg), int_to_reg(reg_info2.reg), NULL));
+        if(code->tk2[0] == '#'){
+            ret_struct tmp1 = get_mips_reg(code->tk1);
+            mips_code = link_Mips(mips_code, tmp1.code);
+            mips_code = link_Mips(mips_code, gen_mips("li", int_to_reg(tmp1.reg), code->tk2+1, NULL));
+        }
+        else{
+            ret_struct tmp1 = get_mips_reg(code->tk1);
+            ret_struct tmp2 = get_mips_reg(code->tk2);
+            mips_code = link_Mips(mips_code, tmp1.code);
+            mips_code = link_Mips(mips_code, tmp2.code);
+            mips_code = link_Mips(mips_code, gen_mips("move", int_to_reg(tmp1.reg), int_to_reg(tmp2.reg), NULL));
+        }
     }
     else if(code->type == 3){
-        ret_struct reg_info1 = get_mips_reg(code->tk1);
-        ret_struct reg_info2 = get_mips_reg(code->tk2);
-        ret_struct reg_info3 = get_mips_reg(code->tk3);
-        mips_code = link_Mips(mips_code, reg_info1.code);
-        mips_code = link_Mips(mips_code, reg_info2.code);
-        mips_code = link_Mips(mips_code, reg_info3.code);
-        mips_code = link_Mips(mips_code, gen_mips("add", int_to_reg(reg_info1.reg), int_to_reg(reg_info2.reg), int_to_reg(reg_info3.reg)));
+        if(code->tk2[0] == '#'){
+            ret_struct tmp1 = get_mips_reg(code->tk1);
+            ret_struct tmp3 = get_mips_reg(code->tk3);
+            mips_code = link_Mips(mips_code, tmp1.code);
+            mips_code = link_Mips(mips_code, tmp3.code);
+            mips_code = link_Mips(mips_code, gen_mips("addi", int_to_reg(tmp1.reg), int_to_reg(tmp3.reg), code->tk2+1));
+        }
+        else if(code->tk3[0] == '#'){
+            ret_struct tmp1 = get_mips_reg(code->tk1);
+            ret_struct tmp2 = get_mips_reg(code->tk2);
+            mips_code = link_Mips(mips_code, tmp1.code);
+            mips_code = link_Mips(mips_code, tmp2.code);
+            mips_code = link_Mips(mips_code, gen_mips("addi", int_to_reg(tmp1.reg), int_to_reg(tmp2.reg), code->tk3+1));
+        }
+        else{
+            ret_struct tmp1 = get_mips_reg(code->tk1);
+            ret_struct tmp2 = get_mips_reg(code->tk2);
+            ret_struct tmp3 = get_mips_reg(code->tk3);
+            mips_code = link_Mips(mips_code, tmp1.code);
+            mips_code = link_Mips(mips_code, tmp2.code);
+            mips_code = link_Mips(mips_code, tmp3.code);
+            mips_code = link_Mips(mips_code, gen_mips("add", int_to_reg(tmp1.reg), int_to_reg(tmp2.reg), int_to_reg(tmp3.reg)));
+        }
     }
     else if(code->type == 4){
-        ret_struct reg_info1 = get_mips_reg(code->tk1);
-        ret_struct reg_info2 = get_mips_reg(code->tk2);
-        ret_struct reg_info3 = get_mips_reg(code->tk3);
-        mips_code = link_Mips(mips_code, reg_info1.code);
-        mips_code = link_Mips(mips_code, reg_info2.code);
-        mips_code = link_Mips(mips_code, reg_info3.code);
-        mips_code = link_Mips(mips_code, gen_mips("sub", int_to_reg(reg_info1.reg), int_to_reg(reg_info2.reg), int_to_reg(reg_info3.reg)));
+        if(code->tk2[0] == '#'){
+            ret_struct tmp1 = get_mips_reg(code->tk1);
+            ret_struct tmp3 = get_mips_reg(code->tk3);
+            mips_code = link_Mips(mips_code, tmp1.code);
+            mips_code = link_Mips(mips_code, tmp3.code);
+            char* tmp_const = (char*)malloc(sizeof(char)*30);
+            sprintf(tmp_const, "%d", -atoi(code->tk2+1));
+            mips_code = link_Mips(mips_code, gen_mips("addi", int_to_reg(tmp1.reg), int_to_reg(tmp3.reg), tmp_const));
+        }
+        else if(code->tk3[0] == '#'){
+            ret_struct tmp1 = get_mips_reg(code->tk1);
+            ret_struct tmp2 = get_mips_reg(code->tk2);
+            mips_code = link_Mips(mips_code, tmp1.code);
+            mips_code = link_Mips(mips_code, tmp2.code);
+            char* tmp_const = (char*)malloc(sizeof(char)*30);
+            sprintf(tmp_const, "%d", -atoi(code->tk3+1));
+            mips_code = link_Mips(mips_code, gen_mips("addi", int_to_reg(tmp1.reg), int_to_reg(tmp2.reg), tmp_const));
+        }
+        else{
+            ret_struct tmp1 = get_mips_reg(code->tk1);
+            ret_struct tmp2 = get_mips_reg(code->tk2);
+            ret_struct tmp3 = get_mips_reg(code->tk3);
+            mips_code = link_Mips(mips_code, tmp1.code);
+            mips_code = link_Mips(mips_code, tmp2.code);
+            mips_code = link_Mips(mips_code, tmp3.code);
+            mips_code = link_Mips(mips_code, gen_mips("sub", int_to_reg(tmp1.reg), int_to_reg(tmp2.reg), int_to_reg(tmp3.reg)));
+        }
     }
     else if(code->type == 5){
-        ret_struct reg_info1 = get_mips_reg(code->tk1);
-        ret_struct reg_info2 = get_mips_reg(code->tk2);
-        ret_struct reg_info3 = get_mips_reg(code->tk3);
-        mips_code = link_Mips(mips_code, reg_info1.code);
-        mips_code = link_Mips(mips_code, reg_info2.code);
-        mips_code = link_Mips(mips_code, reg_info3.code);
-        mips_code = link_Mips(mips_code, gen_mips("mul", int_to_reg(reg_info1.reg), int_to_reg(reg_info2.reg), int_to_reg(reg_info3.reg)));
+        if(code->tk2[0] == '#'){
+            ret_struct tmp1 = get_mips_reg(code->tk1);
+            ret_struct tmp3 = get_mips_reg(code->tk3);
+            mips_code = link_Mips(mips_code, tmp1.code);
+            mips_code = link_Mips(mips_code, tmp3.code);
+            char* tmp_const = (char*)malloc(sizeof(char)*30);
+            sprintf(tmp_const, "%d", atoi(code->tk2+1));
+            mips_code = link_Mips(mips_code, gen_mips("mul", int_to_reg(tmp1.reg), int_to_reg(tmp3.reg), tmp_const));
+        }
+        else if(code->tk3[0] == '#'){
+            ret_struct tmp1 = get_mips_reg(code->tk1);
+            ret_struct tmp2 = get_mips_reg(code->tk2);
+            mips_code = link_Mips(mips_code, tmp1.code);
+            mips_code = link_Mips(mips_code, tmp2.code);
+            char* tmp_const = (char*)malloc(sizeof(char)*30);
+            sprintf(tmp_const, "%d", atoi(code->tk3+1));
+            mips_code = link_Mips(mips_code, gen_mips("mul", int_to_reg(tmp1.reg), int_to_reg(tmp2.reg), tmp_const));
+        }
+        else{
+            ret_struct tmp1 = get_mips_reg(code->tk1);
+            ret_struct tmp2 = get_mips_reg(code->tk2);
+            ret_struct tmp3 = get_mips_reg(code->tk3);
+            mips_code = link_Mips(mips_code, tmp1.code);
+            mips_code = link_Mips(mips_code, tmp2.code);
+            mips_code = link_Mips(mips_code, tmp3.code);
+            mips_code = link_Mips(mips_code, gen_mips("mul", int_to_reg(tmp1.reg), int_to_reg(tmp2.reg), int_to_reg(tmp3.reg)));
+        }
     }
     else if(code->type == 6){
-        ret_struct reg_info1 = get_mips_reg(code->tk1);
-        ret_struct reg_info2 = get_mips_reg(code->tk2);
-        ret_struct reg_info3 = get_mips_reg(code->tk3);
-        mips_code = link_Mips(mips_code, reg_info1.code);
-        mips_code = link_Mips(mips_code, reg_info2.code);
-        mips_code = link_Mips(mips_code, reg_info3.code);
-        mips_code = link_Mips(mips_code, gen_mips("div", int_to_reg(reg_info1.reg), int_to_reg(reg_info2.reg), int_to_reg(reg_info3.reg)));
+        if(code->tk2[0] == '#'){
+            ret_struct tmp1 = get_mips_reg(code->tk1);
+            ret_struct tmp3 = get_mips_reg(code->tk3);
+            mips_code = link_Mips(mips_code, tmp1.code);
+            mips_code = link_Mips(mips_code, tmp3.code);
+            char* tmp_const = (char*)malloc(sizeof(char)*30);
+            sprintf(tmp_const, "%d", atoi(code->tk2+1));
+            mips_code = link_Mips(mips_code, gen_mips("div", int_to_reg(tmp1.reg), int_to_reg(tmp3.reg), tmp_const));
+        }
+        else if(code->tk3[0] == '#'){
+            ret_struct tmp1 = get_mips_reg(code->tk1);
+            ret_struct tmp2 = get_mips_reg(code->tk2);
+            mips_code = link_Mips(mips_code, tmp1.code);
+            mips_code = link_Mips(mips_code, tmp2.code);
+            char* tmp_const = (char*)malloc(sizeof(char)*30);
+            sprintf(tmp_const, "%d", atoi(code->tk3+1));
+            mips_code = link_Mips(mips_code, gen_mips("div", int_to_reg(tmp1.reg), int_to_reg(tmp2.reg), tmp_const));
+        }
+        else{
+            ret_struct tmp1 = get_mips_reg(code->tk1);
+            ret_struct tmp2 = get_mips_reg(code->tk2);
+            ret_struct tmp3 = get_mips_reg(code->tk3);
+            mips_code = link_Mips(mips_code, tmp1.code);
+            mips_code = link_Mips(mips_code, tmp2.code);
+            mips_code = link_Mips(mips_code, tmp3.code);
+            mips_code = link_Mips(mips_code, gen_mips("div", int_to_reg(tmp1.reg), int_to_reg(tmp2.reg), int_to_reg(tmp3.reg)));
+        }
     }
     else if(code->type == 10){
         mips_code = link_Mips(mips_code, gen_mips("j", code->tk1, NULL, NULL));
     }
     else if(code->type == 11){
-        ret_struct reg_info1 = get_mips_reg(code->tk1);
-        ret_struct reg_info2 = get_mips_reg(code->tk2);
-        mips_code = link_Mips(mips_code, reg_info1.code);
-        mips_code = link_Mips(mips_code, reg_info2.code);
-        if(code->relop == 0){
-            mips_code = link_Mips(mips_code, gen_mips("blt", int_to_reg(reg_info1.reg), int_to_reg(reg_info2.reg), code->tk3));
+        if(code->tk1[0] == '#'){
+            if(code->tk2[0] == '#'){
+                mips_code = link_Mips(mips_code, gen_mips("li", "$a0", code->tk1+1, NULL));
+                mips_code = link_Mips(mips_code, gen_mips("li", "$a1", code->tk2+1, NULL));
+                if(code->relop == 0){
+                    mips_code = link_Mips(mips_code, gen_mips("blt", "$a0", "$a1", code->tk3));
+                }
+                else if(code->relop == 1){
+                    mips_code = link_Mips(mips_code, gen_mips("ble", "$a0", "$a1", code->tk3));
+                }
+                else if(code->relop == 2){
+                    mips_code = link_Mips(mips_code, gen_mips("bgt", "$a0", "$a1", code->tk3));
+                }
+                else if(code->relop == 3){
+                    mips_code = link_Mips(mips_code, gen_mips("bge", "$a0", "$a1", code->tk3));
+                }
+                else if(code->relop == 4){
+                    mips_code = link_Mips(mips_code, gen_mips("bne", "$a0", "$a1", code->tk3));
+                }
+                else if(code->relop == 5){
+                    mips_code = link_Mips(mips_code, gen_mips("beq", "$a0", "$a1", code->tk3));
+                }
+            }
+            else{
+                ret_struct tmp2 = get_mips_reg(code->tk2);
+                mips_code = link_Mips(mips_code, tmp2.code);
+                mips_code = link_Mips(mips_code, gen_mips("li", "$a0", code->tk1+1, NULL));
+                if(code->relop == 0){
+                    mips_code = link_Mips(mips_code, gen_mips("blt", "$a0", int_to_reg(tmp2.reg), code->tk3));
+                }
+                else if(code->relop == 1){
+                    mips_code = link_Mips(mips_code, gen_mips("ble", "$a0", int_to_reg(tmp2.reg), code->tk3));
+                }
+                else if(code->relop == 2){
+                    mips_code = link_Mips(mips_code, gen_mips("bgt", "$a0", int_to_reg(tmp2.reg), code->tk3));
+                }
+                else if(code->relop == 3){
+                    mips_code = link_Mips(mips_code, gen_mips("bge", "$a0", int_to_reg(tmp2.reg), code->tk3));
+                }
+                else if(code->relop == 4){
+                    mips_code = link_Mips(mips_code, gen_mips("bne", "$a0", int_to_reg(tmp2.reg), code->tk3));
+                }
+                else if(code->relop == 5){
+                    mips_code = link_Mips(mips_code, gen_mips("beq", "$a0", int_to_reg(tmp2.reg), code->tk3));
+                }
+            }
         }
-        else if(code->relop == 1){
-            mips_code = link_Mips(mips_code, gen_mips("ble", int_to_reg(reg_info1.reg), int_to_reg(reg_info2.reg), code->tk3));
+        else if(code->tk2[0] == '#'){
+            ret_struct tmp1 = get_mips_reg(code->tk1);
+            mips_code = link_Mips(mips_code, tmp1.code);
+            mips_code = link_Mips(mips_code, gen_mips("li", "$a1", code->tk2+1, NULL));
+            if(code->relop == 0){
+                mips_code = link_Mips(mips_code, gen_mips("blt", int_to_reg(tmp1.reg), "$a1", code->tk3));
+            }
+            else if(code->relop == 1){
+                mips_code = link_Mips(mips_code, gen_mips("ble", int_to_reg(tmp1.reg), "$a1", code->tk3));
+            }
+            else if(code->relop == 2){
+                mips_code = link_Mips(mips_code, gen_mips("bgt", int_to_reg(tmp1.reg), "$a1", code->tk3));
+            }
+            else if(code->relop == 3){
+                mips_code = link_Mips(mips_code, gen_mips("bge", int_to_reg(tmp1.reg), "$a1", code->tk3));
+            }
+            else if(code->relop == 4){
+                mips_code = link_Mips(mips_code, gen_mips("bne", int_to_reg(tmp1.reg), "$a1", code->tk3));
+            }
+            else if(code->relop == 5){
+                mips_code = link_Mips(mips_code, gen_mips("beq", int_to_reg(tmp1.reg), "$a1", code->tk3));
+            }
         }
-        else if(code->relop == 2){
-            mips_code = link_Mips(mips_code, gen_mips("bgt", int_to_reg(reg_info1.reg), int_to_reg(reg_info2.reg), code->tk3));
-        }
-        else if(code->relop == 3){
-            mips_code = link_Mips(mips_code, gen_mips("bge", int_to_reg(reg_info1.reg), int_to_reg(reg_info2.reg), code->tk3));
-        }
-        else if(code->relop == 4){
-            mips_code = link_Mips(mips_code, gen_mips("bne", int_to_reg(reg_info1.reg), int_to_reg(reg_info2.reg), code->tk3));
-        }
-        else if(code->relop == 5){
-            mips_code = link_Mips(mips_code, gen_mips("beq", int_to_reg(reg_info1.reg), int_to_reg(reg_info2.reg), code->tk3));
+        else{
+            ret_struct tmp1 = get_mips_reg(code->tk1);
+            ret_struct tmp2 = get_mips_reg(code->tk2);
+            mips_code = link_Mips(mips_code, tmp1.code);
+            mips_code = link_Mips(mips_code, tmp2.code);
+            if(code->relop == 0){
+                mips_code = link_Mips(mips_code, gen_mips("blt", int_to_reg(tmp1.reg), int_to_reg(tmp2.reg), code->tk3));
+            }
+            else if(code->relop == 1){
+                mips_code = link_Mips(mips_code, gen_mips("ble", int_to_reg(tmp1.reg), int_to_reg(tmp2.reg), code->tk3));
+            }
+            else if(code->relop == 2){
+                mips_code = link_Mips(mips_code, gen_mips("bgt", int_to_reg(tmp1.reg), int_to_reg(tmp2.reg), code->tk3));
+            }
+            else if(code->relop == 3){
+                mips_code = link_Mips(mips_code, gen_mips("bge", int_to_reg(tmp1.reg), int_to_reg(tmp2.reg), code->tk3));
+            }
+            else if(code->relop == 4){
+                mips_code = link_Mips(mips_code, gen_mips("bne", int_to_reg(tmp1.reg), int_to_reg(tmp2.reg), code->tk3));
+            }
+            else if(code->relop == 5){
+                mips_code = link_Mips(mips_code, gen_mips("beq", int_to_reg(tmp1.reg), int_to_reg(tmp2.reg), code->tk3));
+            }
         }
     }
     else if(code->type == 12){
-        ret_struct reg_info1 = get_mips_reg(code->tk1);
-        mips_code = link_Mips(mips_code, reg_info1.code);
-        mips_code = link_Mips(mips_code, gen_mips("move", "$v0", int_to_reg(reg_info1.reg), NULL));
+        if(code->tk1[0] == '#'){
+            mips_code = link_Mips(mips_code, gen_mips("li", "$v0", code->tk1+1, NULL));
+        }
+        else{
+            ret_struct tmp1 = get_mips_reg(code->tk1);
+            mips_code = link_Mips(mips_code, tmp1.code);
+            mips_code = link_Mips(mips_code, gen_mips("move", "$v0", int_to_reg(tmp1.reg), NULL));
+        }
         mips_code = link_Mips(mips_code, gen_mips("jr", "$ra", NULL, NULL));
     }
     else if(code->type == 14){
-        ret_struct reg_info1 = get_mips_reg(code->tk1);
-        mips_code = link_Mips(mips_code, reg_info1.code);
-        mips_code = link_Mips(mips_code, gen_mips("move", int_to_reg(reg_info1.reg), "$a0", NULL));
+        ret_struct tmp1 = get_mips_reg(code->tk1);
+        mips_code = link_Mips(mips_code, tmp1.code);
+        mips_code = link_Mips(mips_code, gen_mips("sw", int_to_reg(tmp1.reg), get_var_addr_str(regs[tmp1.reg].var_id*4-4), NULL));
     }
     else if(code->type == 15){
-        ret_struct reg_info1 = get_mips_reg(code->tk1);
-        mips_code = link_Mips(mips_code, reg_info1.code);
-        mips_code = link_Mips(mips_code, gen_mips("move", "$a0", int_to_reg(reg_info1.reg), NULL));
+        if(code->tk1[0] == '#'){
+            mips_code = link_Mips(mips_code, gen_mips("li", "$a0", code->tk1+1, NULL));
+        }
+        else{
+            ret_struct tmp1 = get_mips_reg(code->tk1);
+            mips_code = link_Mips(mips_code, tmp1.code);
+            mips_code = link_Mips(mips_code, gen_mips("move", "$a0", int_to_reg(tmp1.reg), NULL));
+        }
         mips_code = link_Mips(mips_code, gen_mips("addi", "$sp", "$sp", "-4"));
-        mips_code = link_Mips(mips_code, gen_mips("sw", "$ra", "0($sp)", NULL));
-        mips_code = link_Mips(mips_code, gen_mips("jal", code->tk1, NULL, NULL));
-        mips_code = link_Mips(mips_code, gen_mips("lw", "$ra", "0($sp)", NULL));
-        mips_code = link_Mips(mips_code, gen_mips("addi", "$sp", "$sp", "4"));
+        mips_code = link_Mips(mips_code, gen_mips("sw", "$a0", "0($sp)", NULL));
     }
     else if(code->type == 16){
-        ret_struct reg_info1 = get_mips_reg(code->tk1);
-        mips_code = link_Mips(mips_code, reg_info1.code);
-        mips_code = link_Mips(mips_code, gen_mips("move", "$v0", int_to_reg(reg_info1.reg), NULL));
+        mips_code = link_Mips(mips_code, gen_mips("jal", code->tk2, NULL, NULL));
+        ret_struct tmp1 = get_mips_reg(code->tk1);
+        mips_code = link_Mips(mips_code, tmp1.code);
+        mips_code = link_Mips(mips_code, gen_mips("move", int_to_reg(tmp1.reg), "$v0", NULL));
     }
     else if(code->type == 17){
-        ret_struct reg_info1 = get_mips_reg(code->tk1);
-        mips_code = link_Mips(mips_code, reg_info1.code);
-        mips_code = link_Mips(mips_code, gen_mips("move", "$a0", int_to_reg(reg_info1.reg), NULL));
+        ret_struct tmp1 = get_mips_reg(code->tk1);
+        mips_code = link_Mips(mips_code, tmp1.code);
         mips_code = link_Mips(mips_code, gen_mips("addi", "$sp", "$sp", "-4"));
-        mips_code = link_Mips(mips_code, gen_mips("sw", "$ra", "0($sp)", NULL));
+        mips_code = link_Mips(mips_code, gen_mips("sw", int_to_reg(tmp1.reg), "0($sp)", NULL));
         mips_code = link_Mips(mips_code, gen_mips("jal", "read", NULL, NULL));
-        mips_code = link_Mips(mips_code, gen_mips("lw", "$ra", "0($sp)", NULL));
+        mips_code = link_Mips(mips_code, gen_mips("lw", int_to_reg(tmp1.reg), "0($sp)", NULL));
         mips_code = link_Mips(mips_code, gen_mips("addi", "$sp", "$sp", "4"));
-        mips_code = link_Mips(mips_code, gen_mips("move", int_to_reg(reg_info1.reg), "$v0", NULL));
     }
     else if(code->type == 18){
-        ret_struct reg_info1 = get_mips_reg(code->tk1);
-        mips_code = link_Mips(mips_code, reg_info1.code);
-        mips_code = link_Mips(mips_code, gen_mips("move", "$a0", int_to_reg(reg_info1.reg), NULL));
+        if(code->tk1[0] == '#'){
+            mips_code = link_Mips(mips_code, gen_mips("li", "$a0", code->tk1+1, NULL));
+        }
+        else{
+            ret_struct tmp1 = get_mips_reg(code->tk1);
+            mips_code = link_Mips(mips_code, tmp1.code);
+            mips_code = link_Mips(mips_code, gen_mips("move", "$a0", int_to_reg(tmp1.reg), NULL));
+        }
         mips_code = link_Mips(mips_code, gen_mips("addi", "$sp", "$sp", "-4"));
-        mips_code = link_Mips(mips_code, gen_mips("sw", "$ra", "0($sp)", NULL));
+        mips_code = link_Mips(mips_code, gen_mips("sw", "$a0", "0($sp)", NULL));
         mips_code = link_Mips(mips_code, gen_mips("jal", "write", NULL, NULL));
-        mips_code = link_Mips(mips_code, gen_mips("lw", "$ra", "0($sp)", NULL));
+        mips_code = link_Mips(mips_code, gen_mips("lw", "$a0", "0($sp)", NULL));
         mips_code = link_Mips(mips_code, gen_mips("addi", "$sp", "$sp", "4"));
+    }
+    else{
+        printf("Error: unknown type of ir code\n");
+        fflush(stdout);
     }
     return mips_code;
 }
@@ -412,19 +585,19 @@ void print_end_code(Mips* mips_code){
 
 void translate_mips(Code* ir_code, char* filename){
     char* preamble = init(ir_code);
-    printf("Start translating to mips...\n");
+    // printf("Start translating to mips...\n");
     Mips *mips_code = NULL;
     Code *tmp = ir_code;
-    printf("tag111\n");
-    fflush(stdout);
+    // printf("tag111\n");
+    // fflush(stdout);
     while(tmp != NULL){
         mips_code = link_Mips(mips_code, code_2_mips(tmp));
         print_end_code(mips_code);
         tmp = tmp->next;
     }
-    printf("start to dump codes\n");
-    fflush(stdout);
+    // printf("start to dump codes\n");
+    // fflush(stdout);
     dump_mips(mips_code, preamble, filename);
-    printf("finish dump codes\n");
-    fflush(stdout);
+    // printf("finish dump codes\n");
+    // fflush(stdout);
 }
