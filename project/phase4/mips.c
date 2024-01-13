@@ -267,7 +267,7 @@ int get_unused_reg(){
 
 ret_struct get_mips_reg(char *var_name){
     ret_struct ret = {3, NULL};
-
+    reg_used_cnt++;
     for(int i = 1;i <= var_cnt;i++){
         if(strcmp(vars[i].name, var_name) == 0){
             if(vars[i].reg != -1){
@@ -281,7 +281,6 @@ ret_struct get_mips_reg(char *var_name){
                 ret.code = link_Mips(ret.code, update_reg(ret.reg, regs[ret.reg].var_id));
                 ret.code = link_Mips(ret.code, load_var(ret.reg, i));
                 regs[ret.reg].visited = reg_used_cnt;
-                
                 return ret;
             }
         }
