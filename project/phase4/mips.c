@@ -9,29 +9,29 @@ Mips_Var vars[1145];
 int var_cnt;
 Reg regs[32];
 int reg_used_cnt;
-int lable_cnt;
-lable_name lables[1145];
+int label_cnt;
+label_name labels[1145];
 
-void change_lable_tag(char* name){
+void change_label_tag(char* name){
     int exist = 0;
-    for(int i = 1;i <= lable_cnt;i++){
-        if(strcmp(lables[i].name, name) == 0){
-            lables[i].tag = 1;
+    for(int i = 1;i <= label_cnt;i++){
+        if(strcmp(labels[i].name, name) == 0){
+            labels[i].tag = 1;
             exist = 1;
             return;
         }
     }
     if(exist == 0){
-        lables[++lable_cnt].name = name;
-        lables[lable_cnt].tag = 1;
+        labels[++label_cnt].name = name;
+        labels[label_cnt].tag = 1;
     }
     return;
 }
 
-int check_lable_tag(char* name){
-    for(int i = 1;i <= lable_cnt;i++){
-        if(strcmp(lables[i].name, name) == 0){
-            return lables[i].tag;
+int check_label_tag(char* name){
+    for(int i = 1;i <= label_cnt;i++){
+        if(strcmp(labels[i].name, name) == 0){
+            return labels[i].tag;
         }
     }
     return 0;
