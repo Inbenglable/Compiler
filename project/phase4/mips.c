@@ -38,7 +38,7 @@ int check_label_tag(char* name){
 }
 
 Mips* update_all_regs(){
-    if(var_cnt <= 25-8+1) return NULL;
+    //if(var_cnt <= 25-8+1) return NULL;
     Mips* ret = NULL;
     for(int i = 8;i <= 25;i++){
         if(regs[i].reg != -1){
@@ -106,7 +106,8 @@ char* init(Code *head){
     
     char* ret = (char*)malloc(sizeof(char)*100);
     sprintf(ret, ".data\n");
-    if(var_cnt <= 25-8+1){
+    if(1 == 0){
+    //if(var_cnt <= 25-8+1){
         for(int i = 1;i <= var_cnt;i++){
             vars[i].reg = i+8-1;
             regs[i+8-1].var_id = i;
