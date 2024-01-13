@@ -268,8 +268,8 @@ ret_struct get_mips_reg(char *var_name){
 ///FC_Viiiiictor_K's part is over here
 
 int arg_cnt = 0;
-int reg_in_use[18];
 int calling_func = 0;
+char* curr_func_name = NULL;
 
 char* add_offset_to_reg(int reg, int offset){
     char* ret = (char*)malloc(sizeof(char)*30);
@@ -320,6 +320,7 @@ Mips *code_2_mips(Code* code){
     else if(code->type == 1){
         mips_code = link_Mips(mips_code, gen_mips("FUNCTION", code->tk1, NULL, NULL));
         mips_code = link_Mips(mips_code, update_all_regs());
+        curr_func_name = code->tk1;
         if(strcmp(code->tk1, "main") == 0){
             arg_cnt = -1; // main function definitely has no arguments
         }
@@ -624,11 +625,21 @@ Mips *code_2_mips(Code* code){
     else if(code->type == 15){
         if(calling_func == 0){
             calling_func = 1;
-            for(int i = 0;i < 18;i++){
-                reg_in_use[i] = (regs[i+8].var_id == -1?0:1);
-                if(reg_in_use[i] == 1){
+            // for(int i = 0;i < 18;i++){
+            //     reg_in_use[i] = (regs[i+8].var_id == -1?0:1);
+            //     if(reg_in_use[i] == 1){
+            //         mips_code = link_Mips(mips_code, gen_mips("addi", "$sp", "$sp", "-4"));
+            //         mips_code = link_Mips(mips_code, gen_mips("sw", int_to_reg(i+8), "0($sp)", NULL));
+            //     }
+            // }
+            // save all the variables that are in use
+            int func_id = get_fun_num(curr_func_name);
+            for(int i = 1;i <= var_cnt;i++){
+                if(vars[i].fun_num == func_id){
+                    ret_struct tmp1 = get_mips_reg(vars[i].name);
+                    mips_code = link_Mips(mips_code, tmp1.code);
                     mips_code = link_Mips(mips_code, gen_mips("addi", "$sp", "$sp", "-4"));
-                    mips_code = link_Mips(mips_code, gen_mips("sw", int_to_reg(i+8), "0($sp)", NULL));
+                    mips_code = link_Mips(mips_code, gen_mips("sw", int_to_reg(tmp1.reg), "0($sp)", NULL));
                 }
             }
         }
@@ -645,18 +656,38 @@ Mips *code_2_mips(Code* code){
     }
     else if(code->type == 16){
         if(calling_func == 0){
-            for(int i = 0;i < 18;i++){
-                reg_in_use[i] = (regs[i+8].var_id == -1?0:1);
-                if(reg_in_use[i] == 1){
+            // for(int i = 0;i < 18;i++){
+            //     reg_in_use[i] = (regs[i+8].var_id == -1?0:1);
+            //     if(reg_in_use[i] == 1){
+            //         mips_code = link_Mips(mips_code, gen_mips("addi", "$sp", "$sp", "-4"));
+            //         mips_code = link_Mips(mips_code, gen_mips("sw", int_to_reg(i+8), "0($sp)", NULL));
+            //     }
+            // }
+            // save all the variables that are in use
+            int func_id = get_fun_num(curr_func_name);
+            for(int i = 1;i <= var_cnt;i++){
+                if(vars[i].fun_num == func_id){
+                    ret_struct tmp1 = get_mips_reg(vars[i].name);
+                    mips_code = link_Mips(mips_code, tmp1.code);
                     mips_code = link_Mips(mips_code, gen_mips("addi", "$sp", "$sp", "-4"));
-                    mips_code = link_Mips(mips_code, gen_mips("sw", int_to_reg(i+8), "0($sp)", NULL));
+                    mips_code = link_Mips(mips_code, gen_mips("sw", int_to_reg(tmp1.reg), "0($sp)", NULL));
                 }
             }
         }
         mips_code = link_Mips(mips_code, gen_mips("jal", code->tk2, NULL, NULL));
-        for(int i = 17;i >= 0;i--){
-            if(reg_in_use[i] == 1){
-                mips_code = link_Mips(mips_code, gen_mips("lw", int_to_reg(i+8), "0($sp)", NULL));
+        //for(int i = 17;i >= 0;i--){
+            // if(reg_in_use[i] == 1){
+            //     mips_code = link_Mips(mips_code, gen_mips("lw", int_to_reg(i+8), "0($sp)", NULL));
+            //     mips_code = link_Mips(mips_code, gen_mips("addi", "$sp", "$sp", "4"));
+            // }
+        //}
+        // restore all the variables that were in use
+        int func_id = get_fun_num(curr_func_name);
+        for(int i = var_cnt;i > 0;i++){
+            if(vars[i].fun_num == func_id){
+                ret_struct tmp1 = get_mips_reg(vars[i].name);
+                mips_code = link_Mips(mips_code, tmp1.code);
+                mips_code = link_Mips(mips_code, gen_mips("lw", int_to_reg(tmp1.reg), "0($sp)", NULL));
                 mips_code = link_Mips(mips_code, gen_mips("addi", "$sp", "$sp", "4"));
             }
         }
