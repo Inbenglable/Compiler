@@ -1,12 +1,18 @@
-int pprriit(int x1, int x2){
+int pprriit(int x1, int x2, int x3, int x4, int x5){
     write(x1);
     write(x2);
+    write(x3);
+    write(x4);
+    write(x5);
     return 0;
 }
 
 int main(){
     int a = 1;
     int b = 2;
-    pprriit(a, b);
+    int c = 3;
+    int d = 4;
+    int e = 5;
+    pprriit(a, b, c, d, e);
     return 0;
 }

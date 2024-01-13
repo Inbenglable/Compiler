@@ -229,7 +229,7 @@ int get_unused_reg(){
 }
 
 ret_struct get_mips_reg(char *var_name){
-    ret_struct ret;
+    ret_struct ret = {3, NULL};
 
     for(int i = 1;i <= var_cnt;i++){
         if(strcmp(vars[i].name, var_name) == 0){
@@ -553,16 +553,16 @@ Mips *code_2_mips(Code* code){
         mips_code = link_Mips(mips_code, gen_mips("jal", code->tk2, NULL, NULL));
         ret_struct tmp1 = get_mips_reg(code->tk1);
         mips_code = link_Mips(mips_code, tmp1.code);
+        printf("tmp1.reg is %d, it's name is %s\n", tmp1.reg, code->tk1);
+        fflush(stdout);
         mips_code = link_Mips(mips_code, gen_mips("move", int_to_reg(tmp1.reg), "$v0", NULL));
     }
     else if(code->type == 17){
         ret_struct tmp1 = get_mips_reg(code->tk1);
         mips_code = link_Mips(mips_code, tmp1.code);
-        mips_code = link_Mips(mips_code, gen_mips("addi", "$sp", "$sp", "-4"));
-        mips_code = link_Mips(mips_code, gen_mips("sw", int_to_reg(tmp1.reg), "0($sp)", NULL));
-        mips_code = link_Mips(mips_code, gen_mips("jal", "read", NULL, NULL));
-        mips_code = link_Mips(mips_code, gen_mips("lw", int_to_reg(tmp1.reg), "0($sp)", NULL));
-        mips_code = link_Mips(mips_code, gen_mips("addi", "$sp", "$sp", "4"));
+        mips_code = link_Mips(mips_code, gen_mips("li", "$v0", "5", NULL));
+        mips_code = link_Mips(mips_code, gen_mips("syscall", NULL, NULL, NULL));
+        mips_code = link_Mips(mips_code, gen_mips("move", int_to_reg(tmp1.reg), "$v0", NULL));
     }
     else if(code->type == 18){
         if(code->tk1[0] == '#'){
@@ -573,11 +573,8 @@ Mips *code_2_mips(Code* code){
             mips_code = link_Mips(mips_code, tmp1.code);
             mips_code = link_Mips(mips_code, gen_mips("move", "$a0", int_to_reg(tmp1.reg), NULL));
         }
-        mips_code = link_Mips(mips_code, gen_mips("addi", "$sp", "$sp", "-4"));
-        mips_code = link_Mips(mips_code, gen_mips("sw", "$a0", "0($sp)", NULL));
-        mips_code = link_Mips(mips_code, gen_mips("jal", "write", NULL, NULL));
-        mips_code = link_Mips(mips_code, gen_mips("lw", "$a0", "0($sp)", NULL));
-        mips_code = link_Mips(mips_code, gen_mips("addi", "$sp", "$sp", "4"));
+        mips_code = link_Mips(mips_code, gen_mips("li", "$v0", "1", NULL));
+        mips_code = link_Mips(mips_code, gen_mips("syscall", NULL, NULL, NULL));
     }
     else{
         printf("Error: unknown type of ir code\n");
