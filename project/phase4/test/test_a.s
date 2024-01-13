@@ -294,6 +294,9 @@
         sw $s7, reg_root + 60
         sw $t8, reg_root + 64
         sw $t9, reg_root + 68
+        lw $t0, reg_root + 252
+        addi $sp, $sp, -4
+        sw $t0, 0($sp)
         li $a0, 32
         addi $sp, $sp, -4
         sw $a0, 0($sp)
@@ -391,7 +394,8 @@
         addi $sp, $sp, -4
         sw $a0, 0($sp)
         jal foo
-        lw $t0, reg_root + 252
+        lw $t0, 0($sp)
+        addi $sp, $sp, 4
         move $t0, $v0
         move $a0, $t0
         li $v0, 1

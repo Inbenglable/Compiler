@@ -25,20 +25,28 @@
         lw $t1, reg_root
         addi $t0, $t1, -1
         addi $sp, $sp, -4
-        sw $t0, 0($sp)
-        addi $sp, $sp, -4
         sw $t1, 0($sp)
+        addi $sp, $sp, -4
+        sw $t0, 0($sp)
+        lw $t2, reg_root + 8
+        addi $sp, $sp, -4
+        sw $t2, 0($sp)
+        lw $t3, reg_root + 12
+        addi $sp, $sp, -4
+        sw $t3, 0($sp)
         move $a0, $t0
         addi $sp, $sp, -4
         sw $a0, 0($sp)
         jal fact
-        lw $t1, 0($sp)
+        lw $t3, 0($sp)
+        addi $sp, $sp, 4
+        lw $t2, 0($sp)
         addi $sp, $sp, 4
         lw $t0, 0($sp)
         addi $sp, $sp, 4
-        lw $t2, reg_root + 8
+        lw $t1, 0($sp)
+        addi $sp, $sp, 4
         move $t2, $v0
-        lw $t3, reg_root + 12
         mul $t3, $t1, $t2
         move $v0, $t3
         lw $ra, 0($sp)
@@ -63,13 +71,17 @@
         ble $t0, $a1, label_2
         addi $sp, $sp, -4
         sw $t0, 0($sp)
+        lw $t1, reg_root + 20
+        addi $sp, $sp, -4
+        sw $t1, 0($sp)
         move $a0, $t0
         addi $sp, $sp, -4
         sw $a0, 0($sp)
         jal fact
+        lw $t1, 0($sp)
+        addi $sp, $sp, 4
         lw $t0, 0($sp)
         addi $sp, $sp, 4
-        lw $t1, reg_root + 20
         move $t1, $v0
         sw $t0, reg_root + 16
         sw $t1, reg_root + 20

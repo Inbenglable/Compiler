@@ -658,7 +658,7 @@ Mips *code_2_mips(Code* code){
             //     }
             // }
             // save all the variables that are in use
-            int func_id = get_fun_num(curr_func_name);
+            int func_id = get_func_num(curr_func_name);
             for(int i = 1;i <= var_cnt;i++){
                 if(vars[i].fun_num == func_id){
                     ret_struct tmp1 = get_mips_reg(vars[i].name);
@@ -689,7 +689,7 @@ Mips *code_2_mips(Code* code){
             //     }
             // }
             // save all the variables that are in use
-            int func_id = get_fun_num(curr_func_name);
+            int func_id = get_func_num(curr_func_name);
             for(int i = 1;i <= var_cnt;i++){
                 if(vars[i].fun_num == func_id){
                     ret_struct tmp1 = get_mips_reg(vars[i].name);
@@ -707,8 +707,8 @@ Mips *code_2_mips(Code* code){
             // }
         //}
         // restore all the variables that were in use
-        int func_id = get_fun_num(curr_func_name);
-        for(int i = var_cnt;i > 0;i++){
+        int func_id = get_func_num(curr_func_name);
+        for(int i = var_cnt;i > 0;i--){
             if(vars[i].fun_num == func_id){
                 ret_struct tmp1 = get_mips_reg(vars[i].name);
                 mips_code = link_Mips(mips_code, tmp1.code);
