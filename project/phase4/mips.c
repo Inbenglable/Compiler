@@ -72,8 +72,9 @@ char* init(Code *head){
             vars[i].reg = i+8-1;
             regs[i+8-1].var_id = i;
         }
+        sprintf(ret, ".text\n", var_cnt*4);
     }else{
-        sprintf(ret, "reg_root: .space %d", var_cnt*4);
+        sprintf(ret, ".data\n    reg_root: .space %d\n.text\n", var_cnt*4);
     }
     return ret;
 }
@@ -247,6 +248,8 @@ Mips *code_2_mips(Code* code){
     relop 4: !=
     relop 5: ==
     */
+    printf("start translating ir code: %d\n", code->type);
+    fflush(stdout);
     Mips *mips_code = NULL;
     if(code->type == 0){
         mips_code = link_Mips(mips_code, gen_mips("LABEL", code->tk1, NULL, NULL));
@@ -553,21 +556,21 @@ void dump_mips(Mips *head, char* preamble, char* filename){
     while(tmp != NULL){
         fflush(stdout);
         if(tmp->tk_d == NULL){
-            fprintf(fp, "%s\n", tmp->op);
+            fprintf(fp, "        %s\n", tmp->op);
         }
         else if(tmp->tk_s == NULL){
             if(strcmp(tmp->op, "LABEL") == 0 || strcmp(tmp->op, "FUNCTION") == 0){
-                fprintf(fp, "%s:\n", tmp->tk_d);
+                fprintf(fp, "    %s:\n", tmp->tk_d);
             }
             else{
-                fprintf(fp, "%s %s\n", tmp->op, tmp->tk_d);
+                fprintf(fp, "        %s %s\n", tmp->op, tmp->tk_d);
             }
         }
         else if(tmp->tk_t == NULL){
-            fprintf(fp, "%s %s, %s\n", tmp->op, tmp->tk_d, tmp->tk_s);
+            fprintf(fp, "        %s %s, %s\n", tmp->op, tmp->tk_d, tmp->tk_s);
         }
         else{
-            fprintf(fp, "%s %s, %s, %s\n", tmp->op, tmp->tk_d, tmp->tk_s, tmp->tk_t);
+            fprintf(fp, "        %s %s, %s, %s\n", tmp->op, tmp->tk_d, tmp->tk_s, tmp->tk_t);
         }
         tmp = tmp->next;
     }
@@ -591,6 +594,8 @@ void translate_mips(Code* ir_code, char* filename){
     // printf("tag111\n");
     // fflush(stdout);
     while(tmp != NULL){
+        printf("translating ir: %d, %s, %s, %s\n", tmp->type, tmp->tk1, tmp->tk2, tmp->tk3);
+        fflush(stdout);
         mips_code = link_Mips(mips_code, code_2_mips(tmp));
         print_end_code(mips_code);
         tmp = tmp->next;

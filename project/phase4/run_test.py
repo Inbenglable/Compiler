@@ -2,7 +2,7 @@ import os
 
 
 TEST_PATH = './test/'
-TRIAL = False
+TRIAL = True
 
 
 if __name__ == '__main__':
