@@ -34,6 +34,14 @@ typedef struct ret_struct{
     struct Mips* code;
 } ret_struct;
 
+typedef struct lable_name{
+    char* name;
+    int tag;
+} lable_name;
+
+extern int lable_cnt;
+extern lable_name lables[1145];
+
 extern int reg_used_cnt;
 ret_struct get_reg(char *var_name);
 

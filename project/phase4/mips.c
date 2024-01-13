@@ -9,6 +9,44 @@ Mips_Var vars[1145];
 int var_cnt;
 Reg regs[32];
 int reg_used_cnt;
+int lable_cnt;
+lable_name lables[1145];
+
+void change_lable_tag(char* name){
+    int exist = 0;
+    for(int i = 1;i <= lable_cnt;i++){
+        if(strcmp(lables[i].name, name) == 0){
+            lables[i].tag = 1;
+            exist = 1;
+            return;
+        }
+    }
+    if(exist == 0){
+        lables[++lable_cnt].name = name;
+        lables[lable_cnt].tag = 1;
+    }
+    return;
+}
+
+int check_lable_tag(char* name){
+    for(int i = 1;i <= lable_cnt;i++){
+        if(strcmp(lables[i].name, name) == 0){
+            return lables[i].tag;
+        }
+    }
+    return 0;
+}
+
+Mips* update_all_regs(){
+    if(var_cnt <= 25-8+1) return NULL;
+    Mips* ret = NULL;
+    for(int i = 8;i <= 25;i++){
+        if(regs[i].reg != -1){
+            ret = link_Mips(ret, update_reg(i, regs[i].var_id));
+        }
+    }
+    return ret;
+}
 
 int check_create_var(char* name){
     int i;
