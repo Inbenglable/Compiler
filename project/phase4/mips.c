@@ -11,6 +11,8 @@ Reg regs[32];
 int reg_used_cnt;
 int label_cnt;
 label_name labels[1145];
+fun_list funs[1145];
+int fun_cnt;
 
 void change_label_tag(char* name){
     int exist = 0;
@@ -75,24 +77,47 @@ int check_var_mips(char* name){
     return 0;
 }
 
+int get_func_num(char* name){
+    for(int i = 1; i <= fun_cnt; i++){
+        if(strcmp(funs[i].name, name) == 0){
+            return funs[i].id;
+        }
+    }
+    return -1;
+}
+
+void assign_fun(char* name, int num){
+    funs[num].name = (char*)malloc(sizeof(char)*30);
+    funs[num].name = name;
+    funs[num].id = num;
+}
+
 char* init(Code *head){
     Code *tmp = head;
     var_cnt = 0;
+    fun_cnt = 0;
     while(tmp != NULL){
+        if(tmp->type == 1){
+            fun_cnt++;
+            assign_fun(tmp->tk1, fun_cnt);
+        }
         if(tmp->tk1 != NULL && check_var_mips(tmp->tk1) == 1){
             vars[++var_cnt].name = tmp->tk1;
             vars[var_cnt].incash = 0;
             vars[var_cnt].reg = -1;
+            vars[var_cnt].fun_num = fun_cnt;
         }
         if(tmp->tk2 != NULL && check_var_mips(tmp->tk2) == 1){
             vars[++var_cnt].name = tmp->tk2;
             vars[var_cnt].incash = 0;
             vars[var_cnt].reg = -1;
+            vars[var_cnt].fun_num = fun_cnt;
         }
         if(tmp->tk3 != NULL && check_var_mips(tmp->tk3) == 1){
             vars[++var_cnt].name = tmp->tk3;
             vars[var_cnt].incash = 0;
             vars[var_cnt].reg = -1;
+            vars[var_cnt].fun_num = fun_cnt;
         }
         tmp = tmp->next;
     }

@@ -7,9 +7,17 @@ typedef struct Mips_Var{
     char* name;
     int incash;
     int reg;
+    int fun_num;
 } Mips_Var;
 extern Mips_Var vars[1145];
 extern int var_cnt;
+
+typedef struct fun_list{
+    char* name;
+    int id;
+} fun_list;
+extern fun_list funs[1145];
+extern int fun_cnt;
 
 typedef struct Reg{
     int reg;
