@@ -93,8 +93,7 @@ char* init(Code *head){
         }
         tmp = tmp->next;
     }
-    int i;
-    for(i = 0; i < 32; i++){
+    for(int i = 0; i < 32; i++){
         regs[i].reg = i;
         regs[i].var_id = -1;
         regs[i].visited = 0;
@@ -104,13 +103,14 @@ char* init(Code *head){
             regs[i].preserved = 0;
         }
     }
-    char* ret = NULL;
+    
+    char* ret = (char*)malloc(sizeof(char)*100);
     if(var_cnt <= 25-8+1){
         for(int i = 1;i <= var_cnt;i++){
             vars[i].reg = i+8-1;
             regs[i+8-1].var_id = i;
         }
-        sprintf(ret, ".text\n", var_cnt*4);
+        sprintf(ret, ".text\n");
     }else{
         sprintf(ret, ".data\n    reg_root: .space %d\n.text\n", var_cnt*4);
     }
@@ -628,6 +628,7 @@ void print_end_code(Mips* mips_code){
 void translate_mips(Code* ir_code, char* filename){
     char* preamble = init(ir_code);
     // printf("Start translating to mips...\n");
+    // fflush(stdout);
     Mips *mips_code = NULL;
     Code *tmp = ir_code;
     // printf("tag111\n");
