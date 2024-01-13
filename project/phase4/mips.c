@@ -632,6 +632,9 @@ Mips *code_2_mips(Code* code){
         mips_code = link_Mips(mips_code, gen_mips("move", int_to_reg(tmp1.reg), "$v0", NULL));
     }
     else if(code->type == 17){
+        mips_code = link_Mips(mips_code, gen_mips("la", "$a0", "__prompt__", NULL));
+        mips_code = link_Mips(mips_code, gen_mips("li", "$v0", "4", NULL));
+        mips_code = link_Mips(mips_code, gen_mips("syscall", NULL, NULL, NULL));
         ret_struct tmp1 = get_mips_reg(code->tk1);
         mips_code = link_Mips(mips_code, tmp1.code);
         mips_code = link_Mips(mips_code, gen_mips("li", "$v0", "5", NULL));

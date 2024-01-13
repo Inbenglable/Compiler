@@ -1,15 +1,21 @@
 .data
+    reg_root: .space 40
     .globl main
     __prompt__: .asciiz "Enter an integer: "
 .text
-j main
+
     pprriit:
         addi $sp, $sp, -4
         sw $ra, 0($sp)
+        lw $t0, reg_root
         lw $t0, 4($sp)
+        lw $t1, reg_root + 4
         lw $t1, 8($sp)
+        lw $t2, reg_root + 8
         lw $t2, 12($sp)
+        lw $t3, reg_root + 12
         lw $t3, 16($sp)
+        lw $t4, reg_root + 16
         lw $t4, 20($sp)
         move $a0, $t0
         li $v0, 1
@@ -31,11 +37,21 @@ j main
         addi $sp, $sp, 24
         jr $ra
     main:
-        li $t5, 1
-        li $t6, 2
-        li $t7, 3
-        li $s0, 4
-        li $s1, 5
+        sw $t0, reg_root
+        sw $t1, reg_root + 4
+        sw $t2, reg_root + 8
+        sw $t3, reg_root + 12
+        sw $t4, reg_root + 16
+        lw $t0, reg_root + 20
+        li $t0, 1
+        lw $t1, reg_root + 24
+        li $t1, 2
+        lw $t2, reg_root + 28
+        li $t2, 3
+        lw $t3, reg_root + 32
+        li $t3, 4
+        lw $t4, reg_root + 36
+        li $t4, 5
         addi $sp, $sp, -4
         sw $t0, 0($sp)
         addi $sp, $sp, -4
@@ -46,16 +62,6 @@ j main
         sw $t3, 0($sp)
         addi $sp, $sp, -4
         sw $t4, 0($sp)
-        addi $sp, $sp, -4
-        sw $t5, 0($sp)
-        addi $sp, $sp, -4
-        sw $t6, 0($sp)
-        addi $sp, $sp, -4
-        sw $t7, 0($sp)
-        addi $sp, $sp, -4
-        sw $s0, 0($sp)
-        addi $sp, $sp, -4
-        sw $s1, 0($sp)
         li $a0, 5
         addi $sp, $sp, -4
         sw $a0, 0($sp)
@@ -81,16 +87,6 @@ j main
         lw $t3, 0($sp)
         addi $sp, $sp, 4
         lw $t4, 0($sp)
-        addi $sp, $sp, 4
-        lw $t5, 0($sp)
-        addi $sp, $sp, 4
-        lw $t6, 0($sp)
-        addi $sp, $sp, 4
-        lw $t7, 0($sp)
-        addi $sp, $sp, 4
-        lw $s0, 0($sp)
-        addi $sp, $sp, 4
-        lw $s1, 0($sp)
         addi $sp, $sp, 4
         move $v1, $v0
         li $v0, 10
