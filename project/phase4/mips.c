@@ -345,11 +345,20 @@ Mips *code_2_mips(Code* code){
     }
     else if(code->type == 3){
         if(code->tk2[0] == '#'){
-            ret_struct tmp1 = get_mips_reg(code->tk1);
-            ret_struct tmp3 = get_mips_reg(code->tk3);
-            mips_code = link_Mips(mips_code, tmp1.code);
-            mips_code = link_Mips(mips_code, tmp3.code);
-            mips_code = link_Mips(mips_code, gen_mips("addi", int_to_reg(tmp1.reg), int_to_reg(tmp3.reg), code->tk2+1));
+            if(code->tk3[0] == '#'){
+                ret_struct tmp1 = get_mips_reg(code->tk1);
+                mips_code = link_Mips(mips_code, tmp1.code);
+                char* tmp_const = (char*)malloc(sizeof(char)*30);
+                sprintf(tmp_const, "%d", atoi(code->tk2+1)+atoi(code->tk3+1));
+                mips_code = link_Mips(mips_code, gen_mips("li", int_to_reg(tmp1.reg), tmp_const, NULL));
+            }
+            else{
+                ret_struct tmp1 = get_mips_reg(code->tk1);
+                ret_struct tmp3 = get_mips_reg(code->tk3);
+                mips_code = link_Mips(mips_code, tmp1.code);
+                mips_code = link_Mips(mips_code, tmp3.code);
+                mips_code = link_Mips(mips_code, gen_mips("addi", int_to_reg(tmp1.reg), int_to_reg(tmp3.reg), code->tk2+1));
+            }
         }
         else if(code->tk3[0] == '#'){
             ret_struct tmp1 = get_mips_reg(code->tk1);
@@ -370,13 +379,22 @@ Mips *code_2_mips(Code* code){
     }
     else if(code->type == 4){
         if(code->tk2[0] == '#'){
-            ret_struct tmp1 = get_mips_reg(code->tk1);
-            ret_struct tmp3 = get_mips_reg(code->tk3);
-            mips_code = link_Mips(mips_code, tmp1.code);
-            mips_code = link_Mips(mips_code, tmp3.code);
-            char* tmp_const = (char*)malloc(sizeof(char)*30);
-            sprintf(tmp_const, "%d", -atoi(code->tk2+1));
-            mips_code = link_Mips(mips_code, gen_mips("addi", int_to_reg(tmp1.reg), int_to_reg(tmp3.reg), tmp_const));
+            if(code->tk3[0] == '#'){
+                ret_struct tmp1 = get_mips_reg(code->tk1);
+                mips_code = link_Mips(mips_code, tmp1.code);
+                char* tmp_const = (char*)malloc(sizeof(char)*30);
+                sprintf(tmp_const, "%d", -atoi(code->tk2+1)-atoi(code->tk3+1));
+                mips_code = link_Mips(mips_code, gen_mips("li", int_to_reg(tmp1.reg), tmp_const, NULL));
+            }
+            else{
+                ret_struct tmp1 = get_mips_reg(code->tk1);
+                ret_struct tmp3 = get_mips_reg(code->tk3);
+                mips_code = link_Mips(mips_code, tmp1.code);
+                mips_code = link_Mips(mips_code, tmp3.code);
+                char* tmp_const = (char*)malloc(sizeof(char)*30);
+                sprintf(tmp_const, "%d", -atoi(code->tk2+1));
+                mips_code = link_Mips(mips_code, gen_mips("addi", int_to_reg(tmp1.reg), int_to_reg(tmp3.reg), tmp_const));
+            }
         }
         else if(code->tk3[0] == '#'){
             ret_struct tmp1 = get_mips_reg(code->tk1);
@@ -399,13 +417,22 @@ Mips *code_2_mips(Code* code){
     }
     else if(code->type == 5){
         if(code->tk2[0] == '#'){
-            ret_struct tmp1 = get_mips_reg(code->tk1);
-            ret_struct tmp3 = get_mips_reg(code->tk3);
-            mips_code = link_Mips(mips_code, tmp1.code);
-            mips_code = link_Mips(mips_code, tmp3.code);
-            char* tmp_const = (char*)malloc(sizeof(char)*30);
-            sprintf(tmp_const, "%d", atoi(code->tk2+1));
-            mips_code = link_Mips(mips_code, gen_mips("mul", int_to_reg(tmp1.reg), int_to_reg(tmp3.reg), tmp_const));
+            if(code->tk3[0] == '#'){
+                ret_struct tmp1 = get_mips_reg(code->tk1);
+                mips_code = link_Mips(mips_code, tmp1.code);
+                char* tmp_const = (char*)malloc(sizeof(char)*30);
+                sprintf(tmp_const, "%d", atoi(code->tk2+1)*atoi(code->tk3+1));
+                mips_code = link_Mips(mips_code, gen_mips("li", int_to_reg(tmp1.reg), tmp_const, NULL));
+            }
+            else{
+                ret_struct tmp1 = get_mips_reg(code->tk1);
+                ret_struct tmp3 = get_mips_reg(code->tk3);
+                mips_code = link_Mips(mips_code, tmp1.code);
+                mips_code = link_Mips(mips_code, tmp3.code);
+                char* tmp_const = (char*)malloc(sizeof(char)*30);
+                sprintf(tmp_const, "%d", atoi(code->tk2+1));
+                mips_code = link_Mips(mips_code, gen_mips("mul", int_to_reg(tmp1.reg), int_to_reg(tmp3.reg), tmp_const));
+            }
         }
         else if(code->tk3[0] == '#'){
             ret_struct tmp1 = get_mips_reg(code->tk1);
@@ -428,13 +455,22 @@ Mips *code_2_mips(Code* code){
     }
     else if(code->type == 6){
         if(code->tk2[0] == '#'){
-            ret_struct tmp1 = get_mips_reg(code->tk1);
-            ret_struct tmp3 = get_mips_reg(code->tk3);
-            mips_code = link_Mips(mips_code, tmp1.code);
-            mips_code = link_Mips(mips_code, tmp3.code);
-            char* tmp_const = (char*)malloc(sizeof(char)*30);
-            sprintf(tmp_const, "%d", atoi(code->tk2+1));
-            mips_code = link_Mips(mips_code, gen_mips("div", int_to_reg(tmp1.reg), int_to_reg(tmp3.reg), tmp_const));
+            if(code->tk3[0] == '#'){
+                ret_struct tmp1 = get_mips_reg(code->tk1);
+                mips_code = link_Mips(mips_code, tmp1.code);
+                char* tmp_const = (char*)malloc(sizeof(char)*30);
+                sprintf(tmp_const, "%d", atoi(code->tk2+1)/atoi(code->tk3+1));
+                mips_code = link_Mips(mips_code, gen_mips("li", int_to_reg(tmp1.reg), tmp_const, NULL));
+            }
+            else{
+                ret_struct tmp1 = get_mips_reg(code->tk1);
+                ret_struct tmp3 = get_mips_reg(code->tk3);
+                mips_code = link_Mips(mips_code, tmp1.code);
+                mips_code = link_Mips(mips_code, tmp3.code);
+                char* tmp_const = (char*)malloc(sizeof(char)*30);
+                sprintf(tmp_const, "%d", atoi(code->tk2+1));
+                mips_code = link_Mips(mips_code, gen_mips("div", int_to_reg(tmp1.reg), int_to_reg(tmp3.reg), tmp_const));
+            }
         }
         else if(code->tk3[0] == '#'){
             ret_struct tmp1 = get_mips_reg(code->tk1);
