@@ -105,15 +105,18 @@ char* init(Code *head){
     }
     
     char* ret = (char*)malloc(sizeof(char)*100);
+    sprintf(ret, ".data\n");
     if(var_cnt <= 25-8+1){
         for(int i = 1;i <= var_cnt;i++){
             vars[i].reg = i+8-1;
             regs[i+8-1].var_id = i;
         }
-        sprintf(ret, ".text\n");
     }else{
-        sprintf(ret, ".data\n    reg_root: .space %d\n.text\n", var_cnt*4);
+        sprintf(ret, "%s    reg_root: .space %d\n", ret, var_cnt*4);
     }
+    sprintf(ret, "%s    .globl main\n", ret);
+    sprintf(ret, "%s    __prompt__: .asciiz \"Enter an integer: \"\n", ret);
+    sprintf(ret, "%s.text\n", ret);
     return ret;
 }
 
@@ -309,9 +312,13 @@ Mips *code_2_mips(Code* code){
     Mips *mips_code = NULL;
     if(code->type == 0){
         mips_code = link_Mips(mips_code, gen_mips("LABEL", code->tk1, NULL, NULL));
+        if(check_label_tag(code->tk1) == 1){
+            mips_code = link_Mips(mips_code, update_all_regs());
+        }
     }
     else if(code->type == 1){
         mips_code = link_Mips(mips_code, gen_mips("FUNCTION", code->tk1, NULL, NULL));
+        mips_code = link_Mips(mips_code, update_all_regs());
         if(strcmp(code->tk1, "main") == 0){
             arg_cnt = -1; // main function definitely has no arguments
         }
@@ -451,6 +458,8 @@ Mips *code_2_mips(Code* code){
         mips_code = link_Mips(mips_code, gen_mips("j", code->tk1, NULL, NULL));
     }
     else if(code->type == 11){
+        mips_code = link_Mips(mips_code, update_all_regs());
+        change_label_tag(code->tk3);
         if(code->tk1[0] == '#'){
             if(code->tk2[0] == '#'){
                 mips_code = link_Mips(mips_code, gen_mips("li", "$a0", code->tk1+1, NULL));
@@ -673,8 +682,8 @@ void translate_mips(Code* ir_code, char* filename){
         print_end_code(mips_code);
         tmp = tmp->next;
     }
-    mips_code = link_Mips(mips_code, gen_mips("li", "$v0", "10", NULL));
-    mips_code = link_Mips(mips_code, gen_mips("syscall", NULL, NULL, NULL));
+    // mips_code = link_Mips(mips_code, gen_mips("li", "$v0", "10", NULL));
+    // mips_code = link_Mips(mips_code, gen_mips("syscall", NULL, NULL, NULL));
     // printf("start to dump codes\n");
     // fflush(stdout);
     dump_mips(mips_code, preamble, filename);

@@ -1,5 +1,8 @@
+.data
+    .globl main
+    __prompt__: .asciiz "Enter an integer: "
 .text
-	j main
+
     fact:
         addi $sp, $sp, -4
         sw $ra, 0($sp)

@@ -1,3 +1,6 @@
+.data
+    .globl main
+    __prompt__: .asciiz "Enter an integer: "
 .text
 
     mod:
