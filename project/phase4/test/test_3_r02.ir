@@ -1,23 +1,30 @@
-FUNCTION fact :
-PARAM var_n
-IF var_n != #1 GOTO label_0
-RETURN var_n
-GOTO label_1
+FUNCTION calculateBinomialCoefficient :
+PARAM var_row
+PARAM var_col
+var_coefficient := #1
+var_i := #0
+IF var_row >= var_col GOTO label_0
+RETURN #0
 LABEL label_0 :
-tmp_6 := var_n - #1
-ARG tmp_6
-tmp_5 := CALL fact
-tmp_3 := var_n * tmp_5
-RETURN tmp_3
+tmp_4 := var_row - var_col
+IF var_col <= tmp_4 GOTO label_1
+var_col := var_row - var_col
 LABEL label_1 :
-FUNCTION main :
-READ var_m
-IF var_m <= #1 GOTO label_2
-ARG var_m
-var_result := CALL fact
-GOTO label_3
 LABEL label_2 :
-var_result := #1
+IF var_i >= var_col GOTO label_3
+tmp_16 := var_row - var_i
+tmp_14 := var_coefficient * tmp_16
+tmp_22 := var_i + #1
+var_coefficient := tmp_14 / tmp_22
+var_i := var_i + #1
+GOTO label_2
 LABEL label_3 :
-WRITE var_result
+RETURN var_coefficient
+FUNCTION main :
+READ var_row1
+READ var_col1
+ARG var_col1
+ARG var_row1
+var_coefficient1 := CALL calculateBinomialCoefficient
+WRITE var_coefficient1
 RETURN #0

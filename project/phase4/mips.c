@@ -46,8 +46,8 @@ Mips* update_all_regs(){
         if(regs[i].var_id != -1){
             ret = link_Mips(ret, update_reg(i, regs[i].var_id));
         }else{
-            printf("reg %d is not used\n", i);
-            fflush(stdout);
+            // printf("reg %d is not used\n", i);
+            // fflush(stdout);
         }
     }
     return ret;
@@ -242,7 +242,8 @@ Mips* update_reg(int reg, int var_id){
 
 Mips* load_var(int reg, int var_id){
     
-    if(var_id == -1)return NULL;printf("reg %d, var_id %d\n", reg, var_id);
+    if(var_id == -1)return NULL;
+    // printf("reg %d, var_id %d\n", reg, var_id);
     fflush(stdout);
     regs[reg].var_id = var_id;
     vars[var_id].reg = reg;
@@ -334,8 +335,8 @@ Mips *code_2_mips(Code* code){
     relop 4: !=
     relop 5: ==
     */
-    printf("start translating ir code: %d\n", code->type);
-    fflush(stdout);
+    // printf("start translating ir code: %d\n", code->type);
+    // fflush(stdout);
     Mips *mips_code = NULL;
     if(code->type == 0){
         mips_code = link_Mips(mips_code, update_all_regs());
@@ -748,8 +749,8 @@ Mips *code_2_mips(Code* code){
         mips_code = link_Mips(mips_code, gen_mips("syscall", NULL, NULL, NULL));
     }
     else{
-        printf("Error: unknown type of ir code\n");
-        fflush(stdout);
+        // printf("Error: unknown type of ir code\n");
+        // fflush(stdout);
     }
     return mips_code;
 }
@@ -802,10 +803,10 @@ void translate_mips(Code* ir_code, char* filename){
     // printf("tag111\n");
     // fflush(stdout);
     while(tmp != NULL){
-        printf("translating ir: %d, %s, %s, %s\n", tmp->type, tmp->tk1, tmp->tk2, tmp->tk3);
-        fflush(stdout);
+        // printf("translating ir: %d, %s, %s, %s\n", tmp->type, tmp->tk1, tmp->tk2, tmp->tk3);
+        // fflush(stdout);
         mips_code = link_Mips(mips_code, code_2_mips(tmp));
-        print_end_code(mips_code);
+        // print_end_code(mips_code);
         tmp = tmp->next;
     }
     // mips_code = link_Mips(mips_code, gen_mips("li", "$v0", "10", NULL));
