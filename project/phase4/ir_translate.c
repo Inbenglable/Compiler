@@ -813,6 +813,236 @@ Code* translate(struct Node* node, char* filename){
     return optimized_code;
 }
 
+Code* parse_ir_file(FILE* file){
+    Code* head = NULL;
+    Code* tail = NULL;
+    char* buffer = (char*)malloc(sizeof(char)*200);
+    while(fgets(buffer, 200, file) != NULL){
+        /*
+        type 0: LABEL tk1 :
+        type 1: FUNCTION tk1 :
+        type 2: tk1 := tk2
+        type 3: tk1 := tk2 + tk3
+        type 4: tk1 := tk2 - tk3
+        type 5: tk1 := tk2 * tk3
+        type 6: tk1 := tk2 / tk3
+        type 7: tk1 := &tk2
+        type 8: tk1 := *tk2
+        type 9: *tk1 := tk2
+        type 10: GOTO tk1
+        type 11: IF tk1 relop tk2 GOTO tk3
+        type 12: RETURN tk1
+        type 13: DEC tk1 size
+        type 14: PARAM tk1
+        type 15: ARG tk1
+        type 16: tk1 := CALL tk2
+        type 17: READ tk1
+        type 18: WRITE tk1
+        relop 0: <
+        relop 1: <=
+        relop 2: >
+        relop 3: >=
+        relop 4: !=
+        relop 5: ==
+        */
+        Code* code = (Code*)malloc(sizeof(Code));
+        char tokens[10][60];
+        int i = 0;
+        int j = 0;
+        int k = 0;
+        int len = strlen(buffer);
+        if(buffer[len-2] == '\r' && buffer[len-1] == '\n'){
+            buffer[len-2] = ' ';
+            len --;
+        }
+        else if(buffer[len-1] == '\n'){
+            buffer[len-1] = ' ';
+        }
+        while(i < len){
+            if(buffer[i] == ' ' || buffer[i] == '\t' || buffer[i] == '\n' || buffer[i] == '\r'){
+                if(k != 0){
+                    tokens[j][k] = '\0';
+                    printf("[%d:%s]", j, tokens[j]);
+                    j++;
+                    k = 0;
+                }
+            }
+            else{
+                tokens[j][k] = buffer[i];
+                k++;
+            }
+            i++;
+        }
+        if(strcmp(tokens[0], "LABEL") == 0){
+            code->type = 0;
+            code->tk1 = (char*)malloc(sizeof(char)*60);
+            strcpy(code->tk1, tokens[1]);
+            code->tk2 = NULL;
+            code->tk3 = NULL;
+        }else if(strcmp(tokens[0], "FUNCTION") == 0){
+            code->type = 1;
+            code->tk1 = (char*)malloc(sizeof(char)*60);
+            strcpy(code->tk1, tokens[1]);
+            code->tk2 = NULL;
+            code->tk3 = NULL;
+        }else if(strcmp(tokens[1], ":=") == 0){
+            if(strcmp(tokens[3], "CALL") == 0){
+                code->type = 16;
+                code->tk1 = (char*)malloc(sizeof(char)*60);
+                strcpy(code->tk1, tokens[0]);
+                code->tk2 = (char*)malloc(sizeof(char)*60);
+                strcpy(code->tk2, tokens[3]);
+                code->tk3 = NULL;
+            }else if(j == 3){
+                if(tokens[0][0] == '*'){
+                    code->type = 9;
+                    code->tk1 = (char*)malloc(sizeof(char)*60);
+                    strcpy(code->tk1, tokens[0]+1);
+                    code->tk2 = (char*)malloc(sizeof(char)*60);
+                    strcpy(code->tk2, tokens[2]);
+                    code->tk3 = NULL;
+                }else if(tokens[2][0] == '&'){
+                    code->type = 7;
+                    code->tk1 = (char*)malloc(sizeof(char)*60);
+                    strcpy(code->tk1, tokens[0]);
+                    code->tk2 = (char*)malloc(sizeof(char)*60);
+                    strcpy(code->tk2, tokens[2]+1);
+                    code->tk3 = NULL;
+                }else if(tokens[2][0] == '*'){
+                    code->type = 8;
+                    code->tk1 = (char*)malloc(sizeof(char)*60);
+                    strcpy(code->tk1, tokens[0]);
+                    code->tk2 = (char*)malloc(sizeof(char)*60);
+                    strcpy(code->tk2, tokens[2]+1);
+                    code->tk3 = NULL;
+                }else{
+                    code->type = 2;
+                    code->tk1 = (char*)malloc(sizeof(char)*60);
+                    strcpy(code->tk1, tokens[0]);
+                    code->tk2 = (char*)malloc(sizeof(char)*60);
+                    strcpy(code->tk2, tokens[2]);
+                    code->tk3 = NULL;
+                }
+            }else if(strcmp(tokens[3], "+") == 0){
+                code->type = 3;
+                code->tk1 = (char*)malloc(sizeof(char)*60);
+                strcpy(code->tk1, tokens[0]);
+                code->tk2 = (char*)malloc(sizeof(char)*60);
+                strcpy(code->tk2, tokens[2]);
+                code->tk3 = (char*)malloc(sizeof(char)*60);
+                strcpy(code->tk3, tokens[4]);
+            }else if(strcmp(tokens[3], "-") == 0){
+                code->type = 4;
+                code->tk1 = (char*)malloc(sizeof(char)*60);
+                strcpy(code->tk1, tokens[0]);
+                code->tk2 = (char*)malloc(sizeof(char)*60);
+                strcpy(code->tk2, tokens[2]);
+                code->tk3 = (char*)malloc(sizeof(char)*60);
+                strcpy(code->tk3, tokens[4]);
+            }else if(strcmp(tokens[3], "*") == 0){
+                code->type = 5;
+                code->tk1 = (char*)malloc(sizeof(char)*60);
+                strcpy(code->tk1, tokens[0]);
+                code->tk2 = (char*)malloc(sizeof(char)*60);
+                strcpy(code->tk2, tokens[2]);
+                code->tk3 = (char*)malloc(sizeof(char)*60);
+                strcpy(code->tk3, tokens[4]);
+            }else if(strcmp(tokens[3], "/") == 0){
+                code->type = 6;
+                code->tk1 = (char*)malloc(sizeof(char)*60);
+                strcpy(code->tk1, tokens[0]);
+                code->tk2 = (char*)malloc(sizeof(char)*60);
+                strcpy(code->tk2, tokens[2]);
+                code->tk3 = (char*)malloc(sizeof(char)*60);
+                strcpy(code->tk3, tokens[4]);
+            }
+        }else if(strcmp(tokens[0], "GOTO") == 0){
+            code->type = 10;
+            code->tk1 = (char*)malloc(sizeof(char)*60);
+            strcpy(code->tk1, tokens[1]);
+            code->tk2 = NULL;
+            code->tk3 = NULL;
+        }else if(strcmp(tokens[0], "IF") == 0){
+            code->type = 11;
+            code->tk1 = (char*)malloc(sizeof(char)*60);
+            strcpy(code->tk1, tokens[1]);
+            if(strcmp(tokens[2], "<") == 0){
+                code->relop = 0;
+            }else if(strcmp(tokens[2], "<=") == 0){
+                code->relop = 1;
+            }else if(strcmp(tokens[2], ">") == 0){
+                code->relop = 2;
+            }else if(strcmp(tokens[2], ">=") == 0){
+                code->relop = 3;
+            }else if(strcmp(tokens[2], "!=") == 0){
+                code->relop = 4;
+            }else if(strcmp(tokens[2], "==") == 0){
+                code->relop = 5;
+            }
+            code->tk2 = (char*)malloc(sizeof(char)*60);
+            strcpy(code->tk2, tokens[3]);
+            code->tk3 = (char*)malloc(sizeof(char)*60);
+            strcpy(code->tk3, tokens[5]);
+        }else if(strcmp(tokens[0], "RETURN") == 0){
+            code->type = 12;
+            code->tk1 = (char*)malloc(sizeof(char)*60);
+            strcpy(code->tk1, tokens[1]);
+            code->tk2 = NULL;
+            code->tk3 = NULL;
+        }else if(strcmp(tokens[0], "DEC") == 0){
+            code->type = 13;
+            code->tk1 = (char*)malloc(sizeof(char)*60);
+            strcpy(code->tk1, tokens[1]);
+            code->tk2 = (char*)malloc(sizeof(char)*60);
+            strcpy(code->tk2, tokens[2]);
+            code->tk3 = NULL;
+        }else if(strcmp(tokens[0], "PARAM") == 0){
+            code->type = 14;
+            code->tk1 = (char*)malloc(sizeof(char)*60);
+            strcpy(code->tk1, tokens[1]);
+            code->tk2 = NULL;
+            code->tk3 = NULL;
+        }else if(strcmp(tokens[0], "ARG") == 0){
+            code->type = 15;
+            code->tk1 = (char*)malloc(sizeof(char)*60);
+            strcpy(code->tk1, tokens[1]);
+            code->tk2 = NULL;
+            code->tk3 = NULL;
+        }else if(strcmp(tokens[0], "READ") == 0){
+            code->type = 17;
+            code->tk1 = (char*)malloc(sizeof(char)*60);
+            strcpy(code->tk1, tokens[1]);
+            code->tk2 = NULL;
+            code->tk3 = NULL;
+        }else if(strcmp(tokens[0], "WRITE") == 0){
+            code->type = 18;
+            code->tk1 = (char*)malloc(sizeof(char)*60);
+            strcpy(code->tk1, tokens[1]);
+            code->tk2 = NULL;
+            code->tk3 = NULL;
+        }else{
+            code->type = 0;
+            code->tk1 = (char*)malloc(sizeof(char)*60);
+            strcpy(code->tk1, tokens[1]);
+            code->tk2 = NULL;
+            code->tk3 = NULL;
+        }
+        if(head == NULL){
+            head = code;
+            tail = code;
+        }else{
+            tail->next = code;
+            tail = code;
+        }
+    }
+    // Code* tmp = head;
+    // while(tmp != NULL){
+    //     printf("%d %s %s %s\n", tmp->type, tmp->tk1, tmp->tk2, tmp->tk3);
+    //     tmp = tmp->next;
+    // }
+    return head;
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////////////
 

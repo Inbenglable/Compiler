@@ -633,6 +633,23 @@ int main(int argc, char **argv) {
             return 1;
         }
 
+        //check whether the input f is .ir file or not
+        int len = strlen(argv[i]);
+        if(argv[i][len-1] == 'r' && argv[i][len-2] == 'i' && argv[i][len-3] == '.'){
+            char* out_file = (char*)malloc(sizeof(char)*(strlen(argv[i]) + 5));
+            strcat(out_file, argv[i]);
+            Code* ir_code = parse_ir_file(f);
+            for(int i = strlen(out_file)-1;i >= 0;i--){
+                if(out_file[i] == '.'){
+                    out_file[i] = '\0';
+                    break;
+                }
+            }
+            strcat(out_file, ".s");
+            translate_mips(ir_code, out_file);
+            return 0;
+        }
+
         initial_read_write();
         //Var* read = query_Fun("read");
         //Var* write = query_Fun("write");
@@ -667,4 +684,5 @@ int main(int argc, char **argv) {
     strcat(out_file, ".s");
     translate_mips(ir_code, out_file);
     //clear_symbol_table();
+    return 0;
 }

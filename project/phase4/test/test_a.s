@@ -365,10 +365,9 @@
         li $a0, 1
         addi $sp, $sp, -4
         sw $a0, 0($sp)
-        jal foo
-        lw $t0, 0($sp)
-        addi $sp, $sp, 4
-        move $t0, $v0
+        sw $t0, reg_root + 252
+        LABEL
+        lw $t0, reg_root + 252
         move $a0, $t0
         li $v0, 1
         syscall

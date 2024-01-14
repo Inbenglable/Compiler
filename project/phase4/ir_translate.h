@@ -1,4 +1,5 @@
 #include "structure.h"
+#include <stdio.h>
 
 #ifndef __IR_TRANSLATE__
 #define __IR_TRANSLATE__
@@ -73,6 +74,7 @@ struct Code* translate_high_level_def(struct Node* node);
 int translate_specifier(struct Node* node);
 struct Code* translate_local_definition(int size, struct Node* node);
 Code* translate(struct Node* node, char* filename);
+Code* parse_ir_file(FILE* file);
 
 /////////////////
 int char_to_int(const char* str);

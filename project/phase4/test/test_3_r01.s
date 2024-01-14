@@ -66,26 +66,23 @@
         move $a0, $t0
         addi $sp, $sp, -4
         sw $a0, 0($sp)
-        jal mod
-        lw $t4, 0($sp)
-        addi $sp, $sp, 4
-        lw $t3, 0($sp)
-        addi $sp, $sp, 4
-        lw $t2, 0($sp)
-        addi $sp, $sp, 4
-        lw $t1, 0($sp)
-        addi $sp, $sp, 4
-        lw $t0, 0($sp)
-        addi $sp, $sp, 4
-        move $t3, $v0
-        mul $t4, $t1, 10
-        add $t1, $t4, $t3
-        div $t0, $t0, 10
         sw $t0, reg_root + 20
         sw $t1, reg_root + 24
         sw $t2, reg_root + 28
         sw $t3, reg_root + 32
         sw $t4, reg_root + 36
+        LABEL
+        lw $t0, reg_root + 36
+        lw $t1, reg_root + 24
+        mul $t0, $t1, 10
+        lw $t2, reg_root + 32
+        add $t1, $t0, $t2
+        lw $t3, reg_root + 20
+        div $t3, $t3, 10
+        sw $t0, reg_root + 36
+        sw $t1, reg_root + 24
+        sw $t2, reg_root + 32
+        sw $t3, reg_root + 20
         j label_0
     label_1:
         lw $t0, reg_root + 24
@@ -112,22 +109,11 @@
         li $v0, 5
         syscall
         move $t0, $v0
-        addi $sp, $sp, -4
-        sw $t0, 0($sp)
-        lw $t1, reg_root + 44
-        addi $sp, $sp, -4
-        sw $t1, 0($sp)
         move $a0, $t0
         addi $sp, $sp, -4
         sw $a0, 0($sp)
-        jal isPalindrome
-        lw $t1, 0($sp)
-        addi $sp, $sp, 4
-        lw $t0, 0($sp)
-        addi $sp, $sp, 4
-        move $t1, $v0
         sw $t0, reg_root + 40
-        sw $t1, reg_root + 44
+        LABEL
         lw $t0, reg_root + 44
         li $a1, 1
         bne $t0, $a1, label_4

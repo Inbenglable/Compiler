@@ -67,23 +67,12 @@
         move $a0, $t2
         addi $sp, $sp, -4
         sw $a0, 0($sp)
-        jal mod
-        lw $t4, 0($sp)
-        addi $sp, $sp, 4
-        lw $t1, 0($sp)
-        addi $sp, $sp, 4
-        lw $t0, 0($sp)
-        addi $sp, $sp, 4
-        lw $t3, 0($sp)
-        addi $sp, $sp, 4
-        lw $t2, 0($sp)
-        addi $sp, $sp, 4
-        move $t4, $v0
         sw $t0, reg_root + 28
         sw $t1, reg_root + 32
         sw $t2, reg_root + 20
         sw $t3, reg_root + 24
         sw $t4, reg_root + 36
+        LABEL
         lw $t0, reg_root + 36
         li $a1, 0
         bne $t0, $a1, label_2
@@ -126,28 +115,11 @@
         lw $t0, reg_root + 44
         li $a1, 100
         bgt $t0, $a1, label_6
-        lw $t1, reg_root + 40
-        addi $sp, $sp, -4
-        sw $t1, 0($sp)
-        addi $sp, $sp, -4
-        sw $t0, 0($sp)
-        lw $t2, reg_root + 48
-        addi $sp, $sp, -4
-        sw $t2, 0($sp)
         move $a0, $t0
         addi $sp, $sp, -4
         sw $a0, 0($sp)
-        jal isPerfectNumber
-        lw $t2, 0($sp)
-        addi $sp, $sp, 4
-        lw $t0, 0($sp)
-        addi $sp, $sp, 4
-        lw $t1, 0($sp)
-        addi $sp, $sp, 4
-        move $t2, $v0
         sw $t0, reg_root + 44
-        sw $t1, reg_root + 40
-        sw $t2, reg_root + 48
+        LABEL
         lw $t0, reg_root + 48
         li $a1, 1
         bne $t0, $a1, label_7

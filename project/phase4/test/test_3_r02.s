@@ -103,15 +103,12 @@
         move $a0, $t0
         addi $sp, $sp, -4
         sw $a0, 0($sp)
-        jal calculateBinomialCoefficient
-        lw $t2, 0($sp)
-        addi $sp, $sp, 4
-        lw $t1, 0($sp)
-        addi $sp, $sp, 4
-        lw $t0, 0($sp)
-        addi $sp, $sp, 4
-        move $t2, $v0
-        move $a0, $t2
+        sw $t0, reg_root + 32
+        sw $t1, reg_root + 36
+        sw $t2, reg_root + 40
+        LABEL
+        lw $t0, reg_root + 40
+        move $a0, $t0
         li $v0, 1
         syscall
         la $a0, __lf__
