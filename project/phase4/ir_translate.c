@@ -862,7 +862,7 @@ Code* parse_ir_file(FILE* file){
             if(buffer[i] == ' ' || buffer[i] == '\t' || buffer[i] == '\n' || buffer[i] == '\r'){
                 if(k != 0){
                     tokens[j][k] = '\0';
-                    printf("[%d:%s]", j, tokens[j]);
+                    // printf("[%d:%s]", j, tokens[j]);
                     j++;
                     k = 0;
                 }
@@ -872,6 +872,12 @@ Code* parse_ir_file(FILE* file){
                 k++;
             }
             i++;
+        }
+        if(k != 0){
+            tokens[j][k] = '\0';
+            // printf("[%d:%s]", j, tokens[j]);
+            j++;
+            k = 0;
         }
         if(strcmp(tokens[0], "LABEL") == 0){
             code->type = 0;

@@ -88,6 +88,98 @@
         move $a0, $t0
         addi $sp, $sp, -4
         sw $a0, 0($sp)
+        jal hanoi
+        lw $s2, 0($sp)
+        addi $sp, $sp, 4
+        lw $s1, 0($sp)
+        addi $sp, $sp, 4
+        lw $s0, 0($sp)
+        addi $sp, $sp, 4
+        lw $t7, 0($sp)
+        addi $sp, $sp, 4
+        lw $t0, 0($sp)
+        addi $sp, $sp, 4
+        lw $t6, 0($sp)
+        addi $sp, $sp, 4
+        lw $t5, 0($sp)
+        addi $sp, $sp, 4
+        lw $t4, 0($sp)
+        addi $sp, $sp, 4
+        lw $t3, 0($sp)
+        addi $sp, $sp, 4
+        lw $t2, 0($sp)
+        addi $sp, $sp, 4
+        lw $t1, 0($sp)
+        addi $sp, $sp, 4
+        move $v1, $v0
+        mul $t7, $t2, 1000000
+        add $s0, $t7, $t4
+        move $a0, $s0
+        li $v0, 1
+        syscall
+        la $a0, __lf__
+        li $v0, 4
+        syscall
+        move $s1, $t2
+        move $s2, $t4
+        addi $sp, $sp, -4
+        sw $t1, 0($sp)
+        addi $sp, $sp, -4
+        sw $t2, 0($sp)
+        addi $sp, $sp, -4
+        sw $t3, 0($sp)
+        addi $sp, $sp, -4
+        sw $t4, 0($sp)
+        addi $sp, $sp, -4
+        sw $t5, 0($sp)
+        addi $sp, $sp, -4
+        sw $t6, 0($sp)
+        addi $sp, $sp, -4
+        sw $t0, 0($sp)
+        addi $sp, $sp, -4
+        sw $t7, 0($sp)
+        addi $sp, $sp, -4
+        sw $s0, 0($sp)
+        addi $sp, $sp, -4
+        sw $s1, 0($sp)
+        addi $sp, $sp, -4
+        sw $s2, 0($sp)
+        move $a0, $s2
+        addi $sp, $sp, -4
+        sw $a0, 0($sp)
+        move $a0, $s1
+        addi $sp, $sp, -4
+        sw $a0, 0($sp)
+        move $a0, $t3
+        addi $sp, $sp, -4
+        sw $a0, 0($sp)
+        move $a0, $t0
+        addi $sp, $sp, -4
+        sw $a0, 0($sp)
+        jal hanoi
+        lw $s2, 0($sp)
+        addi $sp, $sp, 4
+        lw $s1, 0($sp)
+        addi $sp, $sp, 4
+        lw $s0, 0($sp)
+        addi $sp, $sp, 4
+        lw $t7, 0($sp)
+        addi $sp, $sp, 4
+        lw $t0, 0($sp)
+        addi $sp, $sp, 4
+        lw $t6, 0($sp)
+        addi $sp, $sp, 4
+        lw $t5, 0($sp)
+        addi $sp, $sp, 4
+        lw $t4, 0($sp)
+        addi $sp, $sp, 4
+        lw $t3, 0($sp)
+        addi $sp, $sp, 4
+        lw $t2, 0($sp)
+        addi $sp, $sp, 4
+        lw $t1, 0($sp)
+        addi $sp, $sp, 4
+        move $v1, $v0
         sw $t0, reg_root + 24
         sw $t1, reg_root
         sw $t2, reg_root + 4
@@ -99,46 +191,6 @@
         sw $s0, reg_root + 32
         sw $s1, reg_root + 36
         sw $s2, reg_root + 40
-        LABEL
-        lw $t0, reg_root + 28
-        lw $t1, reg_root + 4
-        mul $t0, $t1, 1000000
-        lw $t2, reg_root + 32
-        lw $t3, reg_root + 12
-        add $t2, $t0, $t3
-        move $a0, $t2
-        li $v0, 1
-        syscall
-        la $a0, __lf__
-        li $v0, 4
-        syscall
-        lw $t4, reg_root + 36
-        move $t4, $t1
-        lw $t5, reg_root + 40
-        move $t5, $t3
-        move $a0, $t5
-        addi $sp, $sp, -4
-        sw $a0, 0($sp)
-        move $a0, $t4
-        addi $sp, $sp, -4
-        sw $a0, 0($sp)
-        lw $t6, reg_root + 8
-        move $a0, $t6
-        addi $sp, $sp, -4
-        sw $a0, 0($sp)
-        lw $t7, reg_root + 24
-        move $a0, $t7
-        addi $sp, $sp, -4
-        sw $a0, 0($sp)
-        sw $t0, reg_root + 28
-        sw $t1, reg_root + 4
-        sw $t2, reg_root + 32
-        sw $t3, reg_root + 12
-        sw $t4, reg_root + 36
-        sw $t5, reg_root + 40
-        sw $t6, reg_root + 8
-        sw $t7, reg_root + 24
-        LABEL
     label_1:
         li $v0, 0
         lw $ra, 0($sp)
@@ -147,6 +199,8 @@
     main:
         lw $t0, reg_root + 44
         li $t0, 3
+        addi $sp, $sp, -4
+        sw $t0, 0($sp)
         li $a0, 3
         addi $sp, $sp, -4
         sw $a0, 0($sp)
@@ -159,7 +213,9 @@
         li $a0, 3
         addi $sp, $sp, -4
         sw $a0, 0($sp)
-        sw $t0, reg_root + 44
-        LABEL
+        jal hanoi
+        lw $t0, 0($sp)
+        addi $sp, $sp, 4
+        move $v1, $v0
         li $v0, 10
         syscall

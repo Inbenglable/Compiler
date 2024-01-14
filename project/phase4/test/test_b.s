@@ -47,22 +47,36 @@
         li $a0, 33629
         addi $sp, $sp, -4
         sw $a0, 0($sp)
-        sw $t0, reg_root + 12
-        sw $t1, reg_root + 16
-        sw $t2, reg_root + 20
-        LABEL
+        jal fun4
+        lw $t2, 0($sp)
+        addi $sp, $sp, 4
+        lw $t1, 0($sp)
+        addi $sp, $sp, 4
+        lw $t0, 0($sp)
+        addi $sp, $sp, 4
+        move $v1, $v0
+        addi $sp, $sp, -4
+        sw $t0, 0($sp)
+        addi $sp, $sp, -4
+        sw $t1, 0($sp)
+        addi $sp, $sp, -4
+        sw $t2, 0($sp)
         li $a0, 85694
         addi $sp, $sp, -4
         sw $a0, 0($sp)
         li $a0, 33629
         addi $sp, $sp, -4
         sw $a0, 0($sp)
-        LABEL
-        lw $t0, reg_root + 20
-        lw $t1, reg_root + 12
-        lw $t2, reg_root + 16
-        add $t0, $t1, $t2
-        move $a0, $t0
+        jal fun4
+        lw $t2, 0($sp)
+        addi $sp, $sp, 4
+        lw $t1, 0($sp)
+        addi $sp, $sp, 4
+        lw $t0, 0($sp)
+        addi $sp, $sp, 4
+        move $v1, $v0
+        add $t2, $t0, $t1
+        move $a0, $t2
         li $v0, 1
         syscall
         la $a0, __lf__
@@ -73,36 +87,58 @@
         addi $sp, $sp, 12
         jr $ra
     fun2:
-        sw $t0, reg_root + 20
-        sw $t1, reg_root + 12
-        sw $t2, reg_root + 16
+        sw $t0, reg_root + 12
+        sw $t1, reg_root + 16
+        sw $t2, reg_root + 20
         addi $sp, $sp, -4
         sw $ra, 0($sp)
         lw $t0, reg_root + 24
         lw $t0, 4($sp)
         lw $t1, reg_root + 28
         lw $t1, 8($sp)
+        addi $sp, $sp, -4
+        sw $t0, 0($sp)
+        addi $sp, $sp, -4
+        sw $t1, 0($sp)
+        lw $t2, reg_root + 32
+        addi $sp, $sp, -4
+        sw $t2, 0($sp)
         li $a0, 56731
         addi $sp, $sp, -4
         sw $a0, 0($sp)
         li $a0, 13211
         addi $sp, $sp, -4
         sw $a0, 0($sp)
-        sw $t0, reg_root + 24
-        sw $t1, reg_root + 28
-        LABEL
+        jal fun3
+        lw $t2, 0($sp)
+        addi $sp, $sp, 4
+        lw $t1, 0($sp)
+        addi $sp, $sp, 4
+        lw $t0, 0($sp)
+        addi $sp, $sp, 4
+        move $v1, $v0
+        addi $sp, $sp, -4
+        sw $t0, 0($sp)
+        addi $sp, $sp, -4
+        sw $t1, 0($sp)
+        addi $sp, $sp, -4
+        sw $t2, 0($sp)
         li $a0, 56731
         addi $sp, $sp, -4
         sw $a0, 0($sp)
         li $a0, 13211
         addi $sp, $sp, -4
         sw $a0, 0($sp)
-        LABEL
-        lw $t0, reg_root + 32
-        lw $t1, reg_root + 24
-        lw $t2, reg_root + 28
-        add $t0, $t1, $t2
-        move $a0, $t0
+        jal fun3
+        lw $t2, 0($sp)
+        addi $sp, $sp, 4
+        lw $t1, 0($sp)
+        addi $sp, $sp, 4
+        lw $t0, 0($sp)
+        addi $sp, $sp, 4
+        move $v1, $v0
+        add $t2, $t0, $t1
+        move $a0, $t2
         li $v0, 1
         syscall
         la $a0, __lf__
@@ -113,36 +149,58 @@
         addi $sp, $sp, 12
         jr $ra
     fun1:
-        sw $t0, reg_root + 32
-        sw $t1, reg_root + 24
-        sw $t2, reg_root + 28
+        sw $t0, reg_root + 24
+        sw $t1, reg_root + 28
+        sw $t2, reg_root + 32
         addi $sp, $sp, -4
         sw $ra, 0($sp)
         lw $t0, reg_root + 36
         lw $t0, 4($sp)
         lw $t1, reg_root + 40
         lw $t1, 8($sp)
+        addi $sp, $sp, -4
+        sw $t0, 0($sp)
+        addi $sp, $sp, -4
+        sw $t1, 0($sp)
+        lw $t2, reg_root + 44
+        addi $sp, $sp, -4
+        sw $t2, 0($sp)
         li $a0, 2310
         addi $sp, $sp, -4
         sw $a0, 0($sp)
         li $a0, 62000
         addi $sp, $sp, -4
         sw $a0, 0($sp)
-        sw $t0, reg_root + 36
-        sw $t1, reg_root + 40
-        LABEL
+        jal fun2
+        lw $t2, 0($sp)
+        addi $sp, $sp, 4
+        lw $t1, 0($sp)
+        addi $sp, $sp, 4
+        lw $t0, 0($sp)
+        addi $sp, $sp, 4
+        move $v1, $v0
+        addi $sp, $sp, -4
+        sw $t0, 0($sp)
+        addi $sp, $sp, -4
+        sw $t1, 0($sp)
+        addi $sp, $sp, -4
+        sw $t2, 0($sp)
         li $a0, 2310
         addi $sp, $sp, -4
         sw $a0, 0($sp)
         li $a0, 62000
         addi $sp, $sp, -4
         sw $a0, 0($sp)
-        LABEL
-        lw $t0, reg_root + 44
-        lw $t1, reg_root + 36
-        lw $t2, reg_root + 40
-        add $t0, $t1, $t2
-        move $a0, $t0
+        jal fun2
+        lw $t2, 0($sp)
+        addi $sp, $sp, 4
+        lw $t1, 0($sp)
+        addi $sp, $sp, 4
+        lw $t0, 0($sp)
+        addi $sp, $sp, 4
+        move $v1, $v0
+        add $t2, $t0, $t1
+        move $a0, $t2
         li $v0, 1
         syscall
         la $a0, __lf__
@@ -153,26 +211,44 @@
         addi $sp, $sp, 12
         jr $ra
     main:
-        sw $t0, reg_root + 44
-        sw $t1, reg_root + 36
-        sw $t2, reg_root + 40
-        li $a0, 810
-        addi $sp, $sp, -4
-        sw $a0, 0($sp)
-        li $a0, 1919
-        addi $sp, $sp, -4
-        sw $a0, 0($sp)
-        LABEL
-        li $a0, 810
-        addi $sp, $sp, -4
-        sw $a0, 0($sp)
-        li $a0, 1919
-        addi $sp, $sp, -4
-        sw $a0, 0($sp)
-        LABEL
+        sw $t0, reg_root + 36
+        sw $t1, reg_root + 40
+        sw $t2, reg_root + 44
         lw $t0, reg_root + 48
-        li $t0, 514
+        addi $sp, $sp, -4
+        sw $t0, 0($sp)
         lw $t1, reg_root + 52
+        addi $sp, $sp, -4
+        sw $t1, 0($sp)
+        li $a0, 810
+        addi $sp, $sp, -4
+        sw $a0, 0($sp)
+        li $a0, 1919
+        addi $sp, $sp, -4
+        sw $a0, 0($sp)
+        jal fun1
+        lw $t1, 0($sp)
+        addi $sp, $sp, 4
+        lw $t0, 0($sp)
+        addi $sp, $sp, 4
+        move $v1, $v0
+        addi $sp, $sp, -4
+        sw $t0, 0($sp)
+        addi $sp, $sp, -4
+        sw $t1, 0($sp)
+        li $a0, 810
+        addi $sp, $sp, -4
+        sw $a0, 0($sp)
+        li $a0, 1919
+        addi $sp, $sp, -4
+        sw $a0, 0($sp)
+        jal fun1
+        lw $t1, 0($sp)
+        addi $sp, $sp, 4
+        lw $t0, 0($sp)
+        addi $sp, $sp, 4
+        move $v1, $v0
+        li $t0, 514
         li $t1, 114
         li $a0, 628
         li $v0, 1
