@@ -1,0 +1,23 @@
+FUNCTION fast_pow :
+PARAM var_base
+PARAM var_power
+var_result := #1
+LABEL label_0 :
+IF var_power <= #0 GOTO label_1
+tmp_6 := var_power / #2
+tmp_5 := tmp_6 * #2
+tmp_2 := var_power - tmp_5
+IF tmp_2 != #1 GOTO label_2
+var_result := var_result * var_base
+LABEL label_2 :
+var_base := var_base * var_base
+var_power := var_power / #2
+GOTO label_0
+LABEL label_1 :
+RETURN var_result
+FUNCTION main :
+ARG #6
+ARG #3
+tmp_23 := CALL fast_pow
+WRITE tmp_23
+RETURN #0

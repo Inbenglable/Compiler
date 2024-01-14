@@ -1,0 +1,53 @@
+FUNCTION fun4 :
+PARAM var_j
+PARAM var_k
+tmp_0 := var_j + var_k
+WRITE tmp_0
+RETURN #0
+FUNCTION fun3 :
+PARAM var_h
+PARAM var_i
+ARG #85694
+ARG #33629
+__tmp__ := CALL fun4
+ARG #85694
+ARG #33629
+__tmp__ := CALL fun4
+tmp_8 := var_h + var_i
+WRITE tmp_8
+RETURN #0
+FUNCTION fun2 :
+PARAM var_f
+PARAM var_g
+ARG #56731
+ARG #13211
+__tmp__ := CALL fun3
+ARG #56731
+ARG #13211
+__tmp__ := CALL fun3
+tmp_16 := var_f + var_g
+WRITE tmp_16
+RETURN #0
+FUNCTION fun1 :
+PARAM var_d
+PARAM var_e
+ARG #2310
+ARG #62000
+__tmp__ := CALL fun2
+ARG #2310
+ARG #62000
+__tmp__ := CALL fun2
+tmp_24 := var_d + var_e
+WRITE tmp_24
+RETURN #0
+FUNCTION main :
+ARG #810
+ARG #1919
+__tmp__ := CALL fun1
+ARG #810
+ARG #1919
+__tmp__ := CALL fun1
+var_b := #514
+var_a := #114
+WRITE #628
+RETURN #0
