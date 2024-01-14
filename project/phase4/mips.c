@@ -307,10 +307,10 @@ Mips *code_2_mips(Code* code){
     type 0: LABEL tk1 :
     type 1: FUNCTION tk1 :
     type 2: tk1 := tk2                  // tk2 could be a constant or a variable
-    type 3: tk1 := tk2 + tk3            // tk2 or tk3 could be a constant, but not both, or they can be both variables
-    type 4: tk1 := tk2 - tk3            // tk2 or tk3 could be a constant, but not both, or they can be both variables
-    type 5: tk1 := tk2 * tk3            // tk2 or tk3 could be a constant, but not both, or they can be both variables
-    type 6: tk1 := tk2 / tk3            // tk2 or tk3 could be a constant, but not both, or they can be both variables
+    type 3: tk1 := tk2 + tk3            // tk2 or tk3 could be a constant or variable
+    type 4: tk1 := tk2 - tk3            // tk2 or tk3 could be a constant or variable
+    type 5: tk1 := tk2 * tk3            // tk2 or tk3 could be a constant or variable
+    type 6: tk1 := tk2 / tk3            // tk2 or tk3 could be a constant or variable
     type 7: tk1 := &tk2                 // I believe that this will not appear in our ir code
     type 8: tk1 := *tk2                 // I think tk2 must be a variable name
     type 9: *tk1 := tk2                 // tk2 could be a constant or a variable

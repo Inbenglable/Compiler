@@ -862,7 +862,7 @@ Code* parse_ir_file(FILE* file){
             if(buffer[i] == ' ' || buffer[i] == '\t' || buffer[i] == '\n' || buffer[i] == '\r'){
                 if(k != 0){
                     tokens[j][k] = '\0';
-                    printf("[%d:%s]", j, tokens[j]);
+                    // printf("[%d:%s]", j, tokens[j]);
                     j++;
                     k = 0;
                 }
@@ -875,11 +875,11 @@ Code* parse_ir_file(FILE* file){
         }
         if(k != 0){
             tokens[j][k] = '\0';
-            printf("[%d:%s]", j, tokens[j]);
+            // printf("[%d:%s]", j, tokens[j]);
             j++;
             k = 0;
         }
-        printf("\n");
+        // printf("\n");
         if(strcmp(tokens[0], "LABEL") == 0){
             code->type = 0;
             code->tk1 = (char*)malloc(sizeof(char)*60);
@@ -896,7 +896,7 @@ Code* parse_ir_file(FILE* file){
             if(strcmp(tokens[2], "CALL") == 0){
                 code->type = 16;
                 code->tk1 = (char*)malloc(sizeof(char)*60);
-                strcpy(code->tk1, tokens[0]);
+                sprintf(code->tk1, "var_%s", tokens[0]);
                 code->tk2 = (char*)malloc(sizeof(char)*60);
                 strcpy(code->tk2, tokens[3]);
                 code->tk3 = NULL;
@@ -904,64 +904,104 @@ Code* parse_ir_file(FILE* file){
                 if(tokens[0][0] == '*'){
                     code->type = 9;
                     code->tk1 = (char*)malloc(sizeof(char)*60);
-                    strcpy(code->tk1, tokens[0]+1);
+                    sprintf(code->tk1, "var_%s", tokens[0]+1);
                     code->tk2 = (char*)malloc(sizeof(char)*60);
-                    strcpy(code->tk2, tokens[2]);
+                    if(start_with_well(tokens[2])){
+                        strcpy(code->tk2, tokens[2]);
+                    }else{
+                        sprintf(code->tk2, "var_%s", tokens[2]);
+                    }
                     code->tk3 = NULL;
                 }else if(tokens[2][0] == '&'){
                     code->type = 7;
                     code->tk1 = (char*)malloc(sizeof(char)*60);
-                    strcpy(code->tk1, tokens[0]);
+                    sprintf(code->tk1, "var_%s", tokens[0]);
                     code->tk2 = (char*)malloc(sizeof(char)*60);
-                    strcpy(code->tk2, tokens[2]+1);
+                    sprintf(code->tk2, "var_%s", tokens[2]+1);
                     code->tk3 = NULL;
                 }else if(tokens[2][0] == '*'){
                     code->type = 8;
                     code->tk1 = (char*)malloc(sizeof(char)*60);
-                    strcpy(code->tk1, tokens[0]);
+                    sprintf(code->tk1, "var_%s", tokens[0]);
                     code->tk2 = (char*)malloc(sizeof(char)*60);
-                    strcpy(code->tk2, tokens[2]+1);
+                    sprintf(code->tk2, "var_%s", tokens[2]+1);
                     code->tk3 = NULL;
                 }else{
                     code->type = 2;
                     code->tk1 = (char*)malloc(sizeof(char)*60);
-                    strcpy(code->tk1, tokens[0]);
+                    sprintf(code->tk1, "var_%s", tokens[0]);
                     code->tk2 = (char*)malloc(sizeof(char)*60);
-                    strcpy(code->tk2, tokens[2]);
+                    if(start_with_well(tokens[2])){
+                        strcpy(code->tk2, tokens[2]);
+                    }else{
+                        sprintf(code->tk2, "var_%s", tokens[2]);
+                    }
                     code->tk3 = NULL;
                 }
             }else if(strcmp(tokens[3], "+") == 0){
                 code->type = 3;
                 code->tk1 = (char*)malloc(sizeof(char)*60);
-                strcpy(code->tk1, tokens[0]);
+                sprintf(code->tk1, "var_%s", tokens[0]);
                 code->tk2 = (char*)malloc(sizeof(char)*60);
-                strcpy(code->tk2, tokens[2]);
+                if(start_with_well(tokens[2])){
+                    strcpy(code->tk2, tokens[2]);
+                }else{
+                    sprintf(code->tk2, "var_%s", tokens[2]);
+                }
                 code->tk3 = (char*)malloc(sizeof(char)*60);
-                strcpy(code->tk3, tokens[4]);
+                if(start_with_well(tokens[4])){
+                    strcpy(code->tk3, tokens[4]);
+                }else{
+                    sprintf(code->tk3, "var_%s", tokens[4]);
+                }
             }else if(strcmp(tokens[3], "-") == 0){
                 code->type = 4;
                 code->tk1 = (char*)malloc(sizeof(char)*60);
-                strcpy(code->tk1, tokens[0]);
+                sprintf(code->tk1, "var_%s", tokens[0]);
                 code->tk2 = (char*)malloc(sizeof(char)*60);
-                strcpy(code->tk2, tokens[2]);
+                if(start_with_well(tokens[2])){
+                    strcpy(code->tk2, tokens[2]);
+                }else{
+                    sprintf(code->tk2, "var_%s", tokens[2]);
+                }
                 code->tk3 = (char*)malloc(sizeof(char)*60);
-                strcpy(code->tk3, tokens[4]);
+                if(start_with_well(tokens[4])){
+                    strcpy(code->tk3, tokens[4]);
+                }else{
+                    sprintf(code->tk3, "var_%s", tokens[4]);
+                }
             }else if(strcmp(tokens[3], "*") == 0){
                 code->type = 5;
                 code->tk1 = (char*)malloc(sizeof(char)*60);
-                strcpy(code->tk1, tokens[0]);
+                sprintf(code->tk1, "var_%s", tokens[0]);
                 code->tk2 = (char*)malloc(sizeof(char)*60);
-                strcpy(code->tk2, tokens[2]);
+                if(start_with_well(tokens[2])){
+                    strcpy(code->tk2, tokens[2]);
+                }else{
+                    sprintf(code->tk2, "var_%s", tokens[2]);
+                }
                 code->tk3 = (char*)malloc(sizeof(char)*60);
-                strcpy(code->tk3, tokens[4]);
+                if(start_with_well(tokens[4])){
+                    strcpy(code->tk3, tokens[4]);
+                }else{
+                    sprintf(code->tk3, "var_%s", tokens[4]);
+                }
             }else if(strcmp(tokens[3], "/") == 0){
                 code->type = 6;
                 code->tk1 = (char*)malloc(sizeof(char)*60);
-                strcpy(code->tk1, tokens[0]);
+                sprintf(code->tk1, "var_%s", tokens[0]);
                 code->tk2 = (char*)malloc(sizeof(char)*60);
-                strcpy(code->tk2, tokens[2]);
+                if(start_with_well(tokens[2])){
+                    strcpy(code->tk2, tokens[2]);
+                }else{
+                    sprintf(code->tk2, "var_%s", tokens[2]);
+                }
                 code->tk3 = (char*)malloc(sizeof(char)*60);
-                strcpy(code->tk3, tokens[4]);
+                if(start_with_well(tokens[4])){
+                    strcpy(code->tk3, tokens[4]);
+                }else{
+                    sprintf(code->tk3, "var_%s", tokens[4]);
+                }
             }
         }else if(strcmp(tokens[0], "GOTO") == 0){
             code->type = 10;
@@ -972,7 +1012,11 @@ Code* parse_ir_file(FILE* file){
         }else if(strcmp(tokens[0], "IF") == 0){
             code->type = 11;
             code->tk1 = (char*)malloc(sizeof(char)*60);
-            strcpy(code->tk1, tokens[1]);
+            if(start_with_well(tokens[1])){
+                strcpy(code->tk1, tokens[1]);
+            }else{
+                sprintf(code->tk1, "var_%s", tokens[1]);
+            }
             if(strcmp(tokens[2], "<") == 0){
                 code->relop = 0;
             }else if(strcmp(tokens[2], "<=") == 0){
@@ -987,44 +1031,64 @@ Code* parse_ir_file(FILE* file){
                 code->relop = 5;
             }
             code->tk2 = (char*)malloc(sizeof(char)*60);
-            strcpy(code->tk2, tokens[3]);
+            if(start_with_well(tokens[3])){
+                strcpy(code->tk2, tokens[3]);
+            }else{
+                sprintf(code->tk2, "var_%s", tokens[3]);
+            }
             code->tk3 = (char*)malloc(sizeof(char)*60);
             strcpy(code->tk3, tokens[5]);
         }else if(strcmp(tokens[0], "RETURN") == 0){
             code->type = 12;
             code->tk1 = (char*)malloc(sizeof(char)*60);
-            strcpy(code->tk1, tokens[1]);
+            if(start_with_well(tokens[1])){
+                strcpy(code->tk1, tokens[1]);
+            }else{
+                sprintf(code->tk1, "var_%s", tokens[1]);
+            }
             code->tk2 = NULL;
             code->tk3 = NULL;
         }else if(strcmp(tokens[0], "DEC") == 0){
             code->type = 13;
             code->tk1 = (char*)malloc(sizeof(char)*60);
-            strcpy(code->tk1, tokens[1]);
+            sprintf(code->tk1, "var_%s", tokens[1]);
             code->tk2 = (char*)malloc(sizeof(char)*60);
             strcpy(code->tk2, tokens[2]);
             code->tk3 = NULL;
         }else if(strcmp(tokens[0], "PARAM") == 0){
             code->type = 14;
             code->tk1 = (char*)malloc(sizeof(char)*60);
-            strcpy(code->tk1, tokens[1]);
+            if(start_with_well(tokens[1])){
+                strcpy(code->tk1, tokens[1]);
+            }else{
+                sprintf(code->tk1, "var_%s", tokens[1]);
+            }
             code->tk2 = NULL;
             code->tk3 = NULL;
         }else if(strcmp(tokens[0], "ARG") == 0){
             code->type = 15;
             code->tk1 = (char*)malloc(sizeof(char)*60);
-            strcpy(code->tk1, tokens[1]);
+            if(start_with_well(tokens[1])){
+                strcpy(code->tk1, tokens[1]);
+            }else{
+                sprintf(code->tk1, "var_%s", tokens[1]);
+            }
             code->tk2 = NULL;
             code->tk3 = NULL;
         }else if(strcmp(tokens[0], "READ") == 0){
             code->type = 17;
             code->tk1 = (char*)malloc(sizeof(char)*60);
-            strcpy(code->tk1, tokens[1]);
+            sprintf(code->tk1, "var_%s", tokens[1]);
             code->tk2 = NULL;
             code->tk3 = NULL;
         }else if(strcmp(tokens[0], "WRITE") == 0){
             code->type = 18;
             code->tk1 = (char*)malloc(sizeof(char)*60);
-            strcpy(code->tk1, tokens[1]);
+            if(start_with_well(tokens[1])){
+                strcpy(code->tk1, tokens[1]);
+            }else{
+                sprintf(code->tk1, "var_%s", tokens[1]);
+            }
             code->tk2 = NULL;
             code->tk3 = NULL;
         }else{
@@ -1042,11 +1106,11 @@ Code* parse_ir_file(FILE* file){
             tail = code;
         }
     }
-    // Code* tmp = head;
-    // while(tmp != NULL){
-    //     printf("%d %s %s %s\n", tmp->type, tmp->tk1, tmp->tk2, tmp->tk3);
-    //     tmp = tmp->next;
-    // }
+    Code* tmp = head;
+    while(tmp != NULL){
+        printf("%d %s %s %s\n", tmp->type, tmp->tk1, tmp->tk2, tmp->tk3);
+        tmp = tmp->next;
+    }
     return head;
 }
 

@@ -1,0 +1,7 @@
+1 main (null) (null)
+2 var_var_b #97 (null)
+2 var_var_a #110 (null)
+5 var_tmp_3 #3 #2
+3 var_var_c #13 var_tmp_3
+18 var_var_c (null) (null)
+12 #0 (null) (null)
