@@ -862,7 +862,7 @@ Code* parse_ir_file(FILE* file){
             if(buffer[i] == ' ' || buffer[i] == '\t' || buffer[i] == '\n' || buffer[i] == '\r'){
                 if(k != 0){
                     tokens[j][k] = '\0';
-                    // printf("[%d:%s]", j, tokens[j]);
+                    printf("[%d:%s]", j, tokens[j]);
                     j++;
                     k = 0;
                 }
@@ -875,10 +875,11 @@ Code* parse_ir_file(FILE* file){
         }
         if(k != 0){
             tokens[j][k] = '\0';
-            // printf("[%d:%s]", j, tokens[j]);
+            printf("[%d:%s]", j, tokens[j]);
             j++;
             k = 0;
         }
+        printf("\n");
         if(strcmp(tokens[0], "LABEL") == 0){
             code->type = 0;
             code->tk1 = (char*)malloc(sizeof(char)*60);
@@ -892,7 +893,7 @@ Code* parse_ir_file(FILE* file){
             code->tk2 = NULL;
             code->tk3 = NULL;
         }else if(strcmp(tokens[1], ":=") == 0){
-            if(strcmp(tokens[3], "CALL") == 0){
+            if(strcmp(tokens[2], "CALL") == 0){
                 code->type = 16;
                 code->tk1 = (char*)malloc(sizeof(char)*60);
                 strcpy(code->tk1, tokens[0]);
