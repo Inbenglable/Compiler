@@ -311,9 +311,9 @@ Mips *code_2_mips(Code* code){
     type 4: tk1 := tk2 - tk3            // tk2 or tk3 could be a constant, but not both, or they can be both variables
     type 5: tk1 := tk2 * tk3            // tk2 or tk3 could be a constant, but not both, or they can be both variables
     type 6: tk1 := tk2 / tk3            // tk2 or tk3 could be a constant, but not both, or they can be both variables
-    type 7: tk1 := &tk2                 // this will not appear in our ir code
-    type 8: tk1 := *tk2                 // this will not appear in our ir code
-    type 9: *tk1 := tk2                 // this will not appear in our ir code
+    type 7: tk1 := &tk2                 // I believe that this will not appear in our ir code
+    type 8: tk1 := *tk2                 // I think tk2 must be a variable name
+    type 9: *tk1 := tk2                 // tk2 could be a constant or a variable
     type 10: GOTO tk1                   // tk1 must be a label name
     type 11: IF tk1 relop tk2 GOTO tk3  // tk3 must be a label name, tk1 or tk2 could be a constant or a variable, they may be both constants or both variables
     type 12: RETURN tk1                 // tk1 could be a constant or a variable
@@ -515,6 +515,28 @@ Mips *code_2_mips(Code* code){
             mips_code = link_Mips(mips_code, tmp2.code);
             mips_code = link_Mips(mips_code, tmp3.code);
             mips_code = link_Mips(mips_code, gen_mips("div", int_to_reg(tmp1.reg), int_to_reg(tmp2.reg), int_to_reg(tmp3.reg)));
+        }
+    }
+    else if(code->type == 8){
+        ret_struct tmp1 = get_mips_reg(code->tk1);
+        ret_struct tmp2 = get_mips_reg(code->tk2);
+        mips_code = link_Mips(mips_code, tmp1.code);
+        mips_code = link_Mips(mips_code, tmp2.code);
+        mips_code = link_Mips(mips_code, gen_mips("lw", int_to_reg(tmp1.reg), add_offset_to_reg(tmp2.reg, 0), NULL));
+    }
+    else if(code->type == 9){
+        if(code->tk2[0] == '#'){
+            ret_struct tmp1 = get_mips_reg(code->tk1);
+            mips_code = link_Mips(mips_code, tmp1.code);
+            mips_code = link_Mips(mips_code, gen_mips("li", "$a0", code->tk2+1, NULL));
+            mips_code = link_Mips(mips_code, gen_mips("sw", "$a0",  add_offset_to_reg(tmp1.reg, 0), NULL));
+        }
+        else{
+            ret_struct tmp1 = get_mips_reg(code->tk1);
+            ret_struct tmp2 = get_mips_reg(code->tk2);
+            mips_code = link_Mips(mips_code, tmp1.code);
+            mips_code = link_Mips(mips_code, tmp2.code);
+            mips_code = link_Mips(mips_code, gen_mips("sw", int_to_reg(tmp2.reg),  add_offset_to_reg(tmp1.reg, 0), NULL));
         }
     }
     else if(code->type == 10){

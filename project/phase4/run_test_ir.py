@@ -16,7 +16,7 @@ if __name__ == '__main__':
     for file in files:
         if file.endswith('.ir'):
             print('Compiling ' + file)
-            result = os.system('wsl ./bin/splc ' + os.path.join(TEST_PATH, file) + ' > ' + os.path.join(TEST_PATH, file[:-3] + '_tokenize_result.txt'))
+            result = os.system('wsl ./bin/splc ' + os.path.join(TEST_PATH, file))
             print(result)
             if TRIAL:
                 break
