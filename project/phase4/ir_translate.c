@@ -1106,11 +1106,11 @@ Code* parse_ir_file(FILE* file){
             tail = code;
         }
     }
-    Code* tmp = head;
-    while(tmp != NULL){
-        printf("%d %s %s %s\n", tmp->type, tmp->tk1, tmp->tk2, tmp->tk3);
-        tmp = tmp->next;
-    }
+    // Code* tmp = head;
+    // while(tmp != NULL){
+    //     printf("%d %s %s %s\n", tmp->type, tmp->tk1, tmp->tk2, tmp->tk3);
+    //     tmp = tmp->next;
+    // }
     return head;
 }
 

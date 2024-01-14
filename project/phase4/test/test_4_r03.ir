@@ -1,7 +1,0 @@
-FUNCTION main :
-var_b := #97
-var_a := #110
-tmp_3 := #3 * #2
-var_c := #13 + tmp_3
-WRITE var_c
-RETURN #0
