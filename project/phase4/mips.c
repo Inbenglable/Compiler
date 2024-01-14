@@ -418,8 +418,9 @@ Mips *code_2_mips(Code* code){
                 mips_code = link_Mips(mips_code, tmp1.code);
                 mips_code = link_Mips(mips_code, tmp3.code);
                 char* tmp_const = (char*)malloc(sizeof(char)*30);
-                sprintf(tmp_const, "%d", -atoi(code->tk2+1));
-                mips_code = link_Mips(mips_code, gen_mips("addi", int_to_reg(tmp1.reg), int_to_reg(tmp3.reg), tmp_const));
+                sprintf(tmp_const, "%d", atoi(code->tk2+1));
+                mips_code = link_Mips(mips_code, gen_mips("li", "$a0", tmp_const, NULL));
+                mips_code = link_Mips(mips_code, gen_mips("sub", int_to_reg(tmp1.reg), "$a0", int_to_reg(tmp3.reg)));
             }
         }
         else if(code->tk3[0] == '#'){

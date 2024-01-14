@@ -59,7 +59,8 @@
         lw $t0, reg_root + 28
         li $t0, 1
         lw $t1, reg_root + 32
-        addi $t1, $t0, 0
+        li $a0, 0
+        sub $t1, $a0, $t0
         move $a0, $t1
         li $v0, 1
         syscall
